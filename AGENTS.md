@@ -41,6 +41,22 @@ scripts/      워크트리 정리, 브랜치 흐름 검사
 - 디자인: design-system-a. 토큰·기본 꼴·컴포넌트를 복사해 쓰고, 원본 출처는
   `NOTICE` 에 남긴다.
 
+## 명령어
+
+```bash
+pnpm install
+pnpm dev            # http://localhost:3100 (aptifit 개발 서버가 3000을 쓴다)
+pnpm typecheck      # next typegen && tsc --noEmit
+pnpm lint
+pnpm format         # CI는 format:check
+pnpm build
+```
+
+- 커밋 전에 husky가 lint-staged(ESLint, Prettier, typecheck)를 부른다.
+- PR 필수 검사: `quality`(CI), `lint`(PR 제목), `Branch Flow`.
+- Next.js 16.4는 학습 데이터와 다를 수 있다. 코드를 쓰기 전에
+  `node_modules/next/dist/docs/` 의 해당 문서를 읽는다(맨 아래 Next.js 블록).
+
 ### 나중에 AWS로 옮길 수 있게
 
 - 스키마는 `supabase/migrations` 의 SQL로만 바꾼다. 대시보드에서 바꾸지 않는다.
@@ -181,3 +197,20 @@ src/
 | Orca worktree 절차         | `docs/development/worktree-workflow.md` |
 | 커밋 규칙                  | `docs/development/commit-guide.md`      |
 | PR 작성·리뷰               | `docs/development/pr-guide.md`          |
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may
+all differ from your training data. Read the relevant guide in
+`node_modules/next/dist/docs/` (resolved from this file's directory; in
+monorepos the `next` package may not be visible from the repo root) before
+writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at
+`node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a
+diff only re-creates the uncommitted change; committing it with your work keeps
+the tree clean.
+
+<!-- END:nextjs-agent-rules -->
