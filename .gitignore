@@ -1,0 +1,5 @@
+.DS_Store
+node_modules/
+
+# 로컬 환경 파일. orca.yaml setup이 worktree로 복사한다.
+.env*.local

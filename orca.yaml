@@ -1,0 +1,57 @@
+scripts:
+  setup: |
+    set -eu
+
+    : "${ORCA_ROOT_PATH:?Orca must set ORCA_ROOT_PATH}"
+    : "${ORCA_WORKTREE_PATH:?Orca must set ORCA_WORKTREE_PATH}"
+
+    if [ ! -d "$ORCA_ROOT_PATH" ]; then
+      echo "error: Orca root path does not exist." >&2
+      exit 1
+    fi
+
+    if [ ! -d "$ORCA_WORKTREE_PATH" ]; then
+      echo "error: Orca worktree path does not exist." >&2
+      exit 1
+    fi
+
+    canonicalize_dir() {
+      dir_path="$1"
+
+      (
+        cd -P "$dir_path" 2>/dev/null || exit 1
+        pwd -P
+      )
+    }
+
+    root_path="$(canonicalize_dir "$ORCA_ROOT_PATH")" || {
+      echo "error: could not resolve Orca root path." >&2
+      exit 1
+    }
+    worktree_path="$(canonicalize_dir "$ORCA_WORKTREE_PATH")" || {
+      echo "error: could not resolve Orca worktree path." >&2
+      exit 1
+    }
+
+    if [ "$root_path" = "$worktree_path" ]; then
+      echo "error: Orca root and worktree paths resolve to the same directory." >&2
+      exit 1
+    fi
+
+    # 메인 checkout의 로컬 환경 파일을 같은 자리로 복사한다(커밋하지 않는 파일).
+    if [ -f "$root_path/.env.local" ]; then
+      cp -p "$root_path/.env.local" "$worktree_path/.env.local"
+      echo "Copied .env.local"
+    else
+      echo "warning: no .env.local was found to copy." >&2
+    fi
+
+    if [ -f "$worktree_path/pnpm-lock.yaml" ]; then
+      if ! command -v pnpm >/dev/null 2>&1; then
+        echo "error: pnpm is required to install dependencies." >&2
+        exit 1
+      fi
+
+      cd "$worktree_path"
+      pnpm install --frozen-lockfile
+    fi
