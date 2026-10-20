@@ -23,8 +23,8 @@
 
 1. 작업 scope와 type을 판단한다(예: 화면 작업이면 `design(web)` 또는
    `feat(web)`). 애매하면 코드 작업 전에 묻는다.
-2. 관련 route, view·widget·feature·entity, Supabase 스키마, 문서 영향을 조사한다.
-   범위가 크거나 불확실하면 분석 이슈부터 만든다.
+2. 관련 route, view·widget·feature·entity, Supabase 스키마, 문서 영향을
+   조사한다. 범위가 크거나 불확실하면 분석 이슈부터 만든다.
 3. GitHub 이슈를 만든다. 제목 `<type>(<scope>): <한글 제목>`, 본문 `문제/배경`,
    `검토한 대안`, `선택한 해결 방향`, `검증 기준`.
 4. 이슈 번호로 전체 브랜치명을 만든다.
@@ -68,8 +68,8 @@ orca worktree show --worktree "id:<repo-id>::<absolute-path>" --json
 
 1. caper 프로젝트에서 새 worktree를 연다.
 2. 표시 이름과 agent를 고른다.
-3. `고급(Advanced)` 에서 `브랜치 이름` 에 전체 브랜치명을 넣고, `브랜치 생성
-   기준` 을 `origin/dev` 로 둔다.
+3. `고급(Advanced)` 에서 `브랜치 이름` 에 전체 브랜치명을 넣고,
+   `브랜치 생성 기준` 을 `origin/dev` 로 둔다.
 4. `orca.yaml` setup을 실행하고 `setup 완료 후 agent 시작` 을 켠다.
 5. GitHub 이슈 번호를 연결하고 만든다.
 6. setup 성공과 branch·base·issue를 확인한다.
@@ -114,11 +114,12 @@ scripts/worktree-finish.sh --issue <issue-num> --branch <branch>
    깨끗한지 확인한다.
 2. 브랜치가 보호 브랜치가 아니고 규칙과 이슈 번호에 맞는지 확인한다.
 3. 그 브랜치의 PR이 `dev` 로 merge됐는지 확인하고 merge 결과 SHA를 읽는다.
-4. 메인 checkout의 `dev` 를 `origin/dev` 로 fast-forward하고, merge 결과가
-   들어 있는지 확인한다.
+4. 메인 checkout의 `dev` 를 `origin/dev` 로 fast-forward하고, merge 결과가 들어
+   있는지 확인한다.
 5. worktree를 지우고 `git worktree prune` 을 실행한다.
 6. 안전하게 지울 수 있는 로컬 브랜치를 지운다.
-7. 원격 브랜치 tip이 PR의 마지막 커밋과 같을 때만 `--force-with-lease` 로 지운다.
+7. 원격 브랜치 tip이 PR의 마지막 커밋과 같을 때만 `--force-with-lease` 로
+   지운다.
 8. 이슈가 열려 있으면 정리 결과를 코멘트하고 닫는다.
 
 옵션: `--base <branch>`(기본 dev), `--pr <number>`, `--keep-remote-branch`,

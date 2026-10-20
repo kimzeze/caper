@@ -18,5 +18,5 @@ caper(케이퍼)는 장난스럽고 대담한 일탈, 한탕을 뜻한다. 친�
 
 ## 개발
 
-규칙은 [AGENTS.md](AGENTS.md), 작업 흐름은 [docs/development](docs/development)에
-있다.
+규칙은 [AGENTS.md](AGENTS.md), 작업 흐름은
+[docs/development](docs/development)에 있다.
