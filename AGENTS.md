@@ -95,9 +95,17 @@ src/
 
 ## 화면 미리보기 (`/preview`)
 
-- 개발 서버와 Vercel preview 배포에서만 열고 production에서는 닫는다.
+- 개발 서버와 Vercel preview 배포에서만 열고 production(`VERCEL_ENV` 가
+  production이거나 없음)에서는 404다. 조건은 `shared/config/preview.ts` 하나다.
 - 화면마다 상태별 케이스(빈 목록, 긴 제목, 포스터 없음·세로·가로, 상태별, 로딩,
   오류)를 고정 데이터로 그린다. DB 없이 실제 위젯을 import해 그린다.
+- 고정 데이터는 `@/entities/<name>/fixtures` 에 두고 스키마로 검사한다. 이
+  진입점은 `app/preview` 에서만 import한다.
+- 묶음 목록은 `src/app/preview/preview-families.ts`, 케이스 route는
+  `src/app/preview/<묶음>/[case]/page.tsx`(`generateStaticParams`).
+- `/preview` 는 `ensureStatic = "navigation"` 으로 전부 정적이다. 없는 케이스도
+  404로 응답한다. 케이스 route는 개발용이라 `instant = false` 로 이동을 잠깐
+  막는다(사용자 화면은 Suspense로 자리를 먼저 그린다).
 - 화면이나 상태를 만들거나 바꾸면 같은 PR에서 미리보기 케이스도 고친다.
 - 미리보기 전용 코드는 위젯의 별도 진입점(`@/widgets/<name>/preview`)으로만
   내보내고, 실제 route가 import하는 `index.ts` 에서는 내보내지 않는다.
