@@ -1,0 +1,8 @@
+allowBuilds:
+  sharp: false
+  unrs-resolver: false
+
+auditConfig:
+  ignoreGhsas:
+    # braces <=3.0.3. eslint-config-next → fast-glob 경로의 개발 의존성뿐이고, 고친 버전이 npm에 아직 없다.
+    - GHSA-vfj7-8cjw-p6xm
