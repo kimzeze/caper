@@ -1,0 +1,181 @@
+# Project Caper
+
+평범한 계획에 영화 제목 같은 이름을 붙여 하나의 프로젝트로 만들고, 계획하고,
+해 보고, 기록하는 서비스다. AI가 작업을 시작하기 전에 이 파일을 먼저 읽는다.
+상세 절차는 `docs/development/` 에 있다.
+
+## 제품
+
+- 플랫폼이다. 사용자가 프로젝트를 만들고 포스터를 올리고, 링크로 crew를 모은다.
+- 확장 순서: 모바일 웹 → iOS 앱(SwiftUI) → 데스크탑 웹. 안드로이드는 당분간 없다.
+- 디자인은 웹에서 먼저 보고 완성한 뒤 앱으로 옮긴다. 매거진 앱처럼 포스터와 큰
+  제목이 중심이다.
+- 프로젝트 항목: 제목, 슬로건, 부제, 포스터, 상태(기획·진행·완료), crew.
+  시스템 번호는 붙이지 않는다. 제목에 번호를 넣는 것은 사용자 자유다.
+- 열람과 참여: 링크가 있으면 누구나 보고 참여한다. 로그인 없이 참여하면
+  Supabase 익명 로그인으로 임시 계정을 만들고, 카카오나 Apple로 로그인하면 같은
+  계정에 이어 붙어 저장 같은 기능이 늘어난다.
+- 로그인: 카카오, Apple.
+
+## 용어
+
+- 코드·데이터·DB: `caper` (복수 `capers`).
+- 화면 문장: "프로젝트". 브랜드: "Project Caper" 또는 "Caper".
+- "작전"이라는 말은 쓰지 않는다.
+
+## 구조와 스택
+
+```
+src/          Next.js 앱(App Router). 모바일 웹부터, 나중에 데스크탑
+supabase/     DB 마이그레이션·시드. 웹과 앱이 같이 따르는 약속
+ios/          SwiftUI 앱(나중에)
+docs/         개발 문서
+scripts/      워크트리 정리, 브랜치 흐름 검사
+```
+
+- Next.js 16 App Router, React 19, TypeScript strict, Tailwind v4, pnpm.
+  Turborepo 같은 모노레포 도구는 쓰지 않는다.
+- Supabase: Postgres, Auth(카카오·Apple·익명), Storage(포스터).
+- 배포: Vercel. `main` 은 production, `dev` 와 PR은 preview.
+- 디자인: design-system-a. 토큰·기본 꼴·컴포넌트를 복사해 쓰고, 원본 출처는
+  `NOTICE` 에 남긴다.
+
+### 나중에 AWS로 옮길 수 있게
+
+- 스키마는 `supabase/migrations` 의 SQL로만 바꾼다. 대시보드에서 바꾸지 않는다.
+- Supabase 호출은 `entities/*/api.ts` 에만 둔다. 화면과 위젯은 Supabase를 직접
+  부르지 않는다.
+- 포스터는 DB에 Storage 경로만 저장한다. 전체 URL을 저장하지 않는다.
+- 로그인은 소셜(카카오·Apple)과 익명만 쓴다. 비밀번호 로그인은 만들지 않는다.
+- Vercel 전용 기능(Blob, KV, Edge Config)을 쓰지 않는다.
+- 권한 정책(RLS)은 Supabase Auth에 묶인다. 제약 조건·트리거처럼 Postgres만으로
+  되는 규칙은 DB에 두고, RLS에만 있는 규칙은 문서에 적어 둔다.
+
+## 앱 내부 구조 (FSD)
+
+```
+src/
+├── app/        Next App Router. route, layout, route handler, Server Action 진입
+├── views/      페이지 단위 조합 (FSD pages. Next의 pages 폴더와 겹쳐 views)
+├── widgets/    화면 덩어리 조합
+├── features/   사용자 동작 단위
+├── entities/   도메인 모델, api.ts(Supabase 호출), schema.ts(Zod)
+└── shared/     ui(design-system-a), lib, config
+```
+
+- import 방향은 `app → views → widgets → features → entities → shared` 한
+  방향이다. 역방향 금지.
+- entity끼리 import하지 않는다(type-only도). 조합은 widget에서 주입한다.
+- slice는 `index.ts` 로 public API를 정한다. 내부 파일을 직접 import하지 않는다.
+  `shared/ui` 는 파일 경로로 직접 import한다.
+- 파일명은 kebab-case. 타입은 `import type`.
+- route·page 파일은 얇게 두고 화면 조합은 `views` 에 맡긴다.
+- 읽기는 서버 컴포넌트, 쓰기는 Server Action. TanStack Query는 클라이언트에서
+  다시 불러와야 하는 곳에만 쓴다. `useEffect` 로 데이터를 불러오지 않는다.
+- 입력 검증은 entity의 `schema.ts`(Zod) 하나로 하고, 서버에서도 같은 스키마로
+  다시 검증한다.
+- 비밀값은 커밋하지 않는다. 비밀값 이름에 `NEXT_PUBLIC_` 를 붙이지 않는다.
+
+## 화면 미리보기 (`/preview`)
+
+- 개발 서버와 Vercel preview 배포에서만 열고 production에서는 닫는다.
+- 화면마다 상태별 케이스(빈 목록, 긴 제목, 포스터 없음·세로·가로, 상태별,
+  로딩, 오류)를 고정 데이터로 그린다. DB 없이 실제 위젯을 import해 그린다.
+- 화면이나 상태를 만들거나 바꾸면 같은 PR에서 미리보기 케이스도 고친다.
+- 미리보기 전용 코드는 위젯의 별도 진입점(`@/widgets/<name>/preview`)으로만
+  내보내고, 실제 route가 import하는 `index.ts` 에서는 내보내지 않는다.
+
+## UI
+
+- design-system-a 규칙을 따른다(skill `design-system-a`, 정본
+  `~/project/design-system-a`). 무채색 stone과 강조색 초록 하나, Pretendard,
+  각진 모서리, 그림자 없음, rlh 간격.
+- 디자인 시스템에 없는 패턴(포스터 그리드, 표지 같은 것)은 caper에서 같은 규칙으로
+  만들고, 디자인 시스템에도 더할지 사용자에게 묻는다.
+- 390px부터 만들고 1280px을 확인한다. 라이트·다크 둘 다 본다.
+- 브라우저 확인은 ego-browser 스킬(ego lite)로 한다.
+- 화면 문장은 합니다체. 버튼은 동사 하나. 줄표(—)를 쓰지 않고, 영어 뒤 조사는
+  붙여 쓴다. 코드 주석과 개발 문서는 한다체로 쓴다.
+
+## BP 기반 진행
+
+- 설계 판단이 필요한 작업과 리뷰 코멘트는 대안을 두 개 이상 적고 BP 관점의
+  추천안을 낸다. 사용자 판단이 필요하면 clarify한 뒤 구현한다.
+- 작업 전에 해당 스킬을 읽는다.
+
+| 작업                                | 스킬                                               |
+| ----------------------------------- | -------------------------------------------------- |
+| Next.js route, 데이터, 메타데이터   | `next-best-practices`                              |
+| React 컴포넌트, 성능                | `vercel-react-best-practices`                      |
+| 폴더 위치, import 경계              | `feature-sliced-design`                            |
+| DB, Auth, Storage, RLS              | `supabase`                                         |
+| 화면 만들기                         | `design-system-a`                                  |
+| 화면 점검(접근성, UX)               | `web-design-guidelines`                            |
+| 브라우저 확인                       | `ego-browser`                                      |
+| iOS 앱(나중에)                      | `swiftui-pro`, `swiftui-expert-skill`              |
+
+## 작업 흐름
+
+상세: `docs/development/workflow.md`, `docs/development/worktree-workflow.md`.
+
+- 브랜치는 `feature → dev → main` 두 단계다. `dev`, `main` 은 보호 브랜치라
+  직접 커밋·push하지 않는다.
+- 모든 작업은 GitHub 이슈로 추적한다. 이슈 본문에 `문제/배경`, `검토한 대안`,
+  `선택한 해결 방향`, `검증 기준` 을 쓴다.
+- 일반 작업은 Orca worktree에서 한다. 메인 checkout에서 브랜치를 바꾸지 않는다.
+  - 사용자가 "OO 워크트리 만들어"라고 하면 이슈를 먼저 만들고, 이슈 번호·전체
+    브랜치명·기준 ref `origin/dev` 를 브리핑해 합의받은 뒤 만든다.
+  - 브랜치: `<type>/<scope>/<issue-num>-<slug>` (예: `feat/web/12-caper-list`).
+  - setup은 `orca.yaml` 이 한다. 만든 뒤 실제 branch·base·issue를 확인하기 전에는
+    코드를 고치지 않는다.
+  - 임시 변경을 stash로 숨기지 않는다. 별도 이슈·worktree로 옮기거나 사용자
+    확인 후 버린다.
+- PR은 `dev` 로, 본문 첫 줄에 `closes #N`. 문제, 검토한 대안, 선택한 방식을 쓴다.
+- merge는 `gh pr merge <n> --merge` 로 한다(`--delete-branch` 금지). 그다음
+  worktree에서 `scripts/worktree-finish.sh --issue <n> --branch <branch>` 를
+  실행한다.
+- 배포는 `dev → main` PR: `release(root): dev → main 배포 (yyyy-mm-dd)`.
+- 리뷰 코멘트는 바로 반영하지 않는다. 오타·포맷·명백한 타입 오류가 아니면
+  `버그 / 보안 / 설계 의견 / 나중에 처리 / 오탐` 으로 나누고, 대안과 추천안을
+  설명한 뒤 정한다.
+
+## 커밋 규칙
+
+상세: `docs/development/commit-guide.md`.
+
+```text
+<타입>(<스코프>): <한글 제목>
+```
+
+- 이슈·커밋·PR 제목은 명사형으로 끝낸다(`추가`, `수정`, `정리`). `추가한다`,
+  `수정합니다` 같은 서술형은 쓰지 않는다.
+- 서명 금지: `Co-Authored-By`, `Signed-off-by`, 생성 도구 문구를 넣지 않는다.
+  PR 본문도 같다.
+- 검증된 의미 단위마다 커밋한다. 커밋 전에 변경 항목을 나열하고 되돌릴 수 있는
+  단위로 나눈다. WIP 커밋, 여러 목적 섞기, 포맷과 로직 섞기 금지.
+- 화면 구조·여백·크기·문구 배치를 맞추는 변경은 `design`, 코드 포맷만 바꾸면
+  `style`.
+
+| 스코프 | 대상                                   |
+| ------ | -------------------------------------- |
+| `root` | 루트 설정, CI, 스크립트, 의존성        |
+| `web`  | `src/` Next.js 앱                      |
+| `db`   | `supabase/` 스키마, 정책, 시드         |
+| `docs` | `docs/`, README                        |
+| `ios`  | `ios/` SwiftUI 앱(나중에)              |
+
+타입: `feat`, `fix`, `refactor`, `style`, `design`, `chore`, `docs`, `test`,
+`release`.
+
+## 메타 룰
+
+새 규칙이나 결정이 생기면 바로 문서에 적는다. PR을 만들기 전에 문서를 고쳐야
+하는지 확인한다.
+
+| 종류                       | 위치                                    |
+| -------------------------- | --------------------------------------- |
+| AI가 매번 알아야 하는 규칙 | `AGENTS.md`                             |
+| 브랜치·이슈·PR 흐름        | `docs/development/workflow.md`          |
+| Orca worktree 절차         | `docs/development/worktree-workflow.md` |
+| 커밋 규칙                  | `docs/development/commit-guide.md`      |
+| PR 작성·리뷰               | `docs/development/pr-guide.md`          |
