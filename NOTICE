@@ -1,0 +1,29 @@
+NOTICE
+
+src/shared/styles/ 와 src/shared/ui/ 의 디자인 시스템 코드(토큰, 기본 꼴, 글 스타일,
+컴포넌트)는 kimzeze/design-system-a 에서 옮겨 왔습니다. design-system-a 는 이성열 님
+(Seongyeol Yi)의 디자인 시스템을 원저작자의 허락을 받아 옮긴 것입니다.
+
+  원본 저장소  https://github.com/yeolyi/yeolyi.com
+               (packages/ui, packages/site, apps/design)
+  원본 사이트  https://design.yeolyi.com
+
+원본의 코드와 컴포넌트는 원저작자의 것입니다
+(Copyright (c) 2026 Seongyeol Yi (이성열). All rights reserved.).
+원본은 오픈소스가 아니며, 이 부분을 복제·수정·재배포하려면 원저작자의 허락이
+필요합니다. caper 에서 바꾼 것은 강조색(design-system-a 와 같음), 파일 이름,
+글꼴 싣는 방식(next/font), 테마 버튼의 상태 읽기입니다.
+
+글꼴은 각자의 라이선스를 따릅니다.
+  Pretendard    SIL Open Font License 1.1  https://github.com/orioncactus/pretendard
+  Monoplex KR   SIL Open Font License 1.1  https://github.com/y-kim/monoplex
+
+---
+
+The design system code in src/shared/styles/ and src/shared/ui/ is adapted from
+kimzeze/design-system-a, which is itself adapted, with the original author's
+permission, from the design system by Seongyeol Yi
+(https://github.com/yeolyi/yeolyi.com, https://design.yeolyi.com).
+The original work is not open source; all rights remain with the original
+author. To copy, modify, redistribute, or reuse that part, ask the original
+author for permission. Fonts remain under their own licenses.

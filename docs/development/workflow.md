@@ -8,10 +8,10 @@
 feature → (PR) → dev → (PR) → main
 ```
 
-| 브랜치    | 역할                                                             |
-| --------- | ---------------------------------------------------------------- |
-| `main`    | production. Vercel production 배포. 항상 배포 가능한 상태        |
-| `dev`     | 통합 개발. 모든 작업 브랜치가 먼저 모인다. Vercel preview 배포   |
+| 브랜치      | 역할                                                           |
+| ----------- | -------------------------------------------------------------- |
+| `main`      | production. Vercel production 배포. 항상 배포 가능한 상태      |
+| `dev`       | 통합 개발. 모든 작업 브랜치가 먼저 모인다. Vercel preview 배포 |
 | 작업 브랜치 | `<type>/<scope>/<issue-num>-<slug>`                            |
 
 `dev`, `main` 은 branch protection으로 보호한다. 직접 push, force push, 삭제가
@@ -25,9 +25,10 @@ feature → (PR) → dev → (PR) → main
 이슈 생성 → worktree 생성 → 작업 + 커밋 → PR → 검사 → merge → worktree 정리
 ```
 
-작업은 메인 checkout에서 브랜치를 바꾸지 않고 [Orca Worktree Workflow](./worktree-workflow.md)
-에 따라 이슈 단위 Orca worktree에서 한다. 메인 checkout은 `dev` 에 두고 로컬
-환경 파일 원본과 정리용으로만 쓴다.
+작업은 메인 checkout에서 브랜치를 바꾸지 않고
+[Orca Worktree Workflow](./worktree-workflow.md) 에 따라 이슈 단위 Orca
+worktree에서 한다. 메인 checkout은 `dev` 에 두고 로컬 환경 파일 원본과
+정리용으로만 쓴다.
 
 AI가 "OO 작업 워크트리 만들어" 요청을 받으면 다음 순서를 따른다.
 
@@ -41,8 +42,8 @@ AI가 "OO 작업 워크트리 만들어" 요청을 받으면 다음 순서를 �
 
 ### 이슈
 
-- 제목: `<type>(<scope>): <한글 제목>`, 명사형으로 끝낸다.
-  예: `feat(web): 프로젝트 목록 화면 추가`, `chore(root): Vercel 배포 연결`
+- 제목: `<type>(<scope>): <한글 제목>`, 명사형으로 끝낸다. 예:
+  `feat(web): 프로젝트 목록 화면 추가`, `chore(root): Vercel 배포 연결`
 - 본문: `문제/배경`, `검토한 대안`, `선택한 해결 방향`, `검증 기준`.
 - 작업 범위를 먼저 조사한다. 작고 명확하면 구현 이슈 하나로 가고, 크거나
   불확실하면 분석 이슈를 만들어 하위 구현 이슈 후보와 사용자에게 물을 것을

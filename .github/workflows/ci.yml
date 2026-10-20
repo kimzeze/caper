@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Test repository policies
+        run: node --test scripts/check-branch-flow.test.mjs
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit dependencies (high+ severity)
+        run: pnpm audit --audit-level high
+
+      - name: Check public env names
+        run: |
+          if grep -RInE 'NEXT_PUBLIC_[A-Z0-9_]*(SECRET|TOKEN|KEY|PASSWORD)' src \
+            --include='*.ts' \
+            --include='*.tsx'; then
+            echo "Secret-like env names must not use the NEXT_PUBLIC_ prefix."
+            exit 1
+          fi
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build

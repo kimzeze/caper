@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# git 훅의 /bin/sh 는 셸 설정의 PATH 를 받지 못하므로 nvm 을 불러 pnpm·node 를 찾게 한다.
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 2>/dev/null
+
+pnpm exec lint-staged
