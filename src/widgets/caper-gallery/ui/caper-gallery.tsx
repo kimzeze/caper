@@ -8,7 +8,7 @@ import { type CaperImage, imageUrl } from "@/entities/caper";
 // 프로젝트 페이지 맨 위 사진 넘기기. 화면 끝까지 차고, 높이는 첫 화면에서 헤더와 제목 첫 줄을 뺀 만큼이다
 // (사진이 거의 다 채우되 아래 제목이 보이게).
 // 화살표 없이 브라우저 스크롤 스냅으로 한 장씩 넘기고, 처음과 끝에서 멈춘다(무한 롤링 없음).
-// 아래 막대가 지금 위치를 따라간다. 막대는 스크롤 이벤트에서 직접 옮긴다
+// 사진 바로 밑 막대가 지금 위치를 따라간다. 막대는 스크롤 이벤트에서 직접 옮긴다
 // (CSS 스크롤 애니메이션은 아직 Baseline Widely available이 아니다).
 // coverTitle 이 있으면 표지(첫 장) 아래쪽에 어두운 막을 깔고 제목을 얹는다.
 export function CaperGallery({
@@ -91,14 +91,13 @@ export function CaperGallery({
         />
       </div>
       {count > 1 && (
-        <div className="measure-col mt-[0.5rlh]">
-          <div aria-hidden className="h-0.5 bg-border">
-            <span
-              ref={thumbRef}
-              className="block h-full bg-foreground"
-              style={{ width: `${100 / count}%` }}
-            />
-          </div>
+        // 위치 막대는 사진 바로 밑에 여백 없이, 사진과 같은 폭(화면 끝까지)으로 붙인다.
+        <div aria-hidden className="h-0.5 bg-muted">
+          <span
+            ref={thumbRef}
+            className="block h-full bg-foreground"
+            style={{ width: `${100 / count}%` }}
+          />
         </div>
       )}
     </section>
