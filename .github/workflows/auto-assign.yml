@@ -1,0 +1,91 @@
+name: Auto Assign
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v9
+        with:
+          script: |
+            const SCOPES = [
+              'root',
+              'web',
+              'db',
+              'docs',
+              'ios',
+            ];
+            const TYPES = {
+              feat: 'type/feat',
+              fix: 'type/bug',
+              refactor: 'type/refactor',
+              chore: 'type/chore',
+              docs: 'type/docs',
+              design: 'type/design',
+              style: 'type/design',
+              test: 'type/test',
+              release: 'type/release',
+            };
+
+            const number = context.payload.issue?.number || context.payload.pull_request?.number;
+            const creator = context.payload.sender.login;
+            const params = { owner: context.repo.owner, repo: context.repo.repo, issue_number: number };
+
+            // 1. 작성자 self-assignee
+            try {
+              await github.rest.issues.addAssignees({ ...params, assignees: [creator] });
+            } catch (e) {
+              core.warning(`Failed to assign creator: ${e.message}`);
+            }
+
+            // 2. type/scope 파싱
+            let type = null;
+            let scope = null;
+
+            // 제목 파서 (이슈·PR 공통): "chore(root): ..." → [type, scope]
+            const parseTitle = (title) => {
+              const m = title?.match(/^(\w+)\((\w+)\)/);
+              return m ? { type: m[1], scope: m[2] } : null;
+            };
+
+            if (context.payload.issue) {
+              // 이슈는 제목만 사용
+              const parsed = parseTitle(context.payload.issue.title);
+              if (parsed) ({ type, scope } = parsed);
+            }
+
+            if (context.payload.pull_request) {
+              // PR은 1순위: 브랜치명 (feature PR 컨벤션 "chore/root/8-...")
+              // 2순위: 제목 (dev→main 배포 PR 등 비표준 브랜치명 fallback)
+              const branch = context.payload.pull_request.head.ref;
+              const segments = branch.split('/');
+              if (segments[0] && TYPES[segments[0]]) {
+                type = segments[0];
+                if (segments[1]) scope = segments[1];
+              } else {
+                const parsed = parseTitle(context.payload.pull_request.title);
+                if (parsed) ({ type, scope } = parsed);
+              }
+            }
+
+            // 3. 라벨 부여
+            const labels = [];
+            if (scope && SCOPES.includes(scope)) labels.push(`scope/${scope}`);
+            if (type && TYPES[type]) labels.push(TYPES[type]);
+
+            if (labels.length > 0) {
+              try {
+                await github.rest.issues.addLabels({ ...params, labels });
+              } catch (e) {
+                core.warning(`Failed to add labels (${labels.join(', ')}): ${e.message}. 라벨이 리포에 등록되어 있는지 확인하세요.`);
+              }
+            }

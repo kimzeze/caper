@@ -1,0 +1,28 @@
+name: Branch Flow Check
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+jobs:
+  branch-flow:
+    name: Branch Flow
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Test branch flow policy
+        run: node --test scripts/check-branch-flow.test.mjs
+
+      - name: Validate protected branch promotion flow
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: node scripts/check-branch-flow.mjs

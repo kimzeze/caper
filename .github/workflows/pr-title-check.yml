@@ -1,0 +1,40 @@
+name: PR Title Check
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            refactor
+            style
+            design
+            chore
+            docs
+            test
+            release
+          scopes: |
+            root
+            web
+            db
+            docs
+            ios
+          requireScope: true
+          subjectPattern: ^.+$
+          subjectPatternError: |
+            PR 제목 형식 오류. `<type>(<scope>): <한글 제목>` 형식이어야 합니다.
+            예) chore(root): CI 워크플로우 추가, feat(web): 프로젝트 목록 화면 추가, release(root): dev → main 배포
+            허용 type: feat, fix, refactor, style, design, chore, docs, test, release
+            허용 scope: root, web, db, docs, ios

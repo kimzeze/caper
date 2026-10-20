@@ -1,0 +1,32 @@
+name: 🧰 Chore
+description: 설정 / 빌드 / CI / 의존성 / 문서 등 (코드 동작과 무관)
+title: "chore(<scope>): "
+labels: ["type/chore"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 작업 내용
+      placeholder: 예) Vercel 배포 연결, ESLint 규칙 추가, GitHub Actions 도입
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: 이유 / 배경
+      placeholder: |
+        - 지금 무엇이 부족하거나 문제인지
+        - 어떤 효과를 기대하는지
+    validations:
+      required: true
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: 체크리스트
+      placeholder: |
+        - [ ] 설정 추가
+        - [ ] 문서 수정
+    validations:
+      required: false

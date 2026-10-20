@@ -1,0 +1,39 @@
+name: 🔧 Refactor
+description: 동작 변경 없이 코드 구조 개선
+title: "refactor(<scope>): "
+labels: ["type/refactor"]
+body:
+  - type: textarea
+    id: target
+    attributes:
+      label: 대상
+      description: 어떤 파일 / 모듈을 개선하나요?
+      placeholder: 예) src/widgets/caper-cover/ui/caper-cover.tsx
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 개선 동기
+      placeholder: |
+        - 표지 컴포넌트에 포스터 비율 계산과 레이아웃이 섞여 있음
+    validations:
+      required: true
+
+  - type: textarea
+    id: approach
+    attributes:
+      label: 접근 방안
+      placeholder: |
+        - 포스터 비율 계산을 entities/caper/lib로 분리
+    validations:
+      required: true
+
+  - type: textarea
+    id: risk
+    attributes:
+      label: 리스크 / 영향 범위
+      placeholder: 동작 변경 없음. 영향 받는 화면 N개.
+    validations:
+      required: false
