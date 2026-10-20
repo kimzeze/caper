@@ -1,11 +1,12 @@
 export {
   CAPER_LIMITS,
   CAPER_STATUSES,
+  caperImageSchema,
   caperSchema,
   caperStatusSchema,
   crewMemberSchema,
-  posterSchema,
+  TITLE_PLACEMENTS,
 } from "./schema";
 export { CAPER_STATUS_LABEL } from "./status";
-export { posterUrl } from "./poster";
-export type { Caper, CaperStatus, CrewMember, Poster } from "./types";
+export { coverImage, imageUrl, isTitleOverCover } from "./image";
+export type { Caper, CaperImage, CaperStatus, CrewMember } from "./types";
