@@ -198,19 +198,15 @@ src/
 | 커밋 규칙                  | `docs/development/commit-guide.md`      |
 | PR 작성·리뷰               | `docs/development/pr-guide.md`          |
 
+<!-- next dev 가 이 블록을 다시 써 넣는다. 그 모양 그대로 두도록 Prettier에서 뺀다. -->
+<!-- prettier-ignore-start -->
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know
 
-This version has breaking changes — APIs, conventions, and file structure may
-all differ from your training data. Read the relevant guide in
-`node_modules/next/dist/docs/` (resolved from this file's directory; in
-monorepos the `next` package may not be visible from the repo root) before
-writing any code. Heed deprecation notices.
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
-This block is written and re-added by `next dev` — verify at
-`node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a
-diff only re-creates the uncommitted change; committing it with your work keeps
-the tree clean.
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+<!-- prettier-ignore-end -->
