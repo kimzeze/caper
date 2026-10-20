@@ -11,5 +11,7 @@ export type PreviewFamily = {
   label: string;
   description: string;
   basePath: string;
+  /** 헤더부터 화면 전체를 그리는 묶음이면 true. 안내 줄을 맨 아래로 보낸다. */
+  whole?: boolean;
   cases: readonly PreviewCase[];
 };
