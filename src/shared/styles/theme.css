@@ -1,0 +1,99 @@
+/* 디자인 시스템 토큰과 상태 유틸리티. design-system-a(packages/ui/src/theme.css)에서 옮겼다. 정본은 그 레포의 문서다.
+   globals.css 에서 tailwindcss 다음에 @import 한다. 글꼴 이름(--font-sans·--font-mono)은 base.css 가 정한다. */
+
+@theme {
+  /* 무채색(stone)에 초록 하나. */
+  /* 바탕 */
+  --color-background: light-dark(var(--color-stone-50), var(--color-stone-950));
+  /* 기본: 글자·굵은 선 */
+  --color-foreground: light-dark(
+    var(--color-stone-900),
+    var(--color-stone-100)
+  );
+  /* 옅은 바탕: 코드·호버 */
+  --color-muted: light-dark(var(--color-stone-200), var(--color-stone-800));
+  /* 보조: 날짜·설명 */
+  --color-muted-foreground: light-dark(
+    var(--color-stone-500),
+    var(--color-stone-400)
+  );
+  /* 가는 선 */
+  --color-border: light-dark(var(--color-stone-300), var(--color-stone-700));
+  /* 초록(레어로우 트루 그린 #01A368): 바탕·테두리로만. 밝은 모드는 바탕 대비 3:1 을 넘게 조금 짙게(3.5 / 6.1). */
+  --color-accent: light-dark(#019962, #01a368);
+  /* 초록 위 글자: 두 모드 모두 짙은 글자(4.8 / 5.4) */
+  --color-on-accent: var(--color-stone-900);
+
+  /* 버튼·입력 칸·세그먼트 높이 하나(44px, 누를 자리 최소 크기) */
+  --spacing-control: 2.75rem;
+
+  /* 본문 컬럼 폭. 글 사이트와 서비스의 문서형 화면(설정·도구 페이지)이 같이 쓴다 */
+  --measure: 45rem;
+}
+
+/* 본문 컬럼 — measure 폭으로 중앙 정렬 + 좌우 여백. 콘텐츠 폭이 정확히
+   min(뷰포트-3rem, measure)가 되도록 패딩은 content-box 바깥에 얹는다. */
+@utility measure-col {
+  box-sizing: content-box;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* 데모의 지금 상태(현재 칸·줄·노드 등) 표시: 반전(잉크 바탕 + 바탕색 글자). 문장 안 강조는 굵게.
+   테두리가 있으면 잉크로(회색 칸 테두리가 반전 바탕 옆에 남지 않게), 안의 보조색 글자(줄 번호 등)도 바탕색으로 뒤집는다. */
+@utility mark {
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  /* .mark.mark: 같은 요소의 border-border 같은 테두리 색 유틸리티보다 앞서게(클래스 하나 더 무겁게) */
+  &.mark {
+    border-color: var(--color-foreground);
+  }
+  & .text-muted-foreground {
+    color: var(--color-background);
+  }
+}
+
+/* 테두리가 있는 컨트롤의 초점: 테두리를 3px 초록으로(늘어난 1px 는 안쪽 그림자). */
+@utility focus-border {
+  &:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+  }
+}
+
+/* 테두리 없는 컨트롤(아이콘 버튼·링크)의 초점: 초록 바탕. */
+@utility focus-fill {
+  &:focus-visible {
+    outline: none;
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+}
+
+/* 누르는 순간: 테두리·바탕은 그대로, 내용물만 1px 내려간다. 버튼류는 높이가 정해져 있고(가운데 정렬)
+   위아래 여백이 0 이라, 위 여백만 2px 주면 내용이 1px 내려간다(레이아웃은 그대로). */
+@utility press-down {
+  &:active:not(:disabled) {
+    padding-top: 2px;
+  }
+}
+
+/* 테마: 기본은 OS 설정, 고른 값은 <html data-theme> (theme-store.ts 가 쿠키로 기억하고 페인트 전에 붙인다). */
+:root {
+  color-scheme: light dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* 테마 전환: 버튼에서 원이 퍼진다(cycleTheme 가 WAAPI 로 clip-path 를 돌린다). 기본 크로스페이드는 끈다. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
