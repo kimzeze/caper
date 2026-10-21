@@ -4,6 +4,7 @@ import type { PreviewFamily } from "@/views/preview";
 import { CATEGORY_PAGE_CASES } from "./category-page/[case]/cases";
 import { JOIN_CASES } from "./join/[case]/cases";
 import { NEW_CAPER_CASES } from "./new-caper/[case]/cases";
+import { PREVIEW_SHORTCUTS } from "./shortcuts";
 
 const fixtureCases = CAPER_FIXTURES.map(({ key, label, note }) => ({
   key,
@@ -66,6 +67,16 @@ export const PREVIEW_FAMILIES: readonly PreviewFamily[] = [
     cases: fixtureCases,
   },
 ];
+
+// 홈의 바로 가기(shortcuts.ts)가 있는 케이스를 가리키는지 본다. 케이스 key 가 바뀌면 여기서 실패한다.
+for (const { href } of PREVIEW_SHORTCUTS) {
+  const found =
+    href === "/preview" ||
+    PREVIEW_FAMILIES.some((family) =>
+      family.cases.some(({ key }) => `${family.basePath}/${key}` === href),
+    );
+  if (!found) throw new Error(`Preview shortcut has no case: ${href}`);
+}
 
 export function findPreviewFamily(key: string): PreviewFamily {
   const family = PREVIEW_FAMILIES.find((value) => value.key === key);
