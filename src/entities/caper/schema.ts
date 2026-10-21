@@ -7,12 +7,27 @@ export const CAPER_STATUSES = ["planning", "active", "done"] as const;
 
 export const caperStatusSchema = z.enum(CAPER_STATUSES);
 
+// 사진 비율은 인스타그램 세로 사진과 같은 4:5 하나로 고정한다. 올릴 때 이 비율로 자르고,
+// 화면의 사진 틀도 이 비율을 쓴다(폰·데스크탑 같음).
+export const CAPER_IMAGE_RATIO = { width: 4, height: 5 } as const;
+
+// 반올림으로 생기는 1px 차이 정도는 받아 준다.
+const RATIO_TOLERANCE = 0.01;
+
 // 사진은 Storage 경로와 원본 가로·세로만 둔다. 크기는 사진이 오기 전에 자리를 잡는 데 쓴다.
-export const caperImageSchema = z.object({
-  path: z.string().min(1),
-  width: z.int().positive(),
-  height: z.int().positive(),
-});
+export const caperImageSchema = z
+  .object({
+    path: z.string().min(1),
+    width: z.int().positive(),
+    height: z.int().positive(),
+  })
+  .refine(
+    ({ width, height }) =>
+      Math.abs(
+        width / height - CAPER_IMAGE_RATIO.width / CAPER_IMAGE_RATIO.height,
+      ) <= RATIO_TOLERANCE,
+    { message: "사진은 4:5 비율이어야 합니다." },
+  );
 
 // 제목을 표지(첫 장) 아래에 둘지 위에 얹을지. 사진이 없으면 over 여도 아래에 둔다.
 export const TITLE_PLACEMENTS = ["below", "over"] as const;

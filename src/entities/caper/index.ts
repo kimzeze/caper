@@ -1,4 +1,5 @@
 export {
+  CAPER_IMAGE_RATIO,
   CAPER_LIMITS,
   CAPER_STATUSES,
   caperImageSchema,

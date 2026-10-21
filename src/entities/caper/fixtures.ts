@@ -14,26 +14,26 @@ export type CaperFixture = {
   caper: Caper;
 };
 
-// 샘플 사진은 사용자가 준 우주왕복선 발사 사진 한 장을 여러 구도로 자른 것이다.
+// 샘플 사진은 사용자가 준 우주왕복선 발사 사진 한 장을 4:5로 여러 구도로 자른 것이다.
 const LAUNCH: CaperImage = {
   path: "preview/to-the-moon.jpg",
   width: 1200,
-  height: 1800,
+  height: 1500,
 };
 const LAUNCH_NOSE: CaperImage = {
   path: "preview/to-the-moon-nose.jpg",
   width: 800,
-  height: 1200,
+  height: 1000,
+};
+const LAUNCH_ORBITER: CaperImage = {
+  path: "preview/to-the-moon-orbiter.jpg",
+  width: 800,
+  height: 1000,
 };
 const LAUNCH_FLAME: CaperImage = {
   path: "preview/to-the-moon-flame.jpg",
   width: 800,
-  height: 1200,
-};
-const LAUNCH_WIDE: CaperImage = {
-  path: "preview/to-the-moon-wide.jpg",
-  width: 1200,
-  height: 800,
+  height: 1000,
 };
 
 const TO_THE_MOON: Caper = {
@@ -47,7 +47,7 @@ const TO_THE_MOON: Caper = {
     "준비물은 2L 페트병 두 개, 자전거 펌프, 고무마개, 절연 테이프, 날개로 쓸 하드보드지.",
     "토요일 오전 10시, 한강공원 잔디밭에서 첫 발사. 비가 오면 일요일로 미룬다.",
   ].join("\n\n"),
-  images: [LAUNCH, LAUNCH_NOSE, LAUNCH_FLAME, LAUNCH_WIDE],
+  images: [LAUNCH, LAUNCH_NOSE, LAUNCH_ORBITER, LAUNCH_FLAME],
   status: "active",
   crew: [
     { id: "dohyeon", name: "도현", role: "owner" },
@@ -107,16 +107,16 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
     },
   }),
   fixture({
-    key: "one-wide-image",
-    label: "가로 사진 한 장",
-    note: "가로 사진 1장(위치 막대 없음), 설명 없음, 완료",
+    key: "one-image",
+    label: "사진 한 장",
+    note: "사진 1장(위치 막대 없음), 설명 없음, 완료",
     caper: {
       id: "liftoff",
       title: "Liftoff",
       titlePlacement: "below",
       slogan: "마지막 발사를 처음부터 끝까지",
       subtitle: "우주왕복선 발사 영상 보면서 밤새기",
-      images: [LAUNCH_WIDE],
+      images: [LAUNCH_FLAME],
       status: "done",
       crew: [
         { id: "dohyeon", name: "도현", role: "owner" },
