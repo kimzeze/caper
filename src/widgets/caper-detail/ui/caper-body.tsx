@@ -1,13 +1,12 @@
 import { clsx } from "clsx";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import {
   type Caper,
   CAPER_STATUS_LABEL,
   formatHeadcount,
+  formatRecruit,
   formatSchedule,
-  JOIN_POLICY_LABEL,
   recruitState,
   scheduleDateTime,
   seatsLeft,
@@ -15,23 +14,16 @@ import {
 import Avatar from "@/shared/ui/avatar";
 import Markdown from "@/shared/ui/markdown";
 
-// 사진 아래 내용: 제목 → 슬로건 → 부제 → 날짜 → 상태·사람 수 → 설명 → with(모집 줄, crew 프로필, 빈자리).
-// 제목을 표지 위에 얹었으면 showTitle 을 끄고 여기서는 그리지 않는다. 보는 사람이 crew 면(myCrewId) 내 칸에 "나"를 붙인다.
-export function CaperDetail({
+// 글 몸: 날짜 → 상태·사람 수 → 설명 → with(인원 줄, crew 프로필, 빈자리).
+// 날짜와 상태 줄은 넓은 화면에서 왼쪽 정보 표(CaperInfo)가 보여 주므로 감춘다(lg:hidden).
+// 보는 사람이 crew 면(myCrewId) 내 칸에 "나"를 붙인다.
+export function CaperBody({
   caper,
-  showTitle,
-  categoryName,
-  categoryHref,
   myCrewId,
   withFooter,
   className,
 }: {
   caper: Caper;
-  showTitle: boolean;
-  /** 제목 위 한 줄(잡지의 섹션 이름처럼). 제목을 표지에 얹었으면 표지 쪽이 그린다. */
-  categoryName?: string;
-  /** 카테고리 모아 보기 주소. 있으면 카테고리 이름이 링크가 된다. */
-  categoryHref?: string;
   myCrewId?: string;
   /** with 구역 끝에 붙일 것(만든 사람의 승인 목록 등). */
   withFooter?: ReactNode;
@@ -45,58 +37,24 @@ export function CaperDetail({
     recruit === "closed" ? `${caper.crew.length}명` : formatHeadcount(caper);
 
   return (
-    <div className={clsx("measure-col pb-[5rlh]", className)}>
-      {showTitle && categoryName && (
-        <p className="text-base text-muted-foreground">
-          {categoryHref ? (
-            <Link href={categoryHref} className="text-muted-foreground">
-              {categoryName}
-            </Link>
-          ) : (
-            categoryName
-          )}
-        </p>
-      )}
-      {showTitle && (
-        <h1
-          className={clsx(
-            "whitespace-pre-line",
-            categoryName && "mt-[0.25rlh]",
-          )}
-        >
-          {caper.title}
-        </h1>
-      )}
-      {caper.slogan && (
-        <p className={clsx("font-bold", showTitle && "mt-[0.5rlh]")}>
-          {caper.slogan}
-        </p>
-      )}
-      {caper.subtitle && (
+    <div className={clsx("pb-[5rlh]", className)}>
+      <div className="lg:hidden">
+        {caper.schedule && (
+          <p className="mt-[0.5rlh] tabular-nums">
+            <time dateTime={scheduleDateTime(caper.schedule)}>
+              {formatSchedule(caper.schedule)}
+            </time>
+          </p>
+        )}
         <p
           className={clsx(
-            "text-muted-foreground",
-            showTitle && !caper.slogan && "mt-[0.5rlh]",
+            "text-base text-muted-foreground",
+            !caper.schedule && "mt-[0.5rlh]",
           )}
         >
-          {caper.subtitle}
+          {CAPER_STATUS_LABEL[caper.status]} · {headcount}
         </p>
-      )}
-      {caper.schedule && (
-        <p className="mt-[0.5rlh] tabular-nums">
-          <time dateTime={scheduleDateTime(caper.schedule)}>
-            {formatSchedule(caper.schedule)}
-          </time>
-        </p>
-      )}
-      <p
-        className={clsx(
-          "text-base text-muted-foreground",
-          !caper.schedule && "mt-[0.5rlh]",
-        )}
-      >
-        {CAPER_STATUS_LABEL[caper.status]} · {headcount}
-      </p>
+      </div>
       {caper.description && (
         <Markdown className="mt-[1.5rlh]">{caper.description}</Markdown>
       )}
@@ -104,17 +62,7 @@ export function CaperDetail({
         <h2>with</h2>
         {recruit !== "closed" && (
           <p className="text-base text-muted-foreground">
-            {[
-              headcount,
-              ...(recruit === "full"
-                ? ["마감"]
-                : [
-                    caper.capacity === undefined && "인원 제한 없음",
-                    JOIN_POLICY_LABEL[caper.joinPolicy],
-                  ]),
-            ]
-              .filter(Boolean)
-              .join(" · ")}
+            {formatRecruit(caper)}
           </p>
         )}
         <ul className="mt-[0.5rlh] grid grid-cols-2 gap-x-4 gap-y-[0.5rlh] sm:grid-cols-3">

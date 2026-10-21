@@ -19,7 +19,7 @@ export function PreviewCasePage({
     <div
       className={
         family.whole
-          ? "measure-col border-t pt-[0.5rlh] pb-[1.5rlh]"
+          ? "measure-col border-t pt-[0.5rlh] pb-[1.5rlh] lg:wide-col"
           : "measure-col pt-[1.5rlh]"
       }
     >

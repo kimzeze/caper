@@ -10,7 +10,7 @@ export type GalleryPhoto = Omit<CarouselPhoto, "alt">;
 // 폰에서는 화면 끝까지 차고, 넓은 화면에서는 본문 폭(--measure)까지만 늘어난다(데스크탑 2단은 #7).
 // 사진 주소(src)는 쓰는 쪽이 정한다: 저장된 caper 는 imageUrl, 만들기 미리보기는 브라우저의 임시 사진.
 // coverTitle 이 있으면 표지(첫 장) 아래쪽에 제목을 얹는다. coverKicker(카테고리)는 그 제목 위 한 줄,
-// coverKickerHref 가 있으면 카테고리 모아 보기로 가는 링크.
+// coverKickerHref 가 있으면 카테고리 모아 보기로 가는 링크. 넓은 화면에서는 왼쪽 정보 표가 보여 주므로 감춘다.
 // coverShade 를 끄면 어두운 막 없이 같은 자리에 둔다(작성자가 고른다).
 export function CaperGallery({
   photos,
@@ -76,7 +76,7 @@ function CoverTitle({
     >
       <div className="measure-col">
         {kicker && (
-          <p className="text-base text-stone-200">
+          <p className="text-base text-stone-200 lg:hidden">
             {kickerHref ? (
               <Link href={kickerHref} className="text-stone-200">
                 {kicker}
@@ -89,7 +89,7 @@ function CoverTitle({
         <h1
           className={clsx(
             "whitespace-pre-line text-stone-50",
-            kicker && "mt-[0.25rlh]",
+            kicker && "mt-[0.25rlh] lg:mt-0",
           )}
         >
           {title}

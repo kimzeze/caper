@@ -29,6 +29,12 @@
 
   /* 본문 컬럼 폭. 글 사이트와 서비스의 문서형 화면(설정·도구 페이지)이 같이 쓴다 */
   --measure: 45rem;
+
+  /* 넓은 화면 2단(caper): 왼쪽 정보 칸 + 사이 + 오른쪽 본문(measure). 바깥 폭은 62rem.
+     헤더·프로젝트 페이지·아래 줄·카테고리 모아 보기가 같은 바깥 폭을 쓴다. */
+  --aside: 13rem;
+  --aside-gap: 4rem;
+  --wide: calc(var(--aside) + var(--aside-gap) + var(--measure));
 }
 
 /* 본문 컬럼 — measure 폭으로 중앙 정렬 + 좌우 여백. 콘텐츠 폭이 정확히
@@ -36,6 +42,14 @@
 @utility measure-col {
   box-sizing: content-box;
   max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* 넓은 바깥 컬럼(caper) — measure-col 과 같은 방식으로 --wide 폭. 넓은 화면(lg)에서 measure-col 대신 쓴다. */
+@utility wide-col {
+  box-sizing: content-box;
+  max-width: var(--wide);
   margin-inline: auto;
   padding-inline: 1.5rem;
 }

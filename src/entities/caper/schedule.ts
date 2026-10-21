@@ -39,13 +39,23 @@ function weekdayOf(year: number, month: number, day: number): number {
  * 화면에 보일 날짜와 시간: "10월 24일(토) 10:00 - 12:00". 시작만 있으면 "10월 24일(토) 10:00", 날짜만이면
  * "10월 24일(토)". 연도는 쓰지 않는다(지난해 기록이 보이면 그때 붙인다).
  */
-export function formatSchedule({ date, start, end }: CaperSchedule): string {
+export function formatSchedule(schedule: CaperSchedule): string {
+  const { day, time } = formatScheduleParts(schedule);
+  return time === undefined ? day : `${day} ${time}`;
+}
+
+/** 날짜와 시간을 따로: { day: "10월 24일(토)", time: "10:00 - 12:00" }. 좁은 칸에서 두 줄로 쓸 때. */
+export function formatScheduleParts({ date, start, end }: CaperSchedule): {
+  day: string;
+  time?: string;
+} {
   const [year, month, day] = date.split("-").map(Number);
   const dayText = `${month}월 ${day}일(${WEEKDAYS[weekdayOf(year, month, day)]})`;
-  if (start === undefined) return dayText;
-  return end === undefined
-    ? `${dayText} ${start}`
-    : `${dayText} ${start} - ${end}`;
+  if (start === undefined) return { day: dayText };
+  return {
+    day: dayText,
+    time: end === undefined ? start : `${start} - ${end}`,
+  };
 }
 
 /** <time dateTime> 값. 시작이 있으면 그 시각까지. */
