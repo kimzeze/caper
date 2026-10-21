@@ -70,7 +70,7 @@ function CaperCard({ caper, href, eager }: GridCaper & { eager: boolean }) {
             src={imageUrl(cover)}
             alt=""
             fill
-            sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw"
+            sizes="(min-width: 64rem) 18rem, (min-width: 40rem) 33vw, 50vw"
             loading={eager ? "eager" : undefined}
             className="object-cover"
           />
