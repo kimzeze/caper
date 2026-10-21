@@ -71,7 +71,8 @@ function CoverTitle({
   return (
     <div
       className={clsx(
-        "absolute inset-x-0 bottom-0 pt-[3rlh] pb-[1.5rlh]",
+        // 넓은 화면은 제목을 글 머리에 두므로 표지 위 제목(막 포함)을 감춘다.
+        "absolute inset-x-0 bottom-0 pt-[3rlh] pb-[1.5rlh] lg:hidden",
         shade &&
           "bg-linear-to-t from-stone-950/75 via-stone-950/40 to-transparent",
       )}

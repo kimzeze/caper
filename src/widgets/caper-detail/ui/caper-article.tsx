@@ -14,7 +14,8 @@ import { CaperInfo } from "./caper-info";
 //   오른쪽은 행 셋(글 머리 → 사진 → 글 몸, eyesmag 글처럼 제목이 먼저)이고, 정보 표는 둘째 행부터 시작해
 //   제목 줄 수와 상관없이 늘 제목 묶음 바로 아래(사진 윗선 높이)에서 시작한다.
 // 문서 순서는 글 머리가 먼저이고(화면 읽기도 제목부터), 폰에서만 사진을 앞으로 보인다(order).
-// 제목을 표지 위에 얹었으면 어디서나 사진이 먼저다.
+// 제목을 표지 위에 얹었으면 폰은 표지가 제목을 그리고, 넓은 화면은 표지 위 제목을 감추고 글 머리에 그대로 둔다
+// (넓은 화면 배치는 모든 프로젝트가 같다).
 // 글은 폰에서 본문 폭(measure-col), 넓은 화면에서는 오른쪽 칸을 그대로 채운다.
 // flex 칸 안에서 measure-col(margin auto)이 내용 폭으로 줄지 않게 칸마다 블록으로 한 번 감싼다.
 const COLUMN = "measure-col lg:max-w-none lg:px-0";
@@ -45,14 +46,13 @@ export function CaperArticle({
     <main className="flex flex-col lg:wide-col lg:mt-[1rlh] lg:article-grid lg:grid-rows-[auto_auto_1fr]">
       <div
         className={clsx(
-          "order-2 lg:col-start-2",
+          "order-2 lg:col-start-2 lg:row-start-1 lg:mt-0",
           hasPhotos ? "mt-[1rlh]" : "mt-[2rlh]",
-          titleOver ? "lg:row-start-2 lg:mt-[1rlh]" : "lg:row-start-1 lg:mt-0",
         )}
       >
         <CaperHeading
           caper={caper}
-          showTitle={!titleOver}
+          titleOnCover={titleOver}
           categoryName={categoryName}
           categoryHref={categoryHref}
           share={shareable}
@@ -60,14 +60,7 @@ export function CaperArticle({
         />
       </div>
       {hasPhotos && (
-        <div
-          className={clsx(
-            "order-1 mt-[0.5rlh] lg:col-start-2",
-            titleOver
-              ? "lg:row-start-1 lg:mt-0"
-              : "lg:row-start-2 lg:mt-[1rlh]",
-          )}
-        >
+        <div className="order-1 mt-[0.5rlh] lg:col-start-2 lg:row-start-2 lg:mt-[1rlh]">
           <CaperGallery
             photos={photos}
             title={caper.title}
