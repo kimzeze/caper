@@ -1,0 +1,61 @@
+/* 마크다운 글(프로젝트 설명)에서 prose.css 가 다루지 않는 것: 체크리스트, 코드 블록(pre), 편집기 안내 글.
+   편집기(Tiptap)와 보기(react-markdown)가 같은 모양이 되도록 두 쪽의 마크업을 함께 칠한다.
+   globals.css 에서 prose.css 다음에 layer(components) 로 부른다. */
+
+@scope (.prose) {
+  /* 목록 항목 안에 문단·중첩 목록이 있으면(편집기는 늘, 보기는 항목 사이가 빈 목록) 머리 기호(*, 1.)가
+     따로 한 줄을 차지한다. 머리 기호는 왼쪽 칸, 내용은 오른쪽 칸에 둔다. */
+  :is(ul, ol) > li:has(> p, > ul, > ol) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+
+    &::before {
+      grid-column: 1;
+    }
+    > * {
+      grid-column: 2;
+    }
+  }
+
+  /* 체크리스트 — 머리 기호(*) 대신 체크 칸. 편집기는 ul[data-type=taskList], 보기는 li.task-list-item 을 낸다. */
+  ul[data-type="taskList"] > li,
+  li.task-list-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+
+    &::before {
+      content: none;
+    }
+  }
+  ul[data-type="taskList"] > li > label {
+    flex: none;
+  }
+  ul[data-type="taskList"] > li > div {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* 체크 칸 — design-system-a Checkbox 와 같은 2px 잉크 사각, 켜지면 채워진다(체크 표시 없음). */
+  input[type="checkbox"] {
+    @apply size-[1.125rem] shrink-0 translate-y-[0.15em] appearance-none border-2 border-foreground bg-background checked:bg-foreground checked:shadow-[inset_0_0_0_2px_var(--color-background)] disabled:cursor-default forced-colors:border-[CanvasText] forced-colors:bg-[Canvas] forced-colors:forced-color-adjust-none forced-colors:checked:bg-[CanvasText] forced-colors:checked:shadow-[inset_0_0_0_2px_Canvas];
+  }
+
+  /* 코드 블록 — design-system-a 코드 블록과 같은 옅은 바탕 + 왼쪽 2px 굵은 선. */
+  pre {
+    @apply border-l-2 border-foreground bg-muted px-[2ch] py-[0.5rlh] font-mono text-base leading-normal wrap-break-word whitespace-pre-wrap;
+
+    code {
+      @apply bg-transparent p-0;
+    }
+  }
+}
+
+/* 편집기 안내 글 — 비어 있을 때 첫 줄 자리에 흐리게. */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: var(--color-muted-foreground);
+}

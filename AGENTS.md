@@ -24,6 +24,12 @@
   쓰는 대로 브라우저에 임시 저장한다(`features/create-caper` 의 초안 store).
   오른쪽 위 "만들기"를 누르면 검사하고, DB 전이라 지금은 `/new/preview` 에서
   미리 본다.
+- 설명은 마크다운 문자열로 저장한다(GFM, 5000자). 쓰기는
+  `shared/ui/markdown-editor` (Tiptap 3: 서식 버튼 + 마크다운 단축키,
+  기울임·밑줄·취소선 없음), 보기는 `shared/ui/markdown`(react-markdown +
+  remark-gfm, HTML은 그리지 않음, `#` 은 소제목으로 낮춤). 둘 다 design-system-a
+  `prose` 와 `shared/styles/markdown.css` (체크리스트, 코드 블록, 목록 정렬)를
+  쓴다.
 - 열람과 참여: 링크가 있으면 누구나 보고 참여한다. 로그인 없이 참여하면 Supabase
   익명 로그인으로 임시 계정을 만들고, 카카오나 Apple로 로그인하면 같은 계정에
   이어 붙어 저장 같은 기능이 늘어난다.
@@ -105,6 +111,9 @@ src/
 - 입력 검증은 entity의 `schema.ts`(Zod) 하나로 하고, 서버에서도 같은 스키마로
   다시 검증한다.
 - 비밀값은 커밋하지 않는다. 비밀값 이름에 `NEXT_PUBLIC_` 를 붙이지 않는다.
+- 브라우저에서만 도는 무거운 컴포넌트(Tiptap 편집기 등)는 `next/dynamic` 의
+  `ssr: false` 로 불러오고 같은 크기 자리를 먼저 그린다. 서버 prerender에서
+  `Math.random()` 같은 값이 나오면 Cache Components 검사에 걸린다.
 
 ## 화면 미리보기 (`/preview`)
 
@@ -134,7 +143,8 @@ src/
 - 디자인 시스템에 없는 패턴(포스터 그리드, 표지 같은 것)은 caper에서 같은
   규칙으로 만들고, 디자인 시스템에도 더할지 사용자에게 묻는다. 지금까지
   caper에서 만든 것: 사진 위 제목(아래쪽 어두운 막), 사진 넘기기와 위치 막대,
-  편집기 칸 (`EditorText`, 초점이면 아래 초록 줄), 버튼 모양 링크(`ButtonLink`).
+  편집기 칸 (`EditorText`, 초점이면 아래 초록 줄), 버튼 모양 링크(`ButtonLink`),
+  마크다운 편집기의 서식 버튼 줄과 체크리스트 칸.
 - 390px부터 만들고 1280px을 확인한다. 라이트·다크 둘 다 본다.
 - 브라우저 확인은 ego-browser 스킬(ego lite)로 한다.
 - 화면 문장은 합니다체. 버튼은 동사 하나. 줄표(—)를 쓰지 않고, 영어 뒤 조사는

@@ -44,7 +44,8 @@ export const CAPER_LIMITS = {
   title: 40,
   slogan: 60,
   subtitle: 60,
-  description: 2000,
+  // 마크다운 기호까지 센 길이다.
+  description: 5000,
   images: 10,
 } as const;
 
@@ -54,7 +55,7 @@ export const caperSchema = z.object({
   titlePlacement: z.enum(TITLE_PLACEMENTS),
   slogan: z.string().trim().min(1).max(CAPER_LIMITS.slogan).optional(),
   subtitle: z.string().trim().min(1).max(CAPER_LIMITS.subtitle).optional(),
-  // 줄바꿈만 살린 일반 글. 마크다운은 쓰지 않는다.
+  // 마크다운 글(GFM: 소제목, 목록, 체크리스트, 인용, 링크 등). 화면은 shared/ui/markdown 이 그린다.
   description: z
     .string()
     .trim()

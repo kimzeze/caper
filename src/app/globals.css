@@ -2,3 +2,4 @@
 @import "../shared/styles/theme.css";
 @import "../shared/styles/base.css";
 @import "../shared/styles/prose.css" layer(components);
+@import "../shared/styles/markdown.css" layer(components);
