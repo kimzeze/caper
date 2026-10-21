@@ -1,6 +1,7 @@
 import { CAPER_FIXTURES } from "@/entities/caper/fixtures";
 import type { PreviewFamily } from "@/views/preview";
 
+import { CATEGORY_PAGE_CASES } from "./category-page/[case]/cases";
 import { JOIN_CASES } from "./join/[case]/cases";
 import { NEW_CAPER_CASES } from "./new-caper/[case]/cases";
 
@@ -20,6 +21,19 @@ export const PREVIEW_FAMILIES: readonly PreviewFamily[] = [
     basePath: "/preview/caper-page",
     whole: true,
     cases: fixtureCases,
+  },
+  {
+    key: "category-page",
+    label: "카테고리",
+    description:
+      "카테고리 하나의 프로젝트를 포스터 격자로 모아 봅니다. 카드를 누르면 그 프로젝트 페이지 미리보기로 갑니다.",
+    basePath: "/preview/category-page",
+    whole: true,
+    cases: CATEGORY_PAGE_CASES.map(({ key, label, note }) => ({
+      key,
+      label,
+      note,
+    })),
   },
   {
     key: "join",

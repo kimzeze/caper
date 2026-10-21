@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import Link from "next/link";
 
 import { CAPER_IMAGE_RATIO, titleOneLine } from "@/entities/caper";
 import PhotoCarousel, { type CarouselPhoto } from "@/shared/ui/photo-carousel";
@@ -8,19 +9,22 @@ export type GalleryPhoto = Omit<CarouselPhoto, "alt">;
 // 프로젝트 페이지 맨 위 사진 넘기기(shared/ui 의 PhotoCarousel). 사진 틀은 4:5(CAPER_IMAGE_RATIO)로 고정한다.
 // 폰에서는 화면 끝까지 차고, 넓은 화면에서는 본문 폭(--measure)까지만 늘어난다(데스크탑 2단은 #7).
 // 사진 주소(src)는 쓰는 쪽이 정한다: 저장된 caper 는 imageUrl, 만들기 미리보기는 브라우저의 임시 사진.
-// coverTitle 이 있으면 표지(첫 장) 아래쪽에 제목을 얹는다. coverKicker(카테고리)는 그 제목 위 한 줄.
+// coverTitle 이 있으면 표지(첫 장) 아래쪽에 제목을 얹는다. coverKicker(카테고리)는 그 제목 위 한 줄,
+// coverKickerHref 가 있으면 카테고리 모아 보기로 가는 링크.
 // coverShade 를 끄면 어두운 막 없이 같은 자리에 둔다(작성자가 고른다).
 export function CaperGallery({
   photos,
   title,
   coverTitle,
   coverKicker,
+  coverKickerHref,
   coverShade = true,
 }: {
   photos: readonly GalleryPhoto[];
   title: string;
   coverTitle?: string;
   coverKicker?: string;
+  coverKickerHref?: string;
   coverShade?: boolean;
 }) {
   // 사진 대체 글과 묶음 이름은 한 줄로 읽는다(작성자가 바꾼 줄은 공백으로).
@@ -40,6 +44,7 @@ export function CaperGallery({
             <CoverTitle
               title={coverTitle}
               kicker={coverKicker}
+              kickerHref={coverKickerHref}
               shade={coverShade}
             />
           )
@@ -53,10 +58,12 @@ export function CaperGallery({
 function CoverTitle({
   title,
   kicker,
+  kickerHref,
   shade,
 }: {
   title: string;
   kicker?: string;
+  kickerHref?: string;
   shade: boolean;
 }) {
   return (
@@ -68,7 +75,17 @@ function CoverTitle({
       )}
     >
       <div className="measure-col">
-        {kicker && <p className="text-base text-stone-200">{kicker}</p>}
+        {kicker && (
+          <p className="text-base text-stone-200">
+            {kickerHref ? (
+              <Link href={kickerHref} className="text-stone-200">
+                {kicker}
+              </Link>
+            ) : (
+              kicker
+            )}
+          </p>
+        )}
         <h1
           className={clsx(
             "whitespace-pre-line text-stone-50",
