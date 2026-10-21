@@ -25,6 +25,7 @@ export function CaperArticle({
   categoryHref,
   myCrewId,
   withFooter,
+  shareable,
 }: {
   caper: Caper;
   /** 사진 주소는 쓰는 쪽이 정한다: 저장된 caper 는 imageUrl, 만들기 미리보기는 브라우저의 임시 사진. */
@@ -33,6 +34,8 @@ export function CaperArticle({
   categoryHref?: string;
   myCrewId?: string;
   withFooter?: ReactNode;
+  /** 글 머리 오른쪽에 링크 복사 버튼(저장된 프로젝트 페이지만). */
+  shareable?: boolean;
 }) {
   const titleOver = isTitleOverCover(caper);
   const hasPhotos = photos.length > 0;
@@ -60,6 +63,7 @@ export function CaperArticle({
             showTitle={!titleOver}
             categoryName={categoryName}
             categoryHref={categoryHref}
+            share={shareable}
             className={COLUMN}
           />
         </div>
