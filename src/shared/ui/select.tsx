@@ -17,6 +17,7 @@ import { useFieldLabel } from "./field";
 // 왼쪽 초록 막대(마우스·키보드 같음). Base UI Select 위에 얹었다.
 // Field 안이면 그 라벨이 트리거의 이름이고, 보이는 라벨이 없으면 aria-label 을 준다.
 // compact: 표 안이나 한 줄에 여럿 늘어놓을 때 최소 폭(10rem)과 값·화살표 사이를 줄인다.
+// sans: 값이 한글 글(사람이 지은 이름 등)이면 고정폭 대신 본문 글꼴로 쓴다(고정폭에 한글을 넣지 않는다).
 interface Props {
   value?: string;
   defaultValue?: string;
@@ -26,6 +27,7 @@ interface Props {
   className?: string;
   "aria-label"?: string;
   compact?: boolean;
+  sans?: boolean;
   // 간단한 경우엔 배열로. 세밀히 제어할 땐 SelectItem children 을 넘긴다.
   options?: { value: string; label: string }[];
   children?: ReactNode;
@@ -40,6 +42,7 @@ function DSSelect({
   className,
   "aria-label": ariaLabel,
   compact,
+  sans,
   options,
   children,
 }: Props) {
@@ -67,7 +70,8 @@ function DSSelect({
         aria-label={labelledBy ? undefined : ariaLabel}
         aria-labelledby={labelledBy}
         className={clsx(
-          "group inline-flex h-control cursor-pointer items-center justify-between border-2 focus-border border-foreground bg-background press-down pr-3 pl-3.5 font-mono transition-colors hover:bg-foreground hover:text-background data-disabled:cursor-not-allowed data-disabled:opacity-50 data-popup-open:bg-foreground data-popup-open:text-background data-pressed:pt-[2px]",
+          "group inline-flex h-control cursor-pointer items-center justify-between border-2 focus-border border-foreground bg-background press-down pr-3 pl-3.5 transition-colors hover:bg-foreground hover:text-background data-disabled:cursor-not-allowed data-disabled:opacity-50 data-popup-open:bg-foreground data-popup-open:text-background data-pressed:pt-[2px]",
+          sans ? "font-sans" : "font-mono",
           compact ? "min-w-0 gap-2" : "min-w-40 gap-6",
           className,
         )}
@@ -88,7 +92,12 @@ function DSSelect({
           alignItemWithTrigger={false}
           sideOffset={4}
         >
-          <Select.Popup className="max-h-(--available-height) min-w-(--anchor-width) overflow-y-auto border-2 border-foreground bg-background font-mono text-foreground">
+          <Select.Popup
+            className={clsx(
+              "max-h-(--available-height) min-w-(--anchor-width) overflow-y-auto border-2 border-foreground bg-background text-foreground",
+              sans ? "font-sans" : "font-mono",
+            )}
+          >
             <Select.List>
               {options
                 ? options.map((o) => (

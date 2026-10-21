@@ -4,5 +4,6 @@ export {
   type DraftPhoto,
   useDraftPhotos,
   useLoadedDraft,
+  useMyCategories,
 } from "./model/draft-store";
 export { CreateCaperEditor } from "./ui/create-caper-editor";

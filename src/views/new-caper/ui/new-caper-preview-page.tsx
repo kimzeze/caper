@@ -8,6 +8,7 @@ import {
   useDraftPhotos,
   useDraftPhotoUrls,
   useLoadedDraft,
+  useMyCategories,
 } from "@/features/create-caper";
 import { CaperDetail } from "@/widgets/caper-detail";
 import { CaperGallery } from "@/widgets/caper-gallery";
@@ -20,6 +21,7 @@ export function NewCaperPreviewPage() {
   const draft = useLoadedDraft();
   const photos = useDraftPhotos();
   const urls = useDraftPhotoUrls(photos);
+  const categories = useMyCategories();
   const caper =
     draft === undefined || photos === undefined
       ? undefined
@@ -28,6 +30,9 @@ export function NewCaperPreviewPage() {
     const src = urls[photo.id];
     return src === undefined ? [] : [{ key: photo.id, src }];
   });
+  const categoryName = categories?.find(
+    (category) => category.id === caper?.categoryId,
+  )?.name;
   // 사진 주소를 다 만들기 전에는 사진 자리만 두지 않고 기다린다(장 수가 바뀌며 화면이 밀리지 않게).
   const photosReady = galleryPhotos.length === (photos?.length ?? 0);
 
@@ -53,12 +58,14 @@ export function NewCaperPreviewPage() {
                 photos={galleryPhotos}
                 title={caper.title}
                 coverTitle={isTitleOverCover(caper) ? caper.title : undefined}
+                coverKicker={isTitleOverCover(caper) ? categoryName : undefined}
               />
             </div>
           )}
           <CaperDetail
             caper={caper}
             showTitle={!isTitleOverCover(caper)}
+            categoryName={categoryName}
             className={galleryPhotos.length > 0 ? "mt-[1rlh]" : "mt-[2rlh]"}
           />
         </main>

@@ -37,6 +37,7 @@ export default async function NewCaperPreviewRoute({
       <CaperEditorPreview
         defaultValues={previewCase.values}
         photos={previewCase.photos}
+        categories={previewCase.categories}
       />
     </PreviewCasePage>
   );
