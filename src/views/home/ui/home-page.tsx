@@ -1,27 +1,64 @@
 import ButtonLink from "@/shared/ui/button-link";
 import { SiteHeader } from "@/widgets/site-header";
 
-// 첫 화면 자리. 프로젝트 목록은 목록 디자인 이슈에서 이 자리에 만든다.
-// 넓은 화면에서는 헤더와 같은 바깥 폭에 두고, 글은 본문 폭까지만.
-export function HomePage() {
+type HomeLink = { label: string; href: string };
+
+const CREATE_LINKS: readonly HomeLink[] = [
+  { label: "새 프로젝트", href: "/new" },
+  { label: "만들기 미리보기", href: "/new/preview" },
+];
+
+// 첫 화면 자리. 프로젝트 목록(실제 홈)을 만들기 전까지는 개발할 때 자주 가는 화면으로 바로 가는 버튼 묶음이다.
+// 미리보기 바로 가기(previewLinks)는 미리보기가 열리는 곳에서만 쓰는 쪽이 넘긴다. 주요(초록) 버튼은 새 프로젝트 하나.
+export function HomePage({
+  previewLinks,
+}: {
+  previewLinks?: readonly HomeLink[];
+}) {
   return (
     <>
       <SiteHeader />
-      <main className="measure-col mt-[3rlh] pb-[5rlh] lg:wide-col">
-        <p className="font-mono text-base text-muted-foreground">
-          Project Caper
-        </p>
-        <h1 className="mt-[0.25rlh]">평범한 계획을 한 편의 영화로</h1>
-        <p className="mt-[1rlh] max-w-(--measure)">
-          친구랑 물로켓 만들기 같은 계획에 영화 제목 같은 이름을 붙이고,
-          포스터를 만들고, 함께할 사람을 모아 해 보고, 남깁니다.
-        </p>
-        <p className="mt-[1.5rlh]">
-          <ButtonLink href="/new" variant="primary">
-            새 프로젝트
-          </ButtonLink>
-        </p>
+      <main className="measure-col mt-[2rlh] pb-[5rlh] lg:wide-col">
+        <h1 className="sr-only">Caper</h1>
+        <LinkGroup title="만들기" links={CREATE_LINKS} primary="/new" />
+        {previewLinks && (
+          <LinkGroup
+            title="화면 미리보기"
+            links={previewLinks}
+            className="mt-[1.5rlh]"
+          />
+        )}
       </main>
     </>
+  );
+}
+
+function LinkGroup({
+  title,
+  links,
+  primary,
+  className,
+}: {
+  title: string;
+  links: readonly HomeLink[];
+  primary?: string;
+  className?: string;
+}) {
+  return (
+    <section className={className}>
+      <h2 className="text-base font-normal text-muted-foreground">{title}</h2>
+      <ul className="mt-[0.5rlh] flex flex-wrap gap-2">
+        {links.map(({ label, href }) => (
+          <li key={href}>
+            <ButtonLink
+              href={href}
+              variant={href === primary ? "primary" : "default"}
+            >
+              {label}
+            </ButtonLink>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
