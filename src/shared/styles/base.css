@@ -24,6 +24,8 @@
   html {
     scrollbar-gutter: stable;
     line-height: calc(1rem * 1.66);
+    /* 페이지 안 이동(#…)이 위에 붙는 헤더에 가리지 않게. */
+    scroll-padding-top: var(--site-header);
   }
 
   /* 본문 16px, 행간 1.66(26.6px), 자간 -0.02em. 폰·데스크탑 같다. mangrove 매거진 글(journal)에서 잰 값에 맞췄다.

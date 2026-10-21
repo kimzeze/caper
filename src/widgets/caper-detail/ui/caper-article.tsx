@@ -44,7 +44,7 @@ export function CaperArticle({
           caper={caper}
           categoryName={categoryName}
           categoryHref={categoryHref}
-          className="sticky top-[1rlh]"
+          className="sticky top-[calc(var(--site-header)+1rlh)]"
         />
       </aside>
       <main className="flex flex-col">
