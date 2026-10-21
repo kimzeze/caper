@@ -1,6 +1,8 @@
 import { CAPER_FIXTURES } from "@/entities/caper/fixtures";
 import type { PreviewFamily } from "@/views/preview";
 
+import { NEW_CAPER_CASES } from "./new-caper/[case]/cases";
+
 const fixtureCases = CAPER_FIXTURES.map(({ key, label, note }) => ({
   key,
   label,
@@ -17,6 +19,19 @@ export const PREVIEW_FAMILIES: readonly PreviewFamily[] = [
     basePath: "/preview/caper-page",
     whole: true,
     cases: fixtureCases,
+  },
+  {
+    key: "new-caper",
+    label: "만들기 편집기",
+    description:
+      "새 프로젝트를 쓰는 한 화면입니다. 완성 모습 그대로 제목, 슬로건, 부제, 설명을 씁니다.",
+    basePath: "/preview/new-caper",
+    whole: true,
+    cases: NEW_CAPER_CASES.map(({ key, label, note }) => ({
+      key,
+      label,
+      note,
+    })),
   },
   {
     key: "capers",

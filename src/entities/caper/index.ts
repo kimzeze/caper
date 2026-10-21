@@ -11,3 +11,8 @@ export {
 export { CAPER_STATUS_LABEL } from "./status";
 export { coverImage, imageUrl, isTitleOverCover } from "./image";
 export type { Caper, CaperImage, CaperStatus, CrewMember } from "./types";
+export {
+  createCaperSchema,
+  type CreateCaperFormValues,
+  EMPTY_CREATE_CAPER_FORM,
+} from "./form";
