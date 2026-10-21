@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { CAPER_CAPACITY, JOIN_POLICIES } from "./recruit";
 import { CAPER_LIMITS, CREW_NAME_MAX, TITLE_PLACEMENTS } from "./schema";
+import { normalizeTitle, titleLineCount } from "./title";
 
 // 모집 인원을 정할지. unlimited 면 capacity 칸 값은 남겨 두되 쓰지 않는다(다시 고르면 그대로 보인다).
 export const CAPACITY_MODES = ["unlimited", "limited"] as const;
@@ -17,6 +18,11 @@ export const createCaperSchema = z
       .max(
         CAPER_LIMITS.title,
         `제목은 ${CAPER_LIMITS.title}자까지 쓸 수 있습니다.`,
+      )
+      .refine(
+        (title) =>
+          titleLineCount(normalizeTitle(title)) <= CAPER_LIMITS.titleLines,
+        `제목은 ${CAPER_LIMITS.titleLines}줄까지 쓸 수 있습니다.`,
       ),
     slogan: z
       .string()

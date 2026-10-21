@@ -3,6 +3,7 @@ import {
   type CreateCaperFormValues,
   caperSchema,
   createCaperSchema,
+  normalizeTitle,
   toCapacity,
 } from "@/entities/caper";
 
@@ -39,7 +40,7 @@ export function toPreviewCaper(
 
   const caper = caperSchema.safeParse({
     id: "draft",
-    title,
+    title: normalizeTitle(title),
     titlePlacement,
     coverShade,
     categoryId: categoryId || undefined,

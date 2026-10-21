@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { CAPER_CAPACITY, JOIN_POLICIES } from "./recruit";
 import { caperScheduleSchema } from "./schedule";
+import { titleLineCount } from "./title";
 
 // caper 하나의 모양. 화면, Server Action, DB(supabase/migrations), iOS 앱이 이 규칙을 따른다.
 // 프로젝트 페이지의 내용 순서는 사진(첫 장이 표지) → 제목 → 슬로건 → 부제 → 날짜 → 설명 → with 이다.
@@ -54,6 +55,8 @@ export const joinRequestSchema = z.object({
 
 export const CAPER_LIMITS = {
   title: 40,
+  // 작성자가 바꾼 줄까지 센 제목 줄 수(title.ts).
+  titleLines: 3,
   slogan: 60,
   subtitle: 60,
   // 마크다운 기호까지 센 길이다.
@@ -64,7 +67,13 @@ export const CAPER_LIMITS = {
 export const caperSchema = z
   .object({
     id: z.string().min(1),
-    title: z.string().trim().min(1).max(CAPER_LIMITS.title),
+    // 작성자가 줄을 바꿀 수 있다(\n). 저장 전에 normalizeTitle 로 빈 줄을 뺀다.
+    title: z
+      .string()
+      .trim()
+      .min(1)
+      .max(CAPER_LIMITS.title)
+      .refine((title) => titleLineCount(title) <= CAPER_LIMITS.titleLines),
     titlePlacement: z.enum(TITLE_PLACEMENTS),
     // 표지 위 제목 아래쪽에 어두운 음영을 깔지(기본 켬). 제목이 표지 위일 때만 뜻이 있다.
     coverShade: z.boolean().default(true),
