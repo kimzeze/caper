@@ -1,4 +1,4 @@
-import type { Caper, CaperViewer } from "@/entities/caper";
+import type { Caper, CaperViewer, JoinRequest } from "@/entities/caper";
 import { findCaperFixture } from "@/entities/caper/fixtures";
 import type { PreviewCase } from "@/views/preview";
 
@@ -8,10 +8,13 @@ const caperOf = (key: string): Caper => {
   return fixture.caper;
 };
 
-/** 참여하기 미리보기 케이스. 링크를 받은 사람이 보는 프로젝트 페이지와 처음 상태다. */
+const OWNER: CaperViewer = { role: "owner", crewId: "dohyeon" };
+
+/** 참여하기 미리보기 케이스. 보는 사람과 처음 상태다. requests 가 있으면 만든 사람이 보는 화면이다. */
 export const JOIN_CASES: readonly (PreviewCase & {
   caper: Caper;
   viewer: CaperViewer;
+  requests?: readonly JoinRequest[];
 })[] = [
   {
     key: "instant",
@@ -47,6 +50,25 @@ export const JOIN_CASES: readonly (PreviewCase & {
     note: "To the Moon에 지아로 들어와 있음(내 칸에 나). 나가기",
     caper: caperOf("to-the-moon"),
     viewer: { role: "member", crewId: "jia" },
+  },
+  {
+    key: "owner-requests",
+    label: "만든 사람: 신청 둘",
+    note: "첫 번째 김장을 2명 모집으로. 하나를 승인하면 자리가 다 차서 남은 신청은 거절만",
+    caper: { ...caperOf("no-image"), capacity: 2 },
+    viewer: OWNER,
+    requests: [
+      { id: "request-minsu", name: "민수" },
+      { id: "request-jia", name: "지아" },
+    ],
+  },
+  {
+    key: "owner-full",
+    label: "만든 사람: 자리 없음",
+    note: "긴 글(2명 중 2명)에 온 신청. 승인 대신 다 찼다는 문장",
+    caper: caperOf("long-text"),
+    viewer: OWNER,
+    requests: [{ id: "request-seojun", name: "서준" }],
   },
 ];
 

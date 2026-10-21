@@ -26,6 +26,11 @@
   사람과의 관계는 `CaperViewer`(guest·pending·member·owner), 줄 상태는
   `joinState`. DB 전이라 `/preview/join` 에서 흉내(`useJoinSimulation`)로 눌러
   본다.
+- 승인(`features/review-join-requests`): 참여 신청(`JoinRequest`)은 만든
+  사람에게만 내려 주고 caper 데이터에는 넣지 않는다. with 구역 끝에
+  `승인 기다림 n` 목록(승인·거절), 아래 줄에 `승인 기다림 n명` + 보기. 자리가 다
+  차면 승인 버튼 대신 `자리가 다 찼습니다. 모집 인원을 늘리거나 거절합니다.`
+  아래에 붙는 줄은 `shared/ui/bottom-bar` 를 같이 쓴다.
 - 날짜는 그 지역 벽시계 값 그대로 둔다(`date` YYYY-MM-DD, `start`·`end` HH:MM,
   UTC로 바꾸지 않는다). 하루짜리만 둔다. 보이는 형식은 `formatSchedule` 하나로
   만든다: `10월 24일(토) 10:00 - 12:00`, 연도는 쓰지 않는다.

@@ -7,6 +7,7 @@ export {
   caperStatusSchema,
   CREW_NAME_MAX,
   crewMemberSchema,
+  joinRequestSchema,
   TITLE_PLACEMENTS,
 } from "./schema";
 export { CAPER_STATUS_LABEL } from "./status";
@@ -32,6 +33,7 @@ export type {
   CaperSchedule,
   CaperStatus,
   CrewMember,
+  JoinRequest,
 } from "./types";
 export {
   CAPACITY_MODES,

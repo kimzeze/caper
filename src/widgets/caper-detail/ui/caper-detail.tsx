@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import type { ReactNode } from "react";
 
 import {
   type Caper,
@@ -19,11 +20,14 @@ export function CaperDetail({
   caper,
   showTitle,
   myCrewId,
+  withFooter,
   className,
 }: {
   caper: Caper;
   showTitle: boolean;
   myCrewId?: string;
+  /** with 구역 끝에 붙일 것(만든 사람의 승인 목록 등). */
+  withFooter?: ReactNode;
   className?: string;
 }) {
   const owners = caper.crew.filter((member) => member.role === "owner");
@@ -112,6 +116,7 @@ export function CaperDetail({
             </li>
           )}
         </ul>
+        {withFooter}
       </section>
     </div>
   );
