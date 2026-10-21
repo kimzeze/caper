@@ -93,15 +93,16 @@ export function CreateCaperEditor() {
           addCategory(category);
           return category;
         }}
-        photos={
+        photos={(cover) => (
           <EditorPhotos
+            cover={cover}
             photos={editorPhotos}
             notice={notice}
             onPickFiles={pickFiles}
             onRemove={remove}
             onReorder={arrangePhotos}
           />
-        }
+        )}
       />
       {cropping !== undefined && (
         <PhotoCropDialog
