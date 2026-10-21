@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 // 모바일 브라우저 주소창 색을 바탕색(theme.css 의 --color-background)에 맞춘다.
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#0c0a09" },
   ],
 };

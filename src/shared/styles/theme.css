@@ -3,8 +3,8 @@
 
 @theme {
   /* 무채색(stone)에 초록 하나. */
-  /* 바탕 */
-  --color-background: light-dark(var(--color-stone-50), var(--color-stone-950));
+  /* 바탕: 밝은 모드는 흰색(caper. design-system-a 는 stone-50) */
+  --color-background: light-dark(#ffffff, var(--color-stone-950));
   /* 기본: 글자·굵은 선 */
   --color-foreground: light-dark(
     var(--color-stone-900),
@@ -19,7 +19,7 @@
   );
   /* 가는 선 */
   --color-border: light-dark(var(--color-stone-300), var(--color-stone-700));
-  /* 초록(레어로우 트루 그린 #01A368): 바탕·테두리로만. 밝은 모드는 바탕 대비 3:1 을 넘게 조금 짙게(3.5 / 6.1). */
+  /* 초록(레어로우 트루 그린 #01A368): 바탕·테두리로만. 밝은 모드는 바탕 대비 3:1 을 넘게 조금 짙게(흰 바탕 3.7 / 다크 6.1). */
   --color-accent: light-dark(#019962, #01a368);
   /* 초록 위 글자: 두 모드 모두 짙은 글자(4.8 / 5.4) */
   --color-on-accent: var(--color-stone-900);
