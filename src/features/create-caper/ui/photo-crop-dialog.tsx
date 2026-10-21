@@ -38,6 +38,9 @@ export function PhotoCropDialog({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(ZOOM.min);
   const [area, setArea] = useState<Area | null>(null);
+  // 완료는 사진을 다 불러오면 켠다. 사진이 처음부터 4:5면 자를 자리를 옮길 일이 없어
+  // onCropComplete 가 오지 않으므로 그것을 기다리지 않는다(cropPhoto 가 가운데를 자른다).
+  const [loaded, setLoaded] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -66,7 +69,7 @@ export function PhotoCropDialog({
   }, []);
 
   const done = async () => {
-    if (area === null || busy) return;
+    if (!loaded || busy) return;
     setBusy(true);
     setError(null);
     try {
@@ -98,7 +101,7 @@ export function PhotoCropDialog({
           <Button
             variant="primary"
             onClick={done}
-            disabled={area === null || busy}
+            disabled={!loaded || busy}
             aria-busy={busy || undefined}
           >
             완료
@@ -116,6 +119,7 @@ export function PhotoCropDialog({
           onCropChange={setCrop}
           onZoomChange={setZoom}
           onCropComplete={(_, pixels) => setArea(pixels)}
+          onMediaLoaded={() => setLoaded(true)}
           showGrid
           keyboardStep={10}
           mediaProps={{ alt: "자를 사진" }}
