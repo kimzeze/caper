@@ -27,6 +27,9 @@
   /* 버튼·입력 칸·세그먼트 높이 하나(44px, 누를 자리 최소 크기) */
   --spacing-control: 2.75rem;
 
+  /* 위에 붙는 사이트 헤더 높이(caper): 버튼 높이 + 위아래 0.5rlh. sticky 정보 표와 페이지 안 이동이 이만큼 비킨다. */
+  --site-header: calc(var(--spacing-control) + 1rlh);
+
   /* 본문 컬럼 폭. 글 사이트와 서비스의 문서형 화면(설정·도구 페이지)이 같이 쓴다 */
   --measure: 45rem;
 
