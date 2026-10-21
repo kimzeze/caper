@@ -1,6 +1,6 @@
 "use client";
 
-import type { ComponentPropsWithoutRef, MouseEvent } from "react";
+import type { ComponentProps, MouseEvent } from "react";
 
 import { buttonClass, type ButtonVariant } from "./button-class";
 
@@ -15,7 +15,7 @@ export default function Button({
   className,
   onMouseDown,
   ...props
-}: ComponentPropsWithoutRef<"button"> & {
+}: ComponentProps<"button"> & {
   variant?: ButtonVariant;
   square?: boolean;
   multiline?: boolean;
