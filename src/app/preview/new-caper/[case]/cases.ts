@@ -4,6 +4,8 @@ import {
   imageUrl,
 } from "@/entities/caper";
 import { findCaperFixture } from "@/entities/caper/fixtures";
+import type { Category } from "@/entities/category";
+import { CATEGORY_FIXTURES } from "@/entities/category/fixtures";
 import type { PreviewCase } from "@/views/preview";
 
 const toTheMoon = findCaperFixture("to-the-moon")?.caper;
@@ -20,6 +22,7 @@ const toTheMoonValues: CreateCaperFormValues = {
   subtitle: toTheMoon?.subtitle ?? "",
   description: toTheMoon?.description ?? "",
   titlePlacement: "below",
+  categoryId: toTheMoon?.categoryId ?? "",
   date: toTheMoon?.schedule?.date ?? "",
   startTime: toTheMoon?.schedule?.start ?? "",
   endTime: toTheMoon?.schedule?.end ?? "",
@@ -31,20 +34,23 @@ const toTheMoonValues: CreateCaperFormValues = {
 export const NEW_CAPER_CASES: readonly (PreviewCase & {
   values: CreateCaperFormValues;
   photos: readonly { id: string; src: string }[];
+  categories: readonly Category[];
 })[] = [
   {
     key: "empty",
     label: "빈 편집기",
-    note: "처음 연 모습. 만들기를 누르면 제목 오류가 보인다",
+    note: "처음 연 모습(카테고리 없음, 만들기 버튼만). 만들기를 누르면 제목 오류가 보인다",
     values: EMPTY_CREATE_CAPER_FORM,
     photos: [],
+    categories: [],
   },
   {
     key: "filled",
     label: "다 쓴 편집기",
-    note: "To the Moon 글로 채운 모습(사진 없음)",
+    note: "To the Moon 글로 채운 모습(사진 없음, 카테고리 셋 중 물로켓 시리즈)",
     values: toTheMoonValues,
     photos: [],
+    categories: CATEGORY_FIXTURES.slice(0, 3),
   },
   {
     key: "with-photos",
@@ -52,6 +58,7 @@ export const NEW_CAPER_CASES: readonly (PreviewCase & {
     note: "To the Moon 사진 4장과 글. 제목을 사진 위에 체크",
     values: { ...toTheMoonValues, titlePlacement: "over" },
     photos: toTheMoonPhotos,
+    categories: CATEGORY_FIXTURES.slice(0, 3),
   },
 ];
 

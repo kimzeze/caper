@@ -13,6 +13,7 @@ import {
   useDraftActions,
   useDraftPhotos,
   useLoadedDraft,
+  useMyCategories,
 } from "../model/draft-store";
 import { CaperEditorForm } from "./caper-editor-form";
 import { EditorPhotos } from "./editor-photos";
@@ -27,7 +28,9 @@ export function CreateCaperEditor() {
   const draft = useLoadedDraft();
   const photos = useDraftPhotos();
   const urls = useDraftPhotoUrls(photos);
-  const { editDraft, addPhoto, removePhoto, arrangePhotos } = useDraftActions();
+  const categories = useMyCategories();
+  const { editDraft, addPhoto, removePhoto, arrangePhotos, addCategory } =
+    useDraftActions();
 
   // 자를 차례를 기다리는 사진들(첫 장을 지금 자른다). 화면 주소(blob:)는 고를 때 만들고 차례에서 빠질 때 거둔다.
   const [queue, setQueue] = useState<{ file: File; src: string }[]>([]);
@@ -84,6 +87,12 @@ export function CreateCaperEditor() {
           router.push("/new/preview");
         }}
         hasPhotos={photoCount > 0}
+        categories={categories ?? []}
+        onCreateCategory={(name) => {
+          const category = { id: crypto.randomUUID(), name };
+          addCategory(category);
+          return category;
+        }}
         photos={
           <EditorPhotos
             photos={editorPhotos}

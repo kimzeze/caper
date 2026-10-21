@@ -17,6 +17,7 @@ import {
   JOIN_POLICIES,
   JOIN_POLICY_LABEL,
 } from "@/entities/caper";
+import type { Category } from "@/entities/category";
 import Button from "@/shared/ui/button";
 import Checkbox from "@/shared/ui/checkbox";
 import EditorText from "@/shared/ui/editor-text";
@@ -27,6 +28,7 @@ import RadioGroup from "@/shared/ui/radio-group";
 import ThemeToggle from "@/shared/ui/theme-toggle";
 
 import { useCreateCaperForm } from "../hooks/use-create-caper-form";
+import { CategoryField } from "./category-field";
 
 // 설명 편집기(Tiptap)는 브라우저에서만 불러온다. 서버에서 미리 그리면 Tiptap 이 만들 때 부르는 Math.random()이
 // Cache Components 의 prerender 검사에 걸리고, 첫 화면 묶음도 무거워진다. 불러오는 동안은 같은 크기 자리를 둔다.
@@ -39,7 +41,7 @@ const MarkdownEditor = dynamic(() => import("@/shared/ui/markdown-editor"), {
 const COUNTER_FROM = 0.8;
 
 // 만들기 편집기(네이버 블로그 글쓰기처럼 완성 모습 그대로 쓰는 한 화면).
-// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 날짜·시간 → 설명(마크다운 편집기)
+// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 카테고리 → 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 날짜·시간 → 설명(마크다운 편집기)
 // → with(모집 인원, 참여 확정).
 // 헤더는 편집기라 화면 폭에 두고 아래 가는 선을 긋는다(design-system-a 패턴 "헤더"). 위에 고정한다.
 // 맨 위 사진 자리(photos)는 쓰는 쪽이 넣는다(사진은 폼 밖 초안 store 와 IndexedDB 가 다룬다).
@@ -50,12 +52,17 @@ export function CaperEditorForm({
   onCreate,
   photos,
   hasPhotos,
+  categories,
+  onCreateCategory,
 }: {
   defaultValues: CreateCaperFormValues;
   onDraftChange: (draft: CreateCaperFormValues) => void;
   onCreate: (values: CreateCaperFormValues) => void;
   photos: ReactNode;
   hasPhotos: boolean;
+  /** 내 카테고리. 새로 만들면 onCreateCategory 가 만든 것을 돌려준다. */
+  categories: readonly Category[];
+  onCreateCategory: (name: string) => Category;
 }) {
   const { form, submit } = useCreateCaperForm({
     defaultValues,
@@ -99,6 +106,12 @@ export function CaperEditorForm({
             )}
           />
         )}
+        <CategoryField
+          control={control}
+          categories={categories}
+          onCreateCategory={onCreateCategory}
+          className="mb-[1rlh]"
+        />
         <EditorField
           name="title"
           label="제목"

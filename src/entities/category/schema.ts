@@ -12,3 +12,17 @@ export const categorySchema = z.object({
 });
 
 export type Category = z.infer<typeof categorySchema>;
+
+// 편집기에서 새 카테고리를 만들 때의 이름 검사. 화면에 보일 오류 문구를 여기 둔다.
+export const createCategorySchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, "카테고리 이름을 써야 합니다.")
+    .max(
+      CATEGORY_NAME_MAX,
+      `카테고리 이름은 ${CATEGORY_NAME_MAX}자까지 쓸 수 있습니다.`,
+    ),
+});
+
+export type CreateCategoryFormValues = z.infer<typeof createCategorySchema>;
