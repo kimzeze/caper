@@ -133,7 +133,11 @@ function Thumbnail({
     <li
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={clsx("shrink-0", isDragging && "relative z-10")}
+      // 아이폰 사파리는 길게 누르면 사진 저장 메뉴를 띄우고 글자를 고른다. 길게 눌러 끌기와 부딪쳐 둘 다 끈다.
+      className={clsx(
+        "shrink-0 select-none [-webkit-touch-callout:none]",
+        isDragging && "relative z-10",
+      )}
     >
       <button
         type="button"
@@ -157,7 +161,7 @@ function Thumbnail({
           width={56}
           height={70}
           draggable={false}
-          className="block aspect-[4/5] w-full object-cover"
+          className="block aspect-[4/5] w-full object-cover select-none [-webkit-touch-callout:none]"
         />
       </button>
       {index === 0 && (
