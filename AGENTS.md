@@ -25,10 +25,11 @@
   오른쪽 위 "만들기"를 누르면 검사하고, DB 전이라 지금은 `/new/preview` 에서
   미리 본다.
 - 만들기 사진: 맨 위 4:5 자리에서 여러 장을 고르면 한 장씩 자르기
-  화면(react-easy-crop, 1080×1350 JPEG)이 뜬다. 최대 10장, 순서 옮기기(첫 장이
-  표지)와 지우기, 사진이 있으면 "제목을 사진 위에". 자른 사진은
-  IndexedDB(`idb-keyval`), 순서와 크기는 초안 store 에 둔다. 사진 넘기기는
-  `shared/ui/photo-carousel` 을 위젯과 편집기가 같이 쓴다.
+  화면(react-easy-crop, 1080×1350 JPEG)이 뜬다. 최대 10장, 지우기, 사진 아래
+  썸네일 줄을 끌어서 순서 바꾸기(`@dnd-kit`: 폰은 길게 눌러, 마우스는 조금
+  움직이면, 키보드는 스페이스·방향키, 첫 칸이 표지), 사진이 있으면 "제목을 사진
+  위에". 자른 사진은 IndexedDB(`idb-keyval`), 순서와 크기는 초안 store 에 둔다.
+  사진 넘기기는 `shared/ui/photo-carousel` 을 위젯과 편집기가 같이 쓴다.
 - 설명은 마크다운 문자열로 저장한다(GFM, 5000자). 쓰기는
   `shared/ui/markdown-editor` (Tiptap 3: 서식 버튼 + 마크다운 단축키,
   기울임·밑줄·취소선 없음), 보기는 `shared/ui/markdown`(react-markdown +

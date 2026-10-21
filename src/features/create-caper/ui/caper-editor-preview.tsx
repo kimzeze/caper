@@ -28,7 +28,7 @@ export function CaperEditorPreview({
           photos={photos}
           onPickFiles={ignore}
           onRemove={ignore}
-          onMove={ignore}
+          onReorder={ignore}
         />
       }
     />

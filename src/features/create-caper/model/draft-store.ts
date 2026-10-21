@@ -25,8 +25,8 @@ type DraftState = {
     editDraft: (draft: CreateCaperFormValues) => void;
     addPhoto: (photo: DraftPhoto) => void;
     removePhoto: (id: string) => void;
-    /** 사진을 offset 칸 옮긴다(-1 앞으로, 1 뒤로). 끝을 넘으면 그대로 둔다. */
-    movePhoto: (id: string, offset: number) => void;
+    /** 사진 순서를 ids 대로 바꾼다(첫 장이 표지). 지금 사진과 id가 다르면 그대로 둔다. */
+    arrangePhotos: (ids: string[]) => void;
     discardDraft: () => void;
   };
 };
@@ -50,15 +50,16 @@ const draftStore = create<DraftState>()(
           set((state) => ({
             photos: state.photos.filter((photo) => photo.id !== id),
           })),
-        movePhoto: (id, offset) =>
+        arrangePhotos: (ids) =>
           set((state) => {
-            const from = state.photos.findIndex((photo) => photo.id === id);
-            const to = from + offset;
-            if (from < 0 || to < 0 || to >= state.photos.length) return state;
-            const photos = [...state.photos];
-            const [moved] = photos.splice(from, 1);
-            photos.splice(to, 0, moved);
-            return { photos };
+            const byId = new Map(
+              state.photos.map((photo) => [photo.id, photo]),
+            );
+            const photos = ids.flatMap((id) => byId.get(id) ?? []);
+            return photos.length === state.photos.length &&
+              new Set(ids).size === ids.length
+              ? { photos }
+              : state;
           }),
         discardDraft: () => set({ draft: EMPTY_CREATE_CAPER_FORM, photos: [] }),
       },
