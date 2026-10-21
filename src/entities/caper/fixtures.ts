@@ -58,6 +58,7 @@ const TO_THE_MOON: Caper = {
     ].join("\n"),
     "> 비가 오면 일요일로 미룬다.",
   ].join("\n\n"),
+  categoryId: "water-rocket",
   schedule: { date: "2026-10-24", start: "10:00", end: "12:00" },
   images: [LAUNCH, LAUNCH_NOSE, LAUNCH_ORBITER, LAUNCH_FLAME],
   status: "active",
@@ -94,13 +95,13 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "to-the-moon",
     label: "To the Moon",
-    note: "사진 4장, 모든 항목, 제목 아래, 진행, 6명 모집에 3명(빈자리 3), 바로 확정",
+    note: "사진 4장, 모든 항목, 카테고리, 제목 아래, 진행, 6명 모집에 3명(빈자리 3), 바로 확정",
     caper: TO_THE_MOON,
   }),
   fixture({
     key: "title-over",
     label: "제목을 사진 위에",
-    note: "To the Moon과 같은 내용, 제목을 표지 위에 얹음",
+    note: "To the Moon과 같은 내용, 제목을 표지 위에 얹음(카테고리도 표지 위)",
     caper: { ...TO_THE_MOON, titlePlacement: "over" },
   }),
   fixture({
@@ -114,6 +115,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
       subtitle: "엄마랑 김장 담그기",
       description:
         "올해는 처음으로 배추 절이는 것부터 같이 한다. 몇 포기를 할지는 아직 정하지 않았다.",
+      categoryId: "family",
       schedule: { date: "2026-11-14" },
       images: [],
       status: "planning",
@@ -132,6 +134,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
       titlePlacement: "below",
       slogan: "마지막 발사를 처음부터 끝까지",
       subtitle: "우주왕복선 발사 영상 보면서 밤새기",
+      categoryId: "space",
       schedule: { date: "2026-09-05", start: "23:00" },
       images: [LAUNCH_FLAME],
       status: "done",
@@ -147,12 +150,13 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "long-text",
     label: "긴 글",
-    note: "제목·슬로건·부제가 한도에 가깝고 설명이 긴 것, 제목 위(가장 빡빡한 경우), 2명 모집이 다 참(마감)",
+    note: "제목·슬로건·부제가 한도에 가깝고 설명이 긴 것, 제목 위(가장 빡빡한 경우, 카테고리 이름도 20자), 2명 모집이 다 참(마감)",
     caper: {
       id: "slow-summer-ride",
       title:
         "우리 동네 골목 끝까지 자전거로 가 보는 아주 느리고 긴 여름날의 탐험",
       titlePlacement: "over",
+      categoryId: "long-name",
       slogan:
         "지도에도 없는 길을 찾아서, 해가 질 때까지 페달을 멈추지 않는다. 돌아올 길은 그때 가서 생각한다",
       subtitle:
@@ -176,7 +180,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "big-crew",
     label: "with 많음",
-    note: "12명, 이름이 긴 사람 포함, 인원 제한 없음, 바로 확정",
+    note: "12명, 이름이 긴 사람 포함, 인원 제한 없음, 바로 확정, 카테고리 없음",
     caper: {
       id: "eleven",
       title: "Eleven",
