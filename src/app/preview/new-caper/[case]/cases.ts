@@ -32,6 +32,23 @@ const toTheMoonValues: CreateCaperFormValues = {
   joinPolicy: toTheMoon?.joinPolicy ?? "instant",
 };
 
+// 카테고리가 많을 때(고르기 그릇에서 찾기·스크롤을 본다). 고정 데이터 넷 + 흔한 이름들.
+const MANY_CATEGORIES: readonly Category[] = [
+  ...CATEGORY_FIXTURES,
+  ...[
+    "주말 실험",
+    "동네 산책",
+    "생일 준비",
+    "캠핑",
+    "보드게임 밤",
+    "독서 모임",
+    "요리 도전",
+    "영화 마라톤",
+    "여름 여행",
+    "운동 같이",
+  ].map((name, index) => ({ id: `many-${index + 1}`, name })),
+];
+
 export const NEW_CAPER_CASES: readonly (PreviewCase & {
   values: CreateCaperFormValues;
   photos: readonly { id: string; src: string }[];
@@ -60,6 +77,14 @@ export const NEW_CAPER_CASES: readonly (PreviewCase & {
     values: { ...toTheMoonValues, titlePlacement: "over" },
     photos: toTheMoonPhotos,
     categories: CATEGORY_FIXTURES.slice(0, 3),
+  },
+  {
+    key: "many-categories",
+    label: "카테고리 많음",
+    note: "카테고리 열넷. 칸을 누르면 고르기 그릇(데스크탑 팝오버, 폰 아래 시트)에서 찾고 고르거나 새로 만든다",
+    values: toTheMoonValues,
+    photos: [],
+    categories: MANY_CATEGORIES,
   },
 ];
 
