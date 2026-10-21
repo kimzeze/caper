@@ -12,6 +12,8 @@
   --font-mono:
     var(--font-monoplex), "MonoplexKR", ui-monospace, SFMono-Regular, Menlo,
     monospace;
+  /* 로고에만 쓴다(caper 의 브랜드 글자). 본문·제목에는 쓰지 않는다. */
+  --font-logo: var(--font-archivo-black), "Archivo Black", sans-serif;
 }
 
 @layer base {
