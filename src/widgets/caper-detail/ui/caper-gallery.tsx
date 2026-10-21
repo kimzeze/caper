@@ -2,6 +2,7 @@ import { clsx } from "clsx";
 import Link from "next/link";
 
 import { CAPER_IMAGE_RATIO, titleOneLine } from "@/entities/caper";
+import CoverText, { type CoverPosition } from "@/shared/ui/cover-text";
 import PhotoCarousel, { type CarouselPhoto } from "@/shared/ui/photo-carousel";
 
 export type GalleryPhoto = Omit<CarouselPhoto, "alt">;
@@ -19,6 +20,7 @@ export function CaperGallery({
   coverKicker,
   coverKickerHref,
   coverShade = true,
+  coverPosition,
 }: {
   photos: readonly GalleryPhoto[];
   title: string;
@@ -26,6 +28,8 @@ export function CaperGallery({
   coverKicker?: string;
   coverKickerHref?: string;
   coverShade?: boolean;
+  /** 표지 위 제목 자리(0~1 비율). 없으면 기본(왼쪽 아래). */
+  coverPosition?: CoverPosition;
 }) {
   // 사진 대체 글과 묶음 이름은 한 줄로 읽는다(작성자가 바꾼 줄은 공백으로).
   const name = titleOneLine(title);
@@ -48,6 +52,7 @@ export function CaperGallery({
               kicker={coverKicker}
               kickerHref={coverKickerHref}
               shade={coverShade}
+              position={coverPosition}
             />
           )
         }
@@ -56,48 +61,42 @@ export function CaperGallery({
   );
 }
 
-// 사진 위 글자는 사진에 따라 안 읽힐 수 있어 기본으로 아래쪽에만 어두운 막을 깐다. 글자는 모드와 상관없이 밝다.
+// 표지 위 제목(shared/ui/cover-text): 작성자가 옮긴 자리(position), 음영은 제목 높이의 어두운 띠.
+// 넓은 화면은 제목을 글 머리에 두므로 표지 위 제목(막 포함)을 감춘다.
 function CoverTitle({
   title,
   kicker,
   kickerHref,
   shade,
+  position,
 }: {
   title: string;
   kicker?: string;
   kickerHref?: string;
   shade: boolean;
+  position?: CoverPosition;
 }) {
   return (
-    <div
-      className={clsx(
-        // 넓은 화면은 제목을 글 머리에 두므로 표지 위 제목(막 포함)을 감춘다.
-        "absolute inset-x-0 bottom-0 pt-[3rlh] pb-[1.5rlh] lg:hidden",
-        shade &&
-          "bg-linear-to-t from-stone-950/75 via-stone-950/40 to-transparent",
-      )}
-    >
-      <div className="measure-col">
-        {kicker && (
-          <p className="text-base text-stone-200 lg:hidden">
-            {kickerHref ? (
-              <Link href={kickerHref} className="text-stone-200">
-                {kicker}
-              </Link>
-            ) : (
-              kicker
-            )}
-          </p>
-        )}
-        <h1
-          className={clsx(
-            "whitespace-pre-line text-stone-50",
-            kicker && "mt-[0.25rlh] lg:mt-0",
+    <CoverText position={position} shade={shade} className="lg:hidden">
+      {kicker && (
+        <p className="text-base text-stone-200">
+          {kickerHref ? (
+            <Link href={kickerHref} className="text-stone-200">
+              {kicker}
+            </Link>
+          ) : (
+            kicker
           )}
-        >
-          {title}
-        </h1>
-      </div>
-    </div>
+        </p>
+      )}
+      <h1
+        className={clsx(
+          "whitespace-pre-line text-stone-50",
+          kicker && "mt-[0.25rlh]",
+        )}
+      >
+        {title}
+      </h1>
+    </CoverText>
   );
 }

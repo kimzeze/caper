@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { CAPER_CAPACITY, JOIN_POLICIES } from "./recruit";
 import { CAPER_LIMITS, CREW_NAME_MAX, TITLE_PLACEMENTS } from "./schema";
-import { normalizeTitle, titleLineCount } from "./title";
+import { normalizeTitle, titleLineCount, titlePositionSchema } from "./title";
 
 // 모집 인원을 정할지. unlimited 면 capacity 칸 값은 남겨 두되 쓰지 않는다(다시 고르면 그대로 보인다).
 export const CAPACITY_MODES = ["unlimited", "limited"] as const;
@@ -51,6 +51,8 @@ export const createCaperSchema = z
     titlePlacement: z.enum(TITLE_PLACEMENTS),
     // 표지 위 제목 아래쪽 음영. 제목을 사진 위에 둘 때만 고른다.
     coverShade: z.boolean(),
+    // 표지 위 제목 자리. 옮기지 않았으면(기본 자리) null.
+    titlePosition: titlePositionSchema.nullable(),
     // 날짜(YYYY-MM-DD)와 시작·끝(HH:MM). 브라우저 날짜·시간 칸 값 그대로이고 비우면 빈 문자열이다.
     date: z.union([z.literal(""), z.iso.date("날짜를 다시 골라야 합니다.")]),
     startTime: z.union([
@@ -117,6 +119,7 @@ export const EMPTY_CREATE_CAPER_FORM: CreateCaperFormValues = {
   description: "",
   titlePlacement: "below",
   coverShade: true,
+  titlePosition: null,
   categoryId: "",
   date: "",
   startTime: "",
