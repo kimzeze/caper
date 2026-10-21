@@ -46,6 +46,12 @@ export const crewMemberSchema = z.object({
   role: z.enum(CREW_ROLES),
 });
 
+// 참여 신청(승인 후 확정일 때). 만든 사람에게만 내려 주고 caper 데이터에는 넣지 않는다.
+export const joinRequestSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().trim().min(1).max(CREW_NAME_MAX),
+});
+
 export const CAPER_LIMITS = {
   title: 40,
   slogan: 60,
