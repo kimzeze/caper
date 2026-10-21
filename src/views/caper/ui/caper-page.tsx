@@ -51,6 +51,7 @@ export function CaperPage({
             : undefined
         }
         withFooter={review && <JoinRequests caper={caper} {...review} />}
+        shareable
       />
       {join && <JoinBar caper={caper} {...join} />}
       {review && <RequestsBar count={review.requests.length} />}
