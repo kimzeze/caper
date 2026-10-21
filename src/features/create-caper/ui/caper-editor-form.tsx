@@ -105,7 +105,7 @@ export function CaperEditorForm({
               onEnter={() => setFocus("slogan")}
               placeholder="제목"
               aria-label="제목"
-              className="text-[2rem] leading-[1.25] font-bold tracking-[-0.01em]"
+              className="text-[2rem] leading-[1.25] font-bold tracking-[-0.04em]"
             />
           )}
         </EditorField>

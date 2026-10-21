@@ -14,39 +14,36 @@
     monospace;
   /* 로고에만 쓴다(caper 의 브랜드 글자). 본문·제목에는 쓰지 않는다. */
   --font-logo: var(--font-archivo-black), "Archivo Black", sans-serif;
+  /* 보조 글씨(메타, 안내). 본문 16px 보다 한 단계 작게. */
+  --text-base: 0.875rem;
 }
 
 @layer base {
-  /* 간격 단위는 rlh(루트 줄 높이). 본문 줄 높이(18px × 1.7)를 html 에 길이로 둬서 작은 글씨 요소에 걸어도 같은 값이다.
-     lh 를 쓰면 그 요소 자신의 줄 높이라 보조 글씨(16px)에서 짧아진다. */
+  /* 간격 단위는 rlh(루트 줄 높이). 본문 줄 높이(16px × 1.66)를 html 에 길이로 둬서 작은 글씨 요소에 걸어도 같은 값이다.
+     lh 를 쓰면 그 요소 자신의 줄 높이라 보조 글씨(14px)에서 짧아진다. */
   html {
     scrollbar-gutter: stable;
-    line-height: calc(1.125rem * 1.7);
+    line-height: calc(1rem * 1.66);
   }
 
-  /* 본문 18px(모바일 17px), 행간 1.7. 한국 읽기 사이트 범위(16~18px, 1.6~1.75) 안에서 큰 쪽.
-     고정폭 메타(text-base)는 16px, 모바일 15px. */
+  /* 본문 16px, 행간 1.66(26.6px), 자간 -0.02em. 폰·데스크탑 같다. mangrove 매거진 글(journal)에서 잰 값에 맞췄다
+     (design-system-a 는 17·18px, 1.7, 자간 0). 보조 글씨(text-base)는 14px. */
   body {
     @apply bg-background text-foreground;
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 1.7;
+    line-height: 1.66;
+    letter-spacing: -0.02em;
     font-family: var(--font-sans);
-  }
-  @media (max-width: 40rem) {
-    html {
-      line-height: calc(1.0625rem * 1.7);
-    }
-    body {
-      font-size: 1.0625rem;
-    }
-    :root {
-      --text-base: 0.9375rem;
-    }
   }
 
   * {
     @apply border-border break-keep;
+  }
+
+  /* 고정폭 글자는 자간을 좁히지 않는다(본문의 -0.02em 을 물려받지 않게). */
+  :where(code, kbd, samp, pre, .font-mono) {
+    letter-spacing: normal;
   }
 
   /* 굵게는 제목·표 머리·문장 안 강조(strong)에만. 기울임은 쓰지 않는다. */
@@ -57,24 +54,25 @@
     font-style: normal;
   }
 
-  /* 제목: 32·24·19(본문 크기 굵게). 자간만 살짝 좁힌다. */
+  /* 제목: 32·20·16(본문 크기 굵게). 자간은 mangrove 글 제목처럼 크게 좁힌다(크기에 비례). */
   h1,
   h2,
   h3 {
     font-weight: 700;
-    letter-spacing: -0.01em;
   }
   h1 {
     font-size: 2rem;
     line-height: 1.25;
+    letter-spacing: -0.04em;
   }
   h2 {
-    font-size: 1.5rem;
-    line-height: 1.3;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    letter-spacing: -0.03em;
   }
   h3 {
-    font-size: 1.1875rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    line-height: 1.66;
   }
 
   /* 선택(드래그): 초록 바탕 + 초록 위 글자색. 코드 색(shiki)도 선택 중엔 이 색으로 덮는다. */

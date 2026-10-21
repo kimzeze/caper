@@ -52,9 +52,14 @@
 }
 
 /* 프로젝트 설명은 짧은 줄을 엔터로 끊어 쓰는 일이 많아, 긴 글용 prose(문단 사이 1rlh, 소제목 위 3rlh)보다 좁힌다.
-   편집기와 보기가 같은 간격이다. 간격은 design-system-a rlh 단계 안에서 고른다. */
+   문단과 문단 사이는 0: 엔터 한 번은 바로 다음 줄, 띄우려면 빈 줄을 넣는다(mangrove 글, 네이버 블로그처럼).
+   빈 문단은 편집기가 &nbsp; 문단으로 저장해 보기에서도 한 줄로 남는다. 목록·인용·소제목 앞뒤는 0.5rlh.
+   편집기와 보기가 같은 간격이다. */
 :where(.prose-compact) > * + * {
   @apply mt-[0.5rlh];
+}
+:where(.prose-compact) > p + p {
+  @apply mt-0;
 }
 .prose-compact {
   h2 {
