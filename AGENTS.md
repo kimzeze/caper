@@ -209,11 +209,11 @@ src/
   1.66·자간 -0.02em(폰·데스크탑 같음), 보조 글씨 14px, 제목 h1 24px(데스크탑
   30px)·행간 1.3·자간 -0.04em, h2 20px, h3 16px 굵게. 간격 단위 rlh 는 본문 줄
   높이(26.6px)다. 고정폭 글자는 자간을 좁히지 않는다.
-- 로고는 헤더의 소문자 `caper` 를 Archivo 폭 125%·굵기 900(`font-logo`,
-  32px)으로 쓴다. 그 한 벌만 잘라 둔 정적
-  파일(`src/app/fonts/ArchivoExpanded-Black.woff2`, 14KB)을 `next/font/local` 로
-  싣는다. 이 글꼴은 로고에만 쓰고 본문·제목은 Pretendard 그대로다. 헤더 위아래
-  여백은 0.5rlh.
+- 로고는 헤더의 소문자 `caper` 를 Urbanist 400(`font-logo`, 36px, 자간
+  -0.01em)으로 쓴다. 그 한 벌만 잘라 둔 정적
+  파일(`src/app/fonts/Urbanist-Regular.woff2`, 12KB)을 `next/font/local` 로
+  싣는다. 이 글꼴은 로고에만 쓰고 본문·제목은 Pretendard 그대로다. 고른 과정과
+  후보 비교는 `docs/design/logo.md`. 헤더 위아래 여백은 0.5rlh.
 - 라이트 모드 바탕은 흰색(`#ffffff`)이다(design-system-a 는 stone-50). 다크는
   stone-950 그대로.
 - 고정폭 글꼴에 한글을 넣지 않는다. Select 값이 한글이면 `sans` 를 준다.
@@ -303,6 +303,7 @@ src/
 | Orca worktree 절차         | `docs/development/worktree-workflow.md` |
 | 커밋 규칙                  | `docs/development/commit-guide.md`      |
 | PR 작성·리뷰               | `docs/development/pr-guide.md`          |
+| 디자인 결정(로고 글꼴 등)  | `docs/design/`                          |
 
 <!-- next dev 가 이 블록을 다시 써 넣는다. 그 모양 그대로 두도록 Prettier에서 뺀다. -->
 <!-- prettier-ignore-start -->

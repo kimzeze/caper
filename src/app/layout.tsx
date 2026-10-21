@@ -22,12 +22,12 @@ const monoplex = localFont({
   preload: false,
 });
 
-// 로고(헤더의 caper)에만 쓰는 글꼴. Archivo 의 폭 125%·굵기 900 한 벌만 뽑은 정적 파일이다(라틴, 14KB).
-// 가변 글꼴 전체(폭·굵기 축)를 싣지 않으려고 Google Fonts 에서 이 값으로 잘라 받았다.
+// 로고(헤더의 caper)에만 쓰는 글꼴. Urbanist 굵기 400 한 벌만 뽑은 정적 파일이다(라틴, 12KB).
+// 가변 글꼴 전체를 싣지 않으려고 Google Fonts 에서 이 값으로 잘라 받았다. 고른 과정은 docs/design/logo.md.
 const logoFont = localFont({
-  src: "./fonts/ArchivoExpanded-Black.woff2",
-  weight: "900",
-  variable: "--font-archivo-expanded",
+  src: "./fonts/Urbanist-Regular.woff2",
+  weight: "400",
+  variable: "--font-urbanist",
   display: "swap",
 });
 

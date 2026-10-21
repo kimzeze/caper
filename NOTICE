@@ -18,8 +18,8 @@ src/shared/styles/ 와 src/shared/ui/ 의 디자인 시스템 코드(토큰, 기
 글꼴은 각자의 라이선스를 따릅니다.
   Pretendard    SIL Open Font License 1.1  https://github.com/orioncactus/pretendard
   Monoplex KR   SIL Open Font License 1.1  https://github.com/y-kim/monoplex
-  Archivo       SIL Open Font License 1.1  https://github.com/Omnibus-Type/Archivo
-                (로고용. 폭 125%·굵기 900 한 벌만 잘라 src/app/fonts 에 둔다)
+  Urbanist      SIL Open Font License 1.1  https://github.com/coreyhu/Urbanist
+                (로고용. 굵기 400 한 벌만 잘라 src/app/fonts 에 둔다)
 
 ---
 
