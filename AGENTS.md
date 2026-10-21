@@ -212,6 +212,8 @@ src/
 - 로고는 헤더의 소문자 `caper` 를 Archivo Black(`font-logo`, `next/font/google`,
   라틴만)으로 쓴다. 이 글꼴은 로고에만 쓰고 본문·제목은 Pretendard 그대로다.
   헤더 위아래 여백은 0.5rlh.
+- 라이트 모드 바탕은 흰색(`#ffffff`)이다(design-system-a 는 stone-50). 다크는
+  stone-950 그대로.
 - 고정폭 글꼴에 한글을 넣지 않는다. Select 값이 한글이면 `sans` 를 준다.
 - 화면 문장은 합니다체. 버튼은 동사 하나. 줄표(—)를 쓰지 않고, 영어 뒤 조사는
   붙여 쓴다. 코드 주석과 개발 문서는 한다체로 쓴다.
