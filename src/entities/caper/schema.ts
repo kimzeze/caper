@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { CAPER_CAPACITY, JOIN_POLICIES } from "./recruit";
 import { caperScheduleSchema } from "./schedule";
-import { titleLineCount } from "./title";
+import { titleLineCount, titlePositionSchema } from "./title";
 
 // caper 하나의 모양. 화면, Server Action, DB(supabase/migrations), iOS 앱이 이 규칙을 따른다.
 // 프로젝트 페이지의 내용 순서는 사진(첫 장이 표지) → 제목 → 슬로건 → 부제 → 날짜 → 설명 → with 이다.
@@ -77,6 +77,8 @@ export const caperSchema = z
     titlePlacement: z.enum(TITLE_PLACEMENTS),
     // 표지 위 제목 아래쪽에 어두운 음영을 깔지(기본 켬). 제목이 표지 위일 때만 뜻이 있다.
     coverShade: z.boolean().default(true),
+    // 표지 위 제목 자리(0~1 비율). 없으면 기본(왼쪽 아래).
+    titlePosition: titlePositionSchema.optional(),
     slogan: z.string().trim().min(1).max(CAPER_LIMITS.slogan).optional(),
     subtitle: z.string().trim().min(1).max(CAPER_LIMITS.subtitle).optional(),
     // 마크다운 글(GFM: 소제목, 목록, 체크리스트, 인용, 링크 등). 화면은 shared/ui/markdown 이 그린다.

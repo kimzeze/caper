@@ -112,6 +112,16 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
     caper: { ...TO_THE_MOON, titlePlacement: "over" },
   }),
   fixture({
+    key: "title-over-top",
+    label: "제목을 사진 위에, 위 가운데",
+    note: "To the Moon 제목을 표지 위 가운데로 옮김(음영 띠도 위쪽)",
+    caper: {
+      ...TO_THE_MOON,
+      titlePlacement: "over",
+      titlePosition: { x: 0.5, y: 0 },
+    },
+  }),
+  fixture({
     key: "title-over-plain",
     label: "제목을 사진 위에, 음영 없음",
     note: "To the Moon 제목을 표지 위에 얹고 아래쪽 음영을 끔",

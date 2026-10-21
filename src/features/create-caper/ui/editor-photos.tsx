@@ -1,6 +1,12 @@
 "use client";
 
-import { type ChangeEvent, useId, useRef, useState } from "react";
+import {
+  type ChangeEvent,
+  type ReactNode,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { ImagePlus, Trash2 } from "lucide-react";
 
 import { CAPER_IMAGE_RATIO, CAPER_LIMITS } from "@/entities/caper";
@@ -19,16 +25,18 @@ const ASPECT = `${CAPER_IMAGE_RATIO.width} / ${CAPER_IMAGE_RATIO.height}`;
 
 // 편집기 맨 위 사진 자리. 사진이 없으면 4:5 빈 자리("사진 추가"), 있으면 프로젝트 페이지와 같은 사진 넘기기,
 // 지금 보이는 장의 지우기·사진 추가, 그 아래 끌어서 순서를 바꾸는 썸네일 줄.
-// 사진 고르기(여러 장)만 하고, 자르기는 쓰는 쪽(onPickFiles)이 한다.
+// 사진 고르기(여러 장)만 하고, 자르기는 쓰는 쪽(onPickFiles)이 한다. cover 는 첫 장 위에 얹을 것(사진 위 제목 미리 보기).
 // 디자인은 나중이고 지금은 기능 위주다.
 export function EditorPhotos({
   photos,
   notice,
+  cover,
   onPickFiles,
   onRemove,
   onReorder,
 }: {
   photos: readonly EditorPhoto[];
+  cover?: ReactNode;
   notice?: string | null;
   onPickFiles: (files: File[]) => void;
   onRemove: (id: string) => void;
@@ -90,6 +98,7 @@ export function EditorPhotos({
             }))}
             label={`올린 사진 ${count}장`}
             aspectRatio={ASPECT}
+            cover={cover}
             onIndexChange={setIndex}
             ref={carouselRef}
           />

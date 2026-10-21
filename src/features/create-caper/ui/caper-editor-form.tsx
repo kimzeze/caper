@@ -24,6 +24,7 @@ import ThemeToggle from "@/shared/ui/theme-toggle";
 
 import { useCreateCaperForm } from "../hooks/use-create-caper-form";
 import { CategoryField } from "./category-field";
+import { CoverTitleEditor } from "./cover-title-editor";
 
 // 설명 편집기(Tiptap)는 브라우저에서만 불러온다. 서버에서 미리 그리면 Tiptap 이 만들 때 부르는 Math.random()이
 // Cache Components 의 prerender 검사에 걸리고, 첫 화면 묶음도 무거워진다. 불러오는 동안은 같은 크기 자리를 둔다.
@@ -39,7 +40,8 @@ const COUNTER_FROM = 0.8;
 // 순서와 글자 크기는 프로젝트 페이지(CaperArticle, 폰 한 단)와 같다: 카테고리 → 제목(h1 크기) 굵게 → 슬로건 굵게 → 부제 보조 색 → 날짜·시간 → 설명(마크다운 편집기)
 // → with(모집 인원, 참여 확정).
 // 헤더는 편집기라 화면 폭에 두고 아래 가는 선을 긋는다(design-system-a 패턴 "헤더"). 위에 고정한다.
-// 맨 위 사진 자리(photos)는 쓰는 쪽이 넣는다(사진은 폼 밖 초안 store 와 IndexedDB 가 다룬다).
+// 맨 위 사진 자리(photos)는 쓰는 쪽이 넣는다(사진은 폼 밖 초안 store 와 IndexedDB 가 다룬다). 폼은 그 첫 장 위에 얹을
+// 사진 위 제목(cover)을 넘긴다.
 // 사진이 있으면(hasPhotos) 제목을 표지 위에 얹을지 고른다.
 export function CaperEditorForm({
   defaultValues,
@@ -53,7 +55,8 @@ export function CaperEditorForm({
   defaultValues: CreateCaperFormValues;
   onDraftChange: (draft: CreateCaperFormValues) => void;
   onCreate: (values: CreateCaperFormValues) => void;
-  photos: ReactNode;
+  /** 사진 자리. cover(제목을 사진 위에 얹었을 때의 표지 위 제목)를 첫 장 위에 얹는다. */
+  photos: (cover: ReactNode) => ReactNode;
   hasPhotos: boolean;
   /** 내 카테고리. 새로 만들면 onCreateCategory 가 만든 것을 돌려준다. */
   categories: readonly Category[];
@@ -81,7 +84,9 @@ export function CaperEditorForm({
           </div>
         </div>
       </header>
-      <div className="mt-[0.5rlh]">{photos}</div>
+      <div className="mt-[0.5rlh]">
+        {photos(<EditorCover control={control} categories={categories} />)}
+      </div>
       <main className="measure-col mt-[1.5rlh] pb-[5rlh]">
         <h1 className="sr-only">새 프로젝트</h1>
         {hasPhotos && <CoverTitleFields control={control} />}
@@ -239,7 +244,27 @@ function ScheduleFields({
   );
 }
 
-// 사진이 있을 때 맨 위: 제목을 사진 위에 얹을지, 얹으면 아래쪽 음영을 깔지(기본 켬).
+// 제목을 사진 위에 얹었으면 첫 사진 위에 옮길 수 있는 제목을 그린다(얹지 않았으면 없음).
+function EditorCover({
+  control,
+  categories,
+}: {
+  control: Control<CreateCaperFormValues>;
+  categories: readonly Category[];
+}) {
+  const over = useWatch({ control, name: "titlePlacement" }) === "over";
+  const categoryId = useWatch({ control, name: "categoryId" });
+  if (!over) return null;
+  return (
+    <CoverTitleEditor
+      control={control}
+      categoryName={categories.find(({ id }) => id === categoryId)?.name}
+    />
+  );
+}
+
+// 사진이 있을 때 맨 위: 제목을 사진 위에 얹을지, 얹으면 음영을 깔지(기본 켬). 얹으면 사진 위 제목을 끌어 옮긴다고 알리고,
+// 옮겼으면 기본 위치로 되돌리는 버튼을 둔다. 넓은 화면의 프로젝트 페이지는 제목을 글 머리에 두므로 그렇다고 알린다.
 // 음영을 끄면 밝은 사진에서 흰 제목이 안 보일 수 있어 한 줄로 알린다.
 function CoverTitleFields({
   control,
@@ -280,6 +305,30 @@ function CoverTitleFields({
         <p className="text-base text-muted-foreground">
           사진이 밝으면 제목이 잘 안 보일 수 있습니다.
         </p>
+      )}
+      {over && (
+        <div className="mt-[0.25rlh] flex flex-wrap items-center gap-x-3 gap-y-[0.25rlh]">
+          <p className="text-base text-muted-foreground">
+            사진 위 제목을 끌어서 옮깁니다.
+            <span className="hidden lg:inline">
+              {" "}
+              넓은 화면에서는 제목 자리에 보입니다.
+            </span>
+          </p>
+          <Controller
+            name="titlePosition"
+            control={control}
+            render={({ field }) =>
+              field.value === null ? (
+                <></>
+              ) : (
+                <Button onClick={() => field.onChange(null)}>
+                  기본 위치로
+                </Button>
+              )
+            }
+          />
+        </div>
       )}
     </div>
   );

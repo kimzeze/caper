@@ -23,6 +23,7 @@ const toTheMoonValues: CreateCaperFormValues = {
   description: toTheMoon?.description ?? "",
   titlePlacement: "below",
   coverShade: true,
+  titlePosition: null,
   categoryId: toTheMoon?.categoryId ?? "",
   date: toTheMoon?.schedule?.date ?? "",
   startTime: toTheMoon?.schedule?.start ?? "",

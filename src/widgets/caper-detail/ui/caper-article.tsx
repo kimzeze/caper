@@ -68,6 +68,7 @@ export function CaperArticle({
             coverKicker={titleOver ? categoryName : undefined}
             coverKickerHref={categoryHref}
             coverShade={caper.coverShade}
+            coverPosition={caper.titlePosition}
           />
         </div>
       )}

@@ -36,14 +36,15 @@ export function CaperEditorPreview({
       onDraftChange={ignore}
       onCreate={ignore}
       hasPhotos={photos.length > 0}
-      photos={
+      photos={(cover) => (
         <EditorPhotos
+          cover={cover}
           photos={photos}
           onPickFiles={ignore}
           onRemove={ignore}
           onReorder={ignore}
         />
-      }
+      )}
     />
   );
 }
