@@ -38,6 +38,11 @@
   `승인 기다림 n` 목록(승인·거절), 아래 줄에 `승인 기다림 n명` + 보기. 자리가 다
   차면 승인 버튼 대신 `자리가 다 찼습니다. 모집 인원을 늘리거나 거절합니다.`
   아래에 붙는 줄은 `shared/ui/bottom-bar` 를 같이 쓴다.
+- 제목은 작성자가 읽기 좋게 줄을 바꿀 수 있다(세 줄까지,
+  `entities/caper/title.ts`). 편집기에서 Enter 가 줄을 바꾸고(폰에 Shift+Enter
+  가 없다), 세 줄이 차면 Enter 는 슬로건으로 간다. 저장 전에 빈 줄과 줄 앞뒤
+  공백을 빼고(`normalizeTitle`), 화면은 바꾼 자리 그대로(`whitespace-pre-line`),
+  사진 대체 글처럼 한 줄이어야 하는 곳은 `titleOneLine`.
 - 날짜는 그 지역 벽시계 값 그대로 둔다(`date` YYYY-MM-DD, `start`·`end` HH:MM,
   UTC로 바꾸지 않는다). 하루짜리만 둔다. 보이는 형식은 `formatSchedule` 하나로
   만든다: `10월 24일(토) 10:00 - 12:00`, 연도는 쓰지 않는다.

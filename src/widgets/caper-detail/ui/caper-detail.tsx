@@ -46,7 +46,14 @@ export function CaperDetail({
         <p className="text-base text-muted-foreground">{categoryName}</p>
       )}
       {showTitle && (
-        <h1 className={clsx(categoryName && "mt-[0.25rlh]")}>{caper.title}</h1>
+        <h1
+          className={clsx(
+            "whitespace-pre-line",
+            categoryName && "mt-[0.25rlh]",
+          )}
+        >
+          {caper.title}
+        </h1>
       )}
       {caper.slogan && (
         <p className={clsx("font-bold", showTitle && "mt-[0.5rlh]")}>

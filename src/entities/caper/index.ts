@@ -27,6 +27,7 @@ export {
   scheduleDateTime,
 } from "./schedule";
 export { coverImage, imageUrl, isTitleOverCover } from "./image";
+export { normalizeTitle, titleOneLine } from "./title";
 export type {
   Caper,
   CaperImage,

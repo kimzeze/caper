@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 
-import { CAPER_IMAGE_RATIO } from "@/entities/caper";
+import { CAPER_IMAGE_RATIO, titleOneLine } from "@/entities/caper";
 import PhotoCarousel, { type CarouselPhoto } from "@/shared/ui/photo-carousel";
 
 export type GalleryPhoto = Omit<CarouselPhoto, "alt">;
@@ -23,14 +23,17 @@ export function CaperGallery({
   coverKicker?: string;
   coverShade?: boolean;
 }) {
+  // 사진 대체 글과 묶음 이름은 한 줄로 읽는다(작성자가 바꾼 줄은 공백으로).
+  const name = titleOneLine(title);
+
   return (
     <div className="mx-auto w-full max-w-(--measure)">
       <PhotoCarousel
         photos={photos.map((photo, index) => ({
           ...photo,
-          alt: `${title} 사진 ${index + 1}`,
+          alt: `${name} 사진 ${index + 1}`,
         }))}
-        label={`${title} 사진 ${photos.length}장`}
+        label={`${name} 사진 ${photos.length}장`}
         aspectRatio={`${CAPER_IMAGE_RATIO.width} / ${CAPER_IMAGE_RATIO.height}`}
         cover={
           coverTitle === undefined ? undefined : (
@@ -66,7 +69,12 @@ function CoverTitle({
     >
       <div className="measure-col">
         {kicker && <p className="text-base text-stone-200">{kicker}</p>}
-        <h1 className={kicker ? "mt-[0.25rlh] text-stone-50" : "text-stone-50"}>
+        <h1
+          className={clsx(
+            "whitespace-pre-line text-stone-50",
+            kicker && "mt-[0.25rlh]",
+          )}
+        >
           {title}
         </h1>
       </div>

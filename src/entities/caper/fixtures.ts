@@ -163,11 +163,11 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "long-text",
     label: "긴 글",
-    note: "제목·슬로건·부제가 한도에 가깝고 설명이 긴 것, 제목 위(가장 빡빡한 경우, 카테고리 이름도 20자), 2명 모집이 다 참(마감)",
+    note: "제목·슬로건·부제가 한도에 가깝고 설명이 긴 것, 제목 위(가장 빡빡한 경우, 제목에 줄 바꿈 하나, 카테고리 이름도 20자), 2명 모집이 다 참(마감)",
     caper: {
       id: "slow-summer-ride",
       title:
-        "우리 동네 골목 끝까지 자전거로 가 보는 아주 느리고 긴 여름날의 탐험",
+        "우리 동네 골목 끝까지\n자전거로 가 보는 아주 느리고 긴 여름날의 탐험",
       titlePlacement: "over",
       categoryId: "long-name",
       slogan:
