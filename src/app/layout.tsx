@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo_Black } from "next/font/google";
 import localFont from "next/font/local";
 
 import { THEME_INIT } from "@/shared/ui/theme-store";
@@ -23,11 +22,12 @@ const monoplex = localFont({
   preload: false,
 });
 
-// 로고(헤더의 caper)에만 쓰는 글꼴. 아주 굵은 소문자라 로고처럼 보인다. 빌드 때 받아 우리 서버에서 낸다(라틴만).
-const logoFont = Archivo_Black({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-archivo-black",
+// 로고(헤더의 caper)에만 쓰는 글꼴. Archivo 의 폭 125%·굵기 900 한 벌만 뽑은 정적 파일이다(라틴, 14KB).
+// 가변 글꼴 전체(폭·굵기 축)를 싣지 않으려고 Google Fonts 에서 이 값으로 잘라 받았다.
+const logoFont = localFont({
+  src: "./fonts/ArchivoExpanded-Black.woff2",
+  weight: "900",
+  variable: "--font-archivo-expanded",
   display: "swap",
 });
 
