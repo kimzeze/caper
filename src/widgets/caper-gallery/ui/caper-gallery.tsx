@@ -3,10 +3,10 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 
-import { type CaperImage, imageUrl } from "@/entities/caper";
+import { CAPER_IMAGE_RATIO, type CaperImage, imageUrl } from "@/entities/caper";
 
-// 프로젝트 페이지 맨 위 사진 넘기기. 화면 끝까지 차고, 높이는 첫 화면에서 헤더와 제목 첫 줄을 뺀 만큼이다
-// (사진이 거의 다 채우되 아래 제목이 보이게).
+// 프로젝트 페이지 맨 위 사진 넘기기. 사진 틀은 4:5(CAPER_IMAGE_RATIO)로 고정한다.
+// 폰에서는 화면 끝까지 차고, 넓은 화면에서는 본문 폭(--measure)까지만 늘어난다(데스크탑 2단은 #7).
 // 화살표 없이 브라우저 스크롤 스냅으로 한 장씩 넘기고, 처음과 끝에서 멈춘다(무한 롤링 없음).
 // 사진 바로 밑 막대가 지금 위치를 따라간다. 막대는 스크롤 이벤트에서 직접 옮긴다
 // (CSS 스크롤 애니메이션은 아직 Baseline Widely available이 아니다).
@@ -50,14 +50,20 @@ export function CaperGallery({
   }, [count]);
 
   return (
-    <section aria-label={`${title} 사진 ${count}장`}>
+    <section
+      aria-label={`${title} 사진 ${count}장`}
+      className="mx-auto w-full max-w-(--measure)"
+    >
       <div className="relative">
         <ul
           ref={listRef}
           // 키보드로도 넘길 수 있게 초점을 받는다(방향키가 그대로 가로 스크롤이 된다).
           // 사진(위치 지정 요소)이 목록의 외곽선을 덮으므로, 초점 표시는 아래 겹친 층이 그린다.
           tabIndex={count > 1 ? 0 : undefined}
-          className="peer flex h-[calc(100svh-12rem)] snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overscroll-x-contain focus-visible:outline-none [&::-webkit-scrollbar]:hidden"
+          style={{
+            aspectRatio: `${CAPER_IMAGE_RATIO.width} / ${CAPER_IMAGE_RATIO.height}`,
+          }}
+          className="peer flex w-full snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overscroll-x-contain focus-visible:outline-none [&::-webkit-scrollbar]:hidden"
         >
           {images.map((image, index) => (
             <li
@@ -69,7 +75,7 @@ export function CaperGallery({
                 src={imageUrl(image)}
                 alt={`${title} 사진 ${index + 1}`}
                 fill
-                sizes="100vw"
+                sizes="(min-width: 45rem) 45rem, 100vw"
                 className="object-cover"
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchPriority={index === 0 ? "high" : undefined}
@@ -91,7 +97,7 @@ export function CaperGallery({
         />
       </div>
       {count > 1 && (
-        // 위치 막대는 사진 바로 밑에 여백 없이, 사진과 같은 폭(화면 끝까지)으로 붙인다.
+        // 위치 막대는 사진 바로 밑에 여백 없이, 사진과 같은 폭으로 붙인다.
         <div aria-hidden className="h-0.5 bg-muted">
           <span
             ref={thumbRef}
