@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import {
@@ -20,6 +21,7 @@ export function CaperDetail({
   caper,
   showTitle,
   categoryName,
+  categoryHref,
   myCrewId,
   withFooter,
   className,
@@ -28,6 +30,8 @@ export function CaperDetail({
   showTitle: boolean;
   /** 제목 위 한 줄(잡지의 섹션 이름처럼). 제목을 표지에 얹었으면 표지 쪽이 그린다. */
   categoryName?: string;
+  /** 카테고리 모아 보기 주소. 있으면 카테고리 이름이 링크가 된다. */
+  categoryHref?: string;
   myCrewId?: string;
   /** with 구역 끝에 붙일 것(만든 사람의 승인 목록 등). */
   withFooter?: ReactNode;
@@ -43,7 +47,15 @@ export function CaperDetail({
   return (
     <div className={clsx("measure-col pb-[5rlh]", className)}>
       {showTitle && categoryName && (
-        <p className="text-base text-muted-foreground">{categoryName}</p>
+        <p className="text-base text-muted-foreground">
+          {categoryHref ? (
+            <Link href={categoryHref} className="text-muted-foreground">
+              {categoryName}
+            </Link>
+          ) : (
+            categoryName
+          )}
+        </p>
       )}
       {showTitle && (
         <h1

@@ -6,6 +6,7 @@ import { findCategoryFixture } from "@/entities/category/fixtures";
 import { CaperPage } from "@/views/caper";
 import { PreviewCasePage } from "@/views/preview";
 
+import { categoryPageHref } from "../../category-page/[case]/cases";
 import { findPreviewFamily } from "../../preview-families";
 
 // 케이스마다 내용이 통째로 다르고 개발용 화면이라, 앱 껍데기를 먼저 보여 주지 않고 이동을 잠깐 막는다.
@@ -38,6 +39,7 @@ export default async function CaperPagePreviewRoute({
       <CaperPage
         caper={fixture.caper}
         category={findCategoryFixture(fixture.caper.categoryId)}
+        categoryHref={categoryPageHref(fixture.caper.categoryId)}
       />
     </PreviewCasePage>
   );

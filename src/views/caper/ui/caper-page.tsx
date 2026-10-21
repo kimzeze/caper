@@ -23,11 +23,14 @@ import { SiteHeader } from "@/widgets/site-header";
 export function CaperPage({
   caper,
   category,
+  categoryHref,
   join,
   review,
 }: {
   caper: Caper;
   category?: Category;
+  /** 카테고리 모아 보기 주소. 있으면 제목 위 카테고리 이름이 링크가 된다. */
+  categoryHref?: string;
   join?: { viewer: CaperViewer } & JoinActions;
   review?: { requests: readonly JoinRequest[] } & ReviewActions;
 }) {
@@ -49,6 +52,7 @@ export function CaperPage({
               title={caper.title}
               coverTitle={titleOver ? caper.title : undefined}
               coverKicker={titleOver ? category?.name : undefined}
+              coverKickerHref={categoryHref}
               coverShade={caper.coverShade}
             />
           </div>
@@ -57,6 +61,7 @@ export function CaperPage({
           caper={caper}
           showTitle={!titleOver}
           categoryName={category?.name}
+          categoryHref={categoryHref}
           myCrewId={
             viewer?.role === "member" || viewer?.role === "owner"
               ? viewer.crewId
