@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { CAPER_CAPACITY, JOIN_POLICIES } from "./recruit";
-import { CAPER_LIMITS, TITLE_PLACEMENTS } from "./schema";
+import { CAPER_LIMITS, CREW_NAME_MAX, TITLE_PLACEMENTS } from "./schema";
 
 // 모집 인원을 정할지. unlimited 면 capacity 칸 값은 남겨 두되 쓰지 않는다(다시 고르면 그대로 보인다).
 export const CAPACITY_MODES = ["unlimited", "limited"] as const;
@@ -113,3 +113,14 @@ export const EMPTY_CREATE_CAPER_FORM: CreateCaperFormValues = {
   capacity: "",
   joinPolicy: "instant",
 };
+
+// 참여하기: with 에 보일 이름. 카카오 로그인이 붙으면 프로필 이름을 채워 둔다.
+export const joinCaperSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, "with에 보일 이름을 써야 합니다.")
+    .max(CREW_NAME_MAX, `이름은 ${CREW_NAME_MAX}자까지 쓸 수 있습니다.`),
+});
+
+export type JoinCaperFormValues = z.infer<typeof joinCaperSchema>;

@@ -5,6 +5,7 @@ export {
   caperImageSchema,
   caperSchema,
   caperStatusSchema,
+  CREW_NAME_MAX,
   crewMemberSchema,
   TITLE_PLACEMENTS,
 } from "./schema";
@@ -37,5 +38,8 @@ export {
   createCaperSchema,
   type CreateCaperFormValues,
   EMPTY_CREATE_CAPER_FORM,
+  type JoinCaperFormValues,
+  joinCaperSchema,
   toCapacity,
 } from "./form";
+export { type CaperViewer, joinState, type JoinState } from "./viewer";

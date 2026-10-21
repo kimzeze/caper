@@ -37,9 +37,12 @@ export const TITLE_PLACEMENTS = ["below", "over"] as const;
 
 export const CREW_ROLES = ["owner", "member"] as const;
 
+// with 에 보일 이름의 길이. 참여하기 이름 칸도 같다.
+export const CREW_NAME_MAX = 20;
+
 export const crewMemberSchema = z.object({
   id: z.string().min(1),
-  name: z.string().trim().min(1).max(20),
+  name: z.string().trim().min(1).max(CREW_NAME_MAX),
   role: z.enum(CREW_ROLES),
 });
 
