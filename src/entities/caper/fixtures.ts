@@ -58,6 +58,7 @@ const TO_THE_MOON: Caper = {
     ].join("\n"),
     "> 비가 오면 일요일로 미룬다.",
   ].join("\n\n"),
+  schedule: { date: "2026-10-24", start: "10:00", end: "12:00" },
   images: [LAUNCH, LAUNCH_NOSE, LAUNCH_ORBITER, LAUNCH_FLAME],
   status: "active",
   crew: [
@@ -103,7 +104,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "no-image",
     label: "사진 없음",
-    note: "사진·슬로건 없음, 제목 위를 골랐지만 아래로, 기획, crew 1명",
+    note: "사진·슬로건 없음, 날짜만, 제목 위를 골랐지만 아래로, 기획, crew 1명",
     caper: {
       id: "first-kimchi",
       title: "첫 번째 김장",
@@ -111,6 +112,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
       subtitle: "엄마랑 김장 담그기",
       description:
         "올해는 처음으로 배추 절이는 것부터 같이 한다. 몇 포기를 할지는 아직 정하지 않았다.",
+      schedule: { date: "2026-11-14" },
       images: [],
       status: "planning",
       crew: [{ id: "dohyeon", name: "도현", role: "owner" }],
@@ -120,13 +122,14 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "one-image",
     label: "사진 한 장",
-    note: "사진 1장(위치 막대 없음), 설명 없음, 완료",
+    note: "사진 1장(위치 막대 없음), 시작 시간만, 설명 없음, 완료",
     caper: {
       id: "liftoff",
       title: "Liftoff",
       titlePlacement: "below",
       slogan: "마지막 발사를 처음부터 끝까지",
       subtitle: "우주왕복선 발사 영상 보면서 밤새기",
+      schedule: { date: "2026-09-05", start: "23:00" },
       images: [LAUNCH_FLAME],
       status: "done",
       crew: [

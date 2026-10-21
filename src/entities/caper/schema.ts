@@ -1,7 +1,9 @@
 import { z } from "zod";
 
+import { caperScheduleSchema } from "./schedule";
+
 // caper 하나의 모양. 화면, Server Action, DB(supabase/migrations), iOS 앱이 이 규칙을 따른다.
-// 프로젝트 페이지의 내용 순서는 사진(첫 장이 표지) → 제목 → 슬로건 → 부제 → 설명이다.
+// 프로젝트 페이지의 내용 순서는 사진(첫 장이 표지) → 제목 → 슬로건 → 부제 → 날짜 → 설명이다.
 
 export const CAPER_STATUSES = ["planning", "active", "done"] as const;
 
@@ -62,6 +64,8 @@ export const caperSchema = z.object({
     .min(1)
     .max(CAPER_LIMITS.description)
     .optional(),
+  // 언제 하는지(선택). 날짜와 그 지역 시각(schedule.ts).
+  schedule: caperScheduleSchema.optional(),
   // 첫 장이 표지다. 목록과 링크 미리보기에도 첫 장을 쓴다.
   images: z.array(caperImageSchema).max(CAPER_LIMITS.images),
   status: caperStatusSchema,
