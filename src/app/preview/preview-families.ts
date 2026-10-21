@@ -1,6 +1,7 @@
 import { CAPER_FIXTURES } from "@/entities/caper/fixtures";
 import type { PreviewFamily } from "@/views/preview";
 
+import { JOIN_CASES } from "./join/[case]/cases";
 import { NEW_CAPER_CASES } from "./new-caper/[case]/cases";
 
 const fixtureCases = CAPER_FIXTURES.map(({ key, label, note }) => ({
@@ -19,6 +20,15 @@ export const PREVIEW_FAMILIES: readonly PreviewFamily[] = [
     basePath: "/preview/caper-page",
     whole: true,
     cases: fixtureCases,
+  },
+  {
+    key: "join",
+    label: "참여하기",
+    description:
+      "링크를 받은 사람이 프로젝트에 들어오는 아래 줄입니다. 누르면 미리보기 안에서 상태가 바뀝니다.",
+    basePath: "/preview/join",
+    whole: true,
+    cases: JOIN_CASES.map(({ key, label, note }) => ({ key, label, note })),
   },
   {
     key: "new-caper",

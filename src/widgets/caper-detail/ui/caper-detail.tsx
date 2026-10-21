@@ -14,14 +14,16 @@ import Avatar from "@/shared/ui/avatar";
 import Markdown from "@/shared/ui/markdown";
 
 // 사진 아래 내용: 제목 → 슬로건 → 부제 → 날짜 → 상태·사람 수 → 설명 → with(모집 줄, crew 프로필, 빈자리).
-// 제목을 표지 위에 얹었으면 showTitle 을 끄고 여기서는 그리지 않는다.
+// 제목을 표지 위에 얹었으면 showTitle 을 끄고 여기서는 그리지 않는다. 보는 사람이 crew 면(myCrewId) 내 칸에 "나"를 붙인다.
 export function CaperDetail({
   caper,
   showTitle,
+  myCrewId,
   className,
 }: {
   caper: Caper;
   showTitle: boolean;
+  myCrewId?: string;
   className?: string;
 }) {
   const owners = caper.crew.filter((member) => member.role === "owner");
@@ -90,8 +92,15 @@ export function CaperDetail({
               <Avatar name={member.name} />
               <div className="min-w-0">
                 <p className="truncate">{member.name}</p>
-                {member.role === "owner" && (
-                  <p className="text-base text-muted-foreground">만든 사람</p>
+                {(member.role === "owner" || member.id === myCrewId) && (
+                  <p className="text-base text-muted-foreground">
+                    {[
+                      member.role === "owner" && "만든 사람",
+                      member.id === myCrewId && "나",
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
                 )}
               </div>
             </li>
