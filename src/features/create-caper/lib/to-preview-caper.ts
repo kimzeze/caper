@@ -20,7 +20,16 @@ export function toPreviewCaper(
 ): Caper | undefined {
   const form = createCaperSchema.safeParse(draft);
   if (!form.success) return undefined;
-  const { title, slogan, subtitle, description, titlePlacement } = form.data;
+  const {
+    title,
+    slogan,
+    subtitle,
+    description,
+    titlePlacement,
+    date,
+    startTime,
+    endTime,
+  } = form.data;
 
   const caper = caperSchema.safeParse({
     id: "draft",
@@ -29,6 +38,13 @@ export function toPreviewCaper(
     slogan: slogan || undefined,
     subtitle: subtitle || undefined,
     description: description || undefined,
+    schedule: date
+      ? {
+          date,
+          start: startTime || undefined,
+          end: endTime || undefined,
+        }
+      : undefined,
     images: photos.map(({ id, width, height }) => ({
       path: `draft/${id}`,
       width,

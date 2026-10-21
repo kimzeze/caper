@@ -20,6 +20,9 @@ const toTheMoonValues: CreateCaperFormValues = {
   subtitle: toTheMoon?.subtitle ?? "",
   description: toTheMoon?.description ?? "",
   titlePlacement: "below",
+  date: toTheMoon?.schedule?.date ?? "",
+  startTime: toTheMoon?.schedule?.start ?? "",
+  endTime: toTheMoon?.schedule?.end ?? "",
 };
 
 export const NEW_CAPER_CASES: readonly (PreviewCase & {

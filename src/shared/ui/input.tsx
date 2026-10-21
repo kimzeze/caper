@@ -1,7 +1,7 @@
 "use client";
 
 import { clsx } from "clsx";
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentProps } from "react";
 import { useFieldLabel } from "./field";
 
 // 한 줄 입력 — 2px 잉크 상자, 높이 44px. 내용 폭에 맞춰 늘고 준다(최소 20ch).
@@ -12,7 +12,7 @@ export default function Input({
   width,
   style,
   ...props
-}: ComponentPropsWithoutRef<"input"> & { width?: number | "fill" }) {
+}: ComponentProps<"input"> & { width?: number | "fill" }) {
   const labelledBy = useFieldLabel();
   return (
     <input
