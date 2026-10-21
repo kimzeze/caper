@@ -26,8 +26,8 @@
     line-height: calc(1rem * 1.66);
   }
 
-  /* 본문 16px, 행간 1.66(26.6px), 자간 -0.02em. 폰·데스크탑 같다. mangrove 매거진 글(journal)에서 잰 값에 맞췄다
-     (design-system-a 는 17·18px, 1.7, 자간 0). 보조 글씨(text-base)는 14px. */
+  /* 본문 16px, 행간 1.66(26.6px), 자간 -0.02em. 폰·데스크탑 같다. mangrove 매거진 글(journal)에서 잰 값에 맞췄다.
+     보조 글씨(text-base)는 14px. design-system-a 원본도 같은 값이다. */
   body {
     @apply bg-background text-foreground;
     font-size: 1rem;

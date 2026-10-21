@@ -3,7 +3,7 @@
 
 @theme {
   /* 무채색(stone)에 초록 하나. */
-  /* 바탕: 밝은 모드는 흰색(caper. design-system-a 는 stone-50) */
+  /* 바탕: 밝은 모드는 흰색 */
   --color-background: light-dark(#ffffff, var(--color-stone-950));
   /* 기본: 글자·굵은 선 */
   --color-foreground: light-dark(
