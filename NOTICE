@@ -12,8 +12,7 @@ src/shared/styles/ 와 src/shared/ui/ 의 디자인 시스템 코드(토큰, 기
 (Copyright (c) 2026 Seongyeol Yi (이성열). All rights reserved.).
 원본은 오픈소스가 아니며, 이 부분을 복제·수정·재배포하려면 원저작자의 허락이
 필요합니다. caper 에서 바꾼 것은 강조색(design-system-a 와 같음), 파일 이름,
-글꼴 싣는 방식(next/font), 테마 버튼의 상태 읽기, 라이트 모드 바탕색(흰색),
-넓은 화면 2단 배치입니다.
+글꼴 싣는 방식(next/font), 테마 버튼의 상태 읽기, 넓은 화면 2단 배치입니다.
 
 글꼴은 각자의 라이선스를 따릅니다.
   Pretendard    SIL Open Font License 1.1  https://github.com/orioncactus/pretendard
