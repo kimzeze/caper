@@ -46,3 +46,22 @@ export function seatsLeft({
     ? undefined
     : Math.max(capacity - crew.length, 0);
 }
+
+/**
+ * 인원 한 줄: "3/6명 · 바로 확정", "1명 · 인원 제한 없음 · 승인 후 확정", 다 차면 "2/2명 · 마감".
+ * 끝난 프로젝트는 모은 사람 수만("2명").
+ */
+export function formatRecruit(
+  caper: Pick<Caper, "status" | "capacity" | "crew" | "joinPolicy">,
+): string {
+  const recruit = recruitState(caper);
+  if (recruit === "closed") return `${caper.crew.length}명`;
+  const parts =
+    recruit === "full"
+      ? ["마감"]
+      : [
+          ...(caper.capacity === undefined ? ["인원 제한 없음"] : []),
+          JOIN_POLICY_LABEL[caper.joinPolicy],
+        ];
+  return [formatHeadcount(caper), ...parts].join(" · ");
+}
