@@ -24,7 +24,7 @@ export const PREVIEW_FAMILIES: readonly PreviewFamily[] = [
     key: "new-caper",
     label: "만들기 편집기",
     description:
-      "새 프로젝트를 쓰는 한 화면입니다. 완성 모습 그대로 제목, 슬로건, 부제, 설명을 씁니다.",
+      "새 프로젝트를 쓰는 한 화면입니다. 완성 모습 그대로 제목, 슬로건, 부제, 날짜, 설명, 모집 인원을 씁니다.",
     basePath: "/preview/new-caper",
     whole: true,
     cases: NEW_CAPER_CASES.map(({ key, label, note }) => ({

@@ -10,6 +10,16 @@ export {
 } from "./schema";
 export { CAPER_STATUS_LABEL } from "./status";
 export {
+  CAPER_CAPACITY,
+  formatHeadcount,
+  JOIN_POLICIES,
+  JOIN_POLICY_LABEL,
+  type JoinPolicy,
+  recruitState,
+  type RecruitState,
+  seatsLeft,
+} from "./recruit";
+export {
   caperScheduleSchema,
   formatSchedule,
   scheduleDateTime,
@@ -23,7 +33,9 @@ export type {
   CrewMember,
 } from "./types";
 export {
+  CAPACITY_MODES,
   createCaperSchema,
   type CreateCaperFormValues,
   EMPTY_CREATE_CAPER_FORM,
+  toCapacity,
 } from "./form";
