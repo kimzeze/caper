@@ -1,1 +1,1 @@
-export { CaperGallery } from "./ui/caper-gallery";
+export { CaperGallery, type GalleryPhoto } from "./ui/caper-gallery";

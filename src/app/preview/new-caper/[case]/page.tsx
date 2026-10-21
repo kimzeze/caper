@@ -34,7 +34,10 @@ export default async function NewCaperPreviewRoute({
       family={findPreviewFamily("new-caper")}
       previewCase={previewCase}
     >
-      <CaperEditorPreview defaultValues={previewCase.values} />
+      <CaperEditorPreview
+        defaultValues={previewCase.values}
+        photos={previewCase.photos}
+      />
     </PreviewCasePage>
   );
 }

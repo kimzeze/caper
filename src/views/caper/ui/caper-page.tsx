@@ -1,4 +1,4 @@
-import { type Caper, isTitleOverCover } from "@/entities/caper";
+import { type Caper, imageUrl, isTitleOverCover } from "@/entities/caper";
 import { CaperDetail } from "@/widgets/caper-detail";
 import { CaperGallery } from "@/widgets/caper-gallery";
 import { SiteHeader } from "@/widgets/site-header";
@@ -16,7 +16,10 @@ export function CaperPage({ caper }: { caper: Caper }) {
         {hasImages && (
           <div className="mt-[0.5rlh]">
             <CaperGallery
-              images={caper.images}
+              photos={caper.images.map((image, index) => ({
+                key: `${image.path}-${index}`,
+                src: imageUrl(image),
+              }))}
               title={caper.title}
               coverTitle={titleOver ? caper.title : undefined}
             />
