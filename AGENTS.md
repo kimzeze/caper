@@ -70,12 +70,14 @@
   위에"(켜면 "음영 넣기", 기본 켬. 끄면 밝은 사진에서 안 보일 수 있다고 알린다).
   자른 사진은 IndexedDB(`idb-keyval`), 순서와 크기는 초안 store 에 둔다. 사진
   넘기기는 `shared/ui/photo-carousel` 을 위젯과 편집기가 같이 쓴다.
-- 설명은 마크다운 문자열로 저장한다(GFM, 5000자). 쓰기는
-  `shared/ui/markdown-editor` (Tiptap 3: 서식 버튼 + 마크다운 단축키,
-  기울임·밑줄·취소선 없음), 보기는 `shared/ui/markdown`(react-markdown +
-  remark-gfm, HTML은 그리지 않음, `#` 은 소제목으로 낮춤). 둘 다 design-system-a
-  `prose` 와 `shared/styles/markdown.css` (체크리스트, 코드 블록, 목록 정렬)를
-  쓴다.
+- 설명은 마크다운 문자열로 저장한다(GFM, 5000자). 문단 사이는 0이라 Enter 한
+  번은 바로 다음 줄이고, 띄우려면 빈 줄을 넣는다. 빈 줄(빈 문단)은 `&nbsp;`
+  문단으로 저장해 어느 마크다운 보기에서도 남는다(`markdown-editor` 의
+  `keepBlankParagraphs`). 쓰기는 `shared/ui/markdown-editor` (Tiptap 3: 서식
+  버튼 + 마크다운 단축키, 기울임·밑줄·취소선 없음), 보기는
+  `shared/ui/markdown`(react-markdown + remark-gfm, HTML은 그리지 않음, `#` 은
+  소제목으로 낮춤). 둘 다 design-system-a `prose` 와
+  `shared/styles/markdown.css` (체크리스트, 코드 블록, 목록 정렬)를 쓴다.
 - 열람과 참여: 링크가 있으면 누구나 보고 참여한다. 로그인 없이 참여하면 Supabase
   익명 로그인으로 임시 계정을 만들고, 카카오나 Apple로 로그인하면 같은 계정에
   이어 붙어 저장 같은 기능이 늘어난다.
@@ -197,6 +199,10 @@ src/
   포스터).
 - 390px부터 만들고 1280px을 확인한다. 라이트·다크 둘 다 본다.
 - 브라우저 확인은 ego-browser 스킬(ego lite)로 한다.
+- 글자는 mangrove 매거진 글에 맞춘다(design-system-a 와 다름): 본문 16px·행간
+  1.66·자간 -0.02em(폰·데스크탑 같음), 보조 글씨 14px, 제목 h1 32px·자간
+  -0.04em, h2 20px, h3 16px 굵게. 간격 단위 rlh 는 본문 줄 높이(26.6px)다.
+  고정폭 글자는 자간을 좁히지 않는다.
 - 로고는 헤더의 소문자 `caper` 를 Archivo Black(`font-logo`, `next/font/google`,
   라틴만)으로 쓴다. 이 글꼴은 로고에만 쓰고 본문·제목은 Pretendard 그대로다.
   헤더 위아래 여백은 0.5rlh.
