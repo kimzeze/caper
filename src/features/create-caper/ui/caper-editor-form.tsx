@@ -101,7 +101,7 @@ export function CaperEditorForm({
             <EditorText
               {...register("title")}
               {...described}
-              singleLine
+              maxLines={CAPER_LIMITS.titleLines}
               onEnter={() => setFocus("slogan")}
               placeholder="제목"
               aria-label="제목"

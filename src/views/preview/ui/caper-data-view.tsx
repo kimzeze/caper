@@ -9,6 +9,7 @@ import {
   imageUrl,
   isTitleOverCover,
   JOIN_POLICY_LABEL,
+  titleOneLine,
 } from "@/entities/caper";
 import type { Category } from "@/entities/category";
 
@@ -85,7 +86,7 @@ export function CaperDataView({
       {cover ? (
         <Image
           src={imageUrl(cover)}
-          alt={`${caper.title} 표지`}
+          alt={`${titleOneLine(caper.title)} 표지`}
           width={cover.width}
           height={cover.height}
           sizes="(max-width: 40rem) 50vw, 15rem"
