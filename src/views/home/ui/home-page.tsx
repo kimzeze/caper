@@ -1,16 +1,10 @@
-import ThemeToggle from "@/shared/ui/theme-toggle";
+import { SiteHeader } from "@/widgets/site-header";
 
-// 첫 화면 자리. 프로젝트 목록과 표지는 화면 디자인 이슈에서 이 자리에 만든다.
+// 첫 화면 자리. 프로젝트 목록은 목록 디자인 이슈에서 이 자리에 만든다.
 export function HomePage() {
   return (
     <>
-      <header className="measure-col flex min-h-control items-center justify-between pt-[1.5rlh]">
-        <span className="font-bold">Caper</span>
-        {/* 아이콘 버튼의 안쪽 여백만큼 당겨 오른쪽 선을 글 폭에 맞춘다. */}
-        <div className="-mr-2">
-          <ThemeToggle />
-        </div>
-      </header>
+      <SiteHeader />
       <main className="measure-col mt-[3rlh] pb-[5rlh]">
         <p className="font-mono text-base text-muted-foreground">
           Project Caper
