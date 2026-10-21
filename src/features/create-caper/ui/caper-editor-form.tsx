@@ -11,13 +11,19 @@ import {
 } from "react-hook-form";
 import type { Control, UseFormRegister } from "react-hook-form";
 
-import { CAPER_LIMITS, type CreateCaperFormValues } from "@/entities/caper";
+import {
+  CAPER_LIMITS,
+  type CreateCaperFormValues,
+  JOIN_POLICIES,
+  JOIN_POLICY_LABEL,
+} from "@/entities/caper";
 import Button from "@/shared/ui/button";
 import Checkbox from "@/shared/ui/checkbox";
 import EditorText from "@/shared/ui/editor-text";
 import Field from "@/shared/ui/field";
 import Input from "@/shared/ui/input";
 import { MarkdownEditorPlaceholder } from "@/shared/ui/markdown-editor";
+import RadioGroup from "@/shared/ui/radio-group";
 import ThemeToggle from "@/shared/ui/theme-toggle";
 
 import { useCreateCaperForm } from "../hooks/use-create-caper-form";
@@ -33,7 +39,8 @@ const MarkdownEditor = dynamic(() => import("@/shared/ui/markdown-editor"), {
 const COUNTER_FROM = 0.8;
 
 // 만들기 편집기(네이버 블로그 글쓰기처럼 완성 모습 그대로 쓰는 한 화면).
-// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 날짜·시간 → 설명(마크다운 편집기).
+// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 날짜·시간 → 설명(마크다운 편집기)
+// → with(모집 인원, 참여 확정).
 // 헤더는 편집기라 화면 폭에 두고 아래 가는 선을 긋는다(design-system-a 패턴 "헤더"). 위에 고정한다.
 // 맨 위 사진 자리(photos)는 쓰는 쪽이 넣는다(사진은 폼 밖 초안 store 와 IndexedDB 가 다룬다).
 // 사진이 있으면(hasPhotos) 제목을 표지 위에 얹을지 고른다.
@@ -173,6 +180,7 @@ export function CaperEditorForm({
             />
           )}
         </EditorField>
+        <RecruitFields control={control} register={register} />
       </main>
     </form>
   );
@@ -236,6 +244,104 @@ function ScheduleFields({
         </p>
       )}
     </div>
+  );
+}
+
+const CAPACITY_OPTIONS = [
+  { value: "unlimited", label: "제한 없음" },
+  { value: "limited", label: "인원 정하기" },
+];
+
+const JOIN_POLICY_OPTIONS = JOIN_POLICIES.map((policy) => ({
+  value: policy,
+  label: JOIN_POLICY_LABEL[policy],
+}));
+
+const JOIN_POLICY_HINT = {
+  instant: "참여하기를 누르면 바로 with에 들어갑니다.",
+  approval: "참여하기를 누른 사람을 내가 승인하면 with에 들어갑니다.",
+} as const;
+
+// with 구역(프로젝트 페이지 맨 아래와 같은 자리). 모집 인원을 정하면 숫자 칸이 옆에 나온다.
+// 인원은 만든 사람을 넣은 전체 수다.
+function RecruitFields({
+  control,
+  register,
+}: {
+  control: Control<CreateCaperFormValues>;
+  register: UseFormRegister<CreateCaperFormValues>;
+}) {
+  const id = useId();
+  const capacityMode = useWatch({ control, name: "capacityMode" });
+  const joinPolicy = useWatch({ control, name: "joinPolicy" });
+  const { errors } = useFormState({ control, name: "capacity" });
+  const message = errors.capacity?.message;
+  const limited = capacityMode === "limited";
+
+  return (
+    <section className="mt-[2rlh]">
+      <h2>with</h2>
+      <div className="mt-[0.5rlh] flex flex-wrap items-end gap-x-3 gap-y-[0.5rlh]">
+        <Field label="모집 인원">
+          <Controller
+            name="capacityMode"
+            control={control}
+            // 제한 없음으로 바꾸면 인원 칸 오류도 다시 본다(만들기를 누른 뒤부터).
+            rules={{ deps: "capacity" }}
+            render={({ field }) => (
+              <RadioGroup
+                options={CAPACITY_OPTIONS}
+                value={field.value}
+                onValueChange={field.onChange}
+              />
+            )}
+          />
+        </Field>
+        {limited && (
+          <div className="flex items-center gap-2">
+            <Input
+              inputMode="numeric"
+              pattern="[0-9]*"
+              width={4}
+              aria-label="모집 인원(명)"
+              aria-invalid={message ? true : undefined}
+              aria-describedby={`${id}-hint${message ? ` ${id}-error` : ""}`}
+              {...register("capacity")}
+            />
+            <span aria-hidden>명</span>
+          </div>
+        )}
+      </div>
+      {limited && (
+        <p
+          id={`${id}-hint`}
+          className="mt-[0.25rlh] text-base text-muted-foreground"
+        >
+          만든 사람을 넣은 인원입니다.
+        </p>
+      )}
+      {message && (
+        <p id={`${id}-error`} className="mt-[0.25rlh] font-bold">
+          {message}
+        </p>
+      )}
+      <Field label="참여 확정" className="mt-[1rlh]">
+        <Controller
+          name="joinPolicy"
+          control={control}
+          render={({ field }) => (
+            <RadioGroup
+              options={JOIN_POLICY_OPTIONS}
+              value={field.value}
+              onValueChange={field.onChange}
+            />
+          )}
+        />
+      </Field>
+      <p className="mt-[0.25rlh] text-base text-muted-foreground">
+        {JOIN_POLICY_HINT[joinPolicy]}
+      </p>
+    </section>
   );
 }
 
