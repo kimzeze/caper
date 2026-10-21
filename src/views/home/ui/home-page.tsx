@@ -13,7 +13,7 @@ export function HomePage() {
         <h1 className="mt-[0.25rlh]">평범한 계획을 한 편의 영화로</h1>
         <p className="mt-[1rlh]">
           친구랑 물로켓 만들기 같은 계획에 영화 제목 같은 이름을 붙이고,
-          포스터를 만들고, crew를 모아 해 보고, 남깁니다.
+          포스터를 만들고, 함께할 사람을 모아 해 보고, 남깁니다.
         </p>
         <p className="mt-[1.5rlh]">
           <ButtonLink href="/new" variant="primary">
