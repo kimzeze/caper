@@ -43,6 +43,8 @@ export const createCaperSchema = z
     categoryId: z.string(),
     // 사진이 있을 때만 고를 수 있다. 사진이 없으면 over 여도 아래에 둔다(isTitleOverCover).
     titlePlacement: z.enum(TITLE_PLACEMENTS),
+    // 표지 위 제목 아래쪽 음영. 제목을 사진 위에 둘 때만 고른다.
+    coverShade: z.boolean(),
     // 날짜(YYYY-MM-DD)와 시작·끝(HH:MM). 브라우저 날짜·시간 칸 값 그대로이고 비우면 빈 문자열이다.
     date: z.union([z.literal(""), z.iso.date("날짜를 다시 골라야 합니다.")]),
     startTime: z.union([
@@ -108,6 +110,7 @@ export const EMPTY_CREATE_CAPER_FORM: CreateCaperFormValues = {
   subtitle: "",
   description: "",
   titlePlacement: "below",
+  coverShade: true,
   categoryId: "",
   date: "",
   startTime: "",

@@ -1,3 +1,5 @@
+import type { z } from "zod";
+
 import { caperSchema } from "./schema";
 import type { Caper, CaperImage } from "./types";
 
@@ -36,7 +38,10 @@ const LAUNCH_FLAME: CaperImage = {
   height: 1000,
 };
 
-const TO_THE_MOON: Caper = {
+// 검사 전 모양. 기본값이 있는 항목(coverShade)은 적지 않아도 된다.
+type CaperInput = z.input<typeof caperSchema>;
+
+const TO_THE_MOON: CaperInput = {
   id: "to-the-moon",
   title: "To the Moon",
   titlePlacement: "below",
@@ -72,7 +77,9 @@ const TO_THE_MOON: Caper = {
   createdAt: "2026-10-18T09:00:00.000Z",
 };
 
-const fixture = (value: CaperFixture): CaperFixture => ({
+const fixture = (
+  value: Omit<CaperFixture, "caper"> & { caper: CaperInput },
+): CaperFixture => ({
   ...value,
   caper: caperSchema.parse(value.caper),
 });
@@ -103,6 +110,12 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
     label: "제목을 사진 위에",
     note: "To the Moon과 같은 내용, 제목을 표지 위에 얹음(카테고리도 표지 위)",
     caper: { ...TO_THE_MOON, titlePlacement: "over" },
+  }),
+  fixture({
+    key: "title-over-plain",
+    label: "제목을 사진 위에, 음영 없음",
+    note: "To the Moon 제목을 표지 위에 얹고 아래쪽 음영을 끔",
+    caper: { ...TO_THE_MOON, titlePlacement: "over", coverShade: false },
   }),
   fixture({
     key: "no-image",

@@ -3,12 +3,7 @@
 import { type ReactNode, useId } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import {
-  Controller,
-  type FieldPath,
-  useFormState,
-  useWatch,
-} from "react-hook-form";
+import { Controller, useFormState, useWatch } from "react-hook-form";
 import type { Control, UseFormRegister } from "react-hook-form";
 
 import {
@@ -89,23 +84,7 @@ export function CaperEditorForm({
       <div className="mt-[0.5rlh]">{photos}</div>
       <main className="measure-col mt-[1.5rlh] pb-[5rlh]">
         <h1 className="sr-only">새 프로젝트</h1>
-        {hasPhotos && (
-          <Controller
-            name="titlePlacement"
-            control={control}
-            render={({ field }) => (
-              <Checkbox
-                checked={field.value === "over"}
-                onCheckedChange={(checked) =>
-                  field.onChange(checked ? "over" : "below")
-                }
-                className="mb-[1rlh]"
-              >
-                제목을 사진 위에
-              </Checkbox>
-            )}
-          />
-        )}
+        {hasPhotos && <CoverTitleFields control={control} />}
         <CategoryField
           control={control}
           categories={categories}
@@ -260,6 +239,52 @@ function ScheduleFields({
   );
 }
 
+// 사진이 있을 때 맨 위: 제목을 사진 위에 얹을지, 얹으면 아래쪽 음영을 깔지(기본 켬).
+// 음영을 끄면 밝은 사진에서 흰 제목이 안 보일 수 있어 한 줄로 알린다.
+function CoverTitleFields({
+  control,
+}: {
+  control: Control<CreateCaperFormValues>;
+}) {
+  const over = useWatch({ control, name: "titlePlacement" }) === "over";
+  const shade = useWatch({ control, name: "coverShade" });
+
+  return (
+    <div className="mb-[1rlh] flex flex-col items-start">
+      <Controller
+        name="titlePlacement"
+        control={control}
+        render={({ field }) => (
+          <Checkbox
+            checked={field.value === "over"}
+            onCheckedChange={(checked) =>
+              field.onChange(checked ? "over" : "below")
+            }
+          >
+            제목을 사진 위에
+          </Checkbox>
+        )}
+      />
+      {over && (
+        <Controller
+          name="coverShade"
+          control={control}
+          render={({ field }) => (
+            <Checkbox checked={field.value} onCheckedChange={field.onChange}>
+              음영 넣기
+            </Checkbox>
+          )}
+        />
+      )}
+      {over && !shade && (
+        <p className="text-base text-muted-foreground">
+          사진이 밝으면 제목이 잘 안 보일 수 있습니다.
+        </p>
+      )}
+    </div>
+  );
+}
+
 const CAPACITY_OPTIONS = [
   { value: "unlimited", label: "제한 없음" },
   { value: "limited", label: "인원 정하기" },
@@ -372,7 +397,7 @@ function EditorField({
   className,
   children,
 }: {
-  name: FieldPath<CreateCaperFormValues>;
+  name: "title" | "slogan" | "subtitle" | "description";
   label: string;
   limit: number;
   control: Control<CreateCaperFormValues>;
