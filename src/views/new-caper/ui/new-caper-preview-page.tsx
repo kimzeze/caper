@@ -59,6 +59,7 @@ export function NewCaperPreviewPage() {
                 title={caper.title}
                 coverTitle={isTitleOverCover(caper) ? caper.title : undefined}
                 coverKicker={isTitleOverCover(caper) ? categoryName : undefined}
+                coverShade={caper.coverShade}
               />
             </div>
           )}

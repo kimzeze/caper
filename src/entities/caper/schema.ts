@@ -66,6 +66,8 @@ export const caperSchema = z
     id: z.string().min(1),
     title: z.string().trim().min(1).max(CAPER_LIMITS.title),
     titlePlacement: z.enum(TITLE_PLACEMENTS),
+    // 표지 위 제목 아래쪽에 어두운 음영을 깔지(기본 켬). 제목이 표지 위일 때만 뜻이 있다.
+    coverShade: z.boolean().default(true),
     slogan: z.string().trim().min(1).max(CAPER_LIMITS.slogan).optional(),
     subtitle: z.string().trim().min(1).max(CAPER_LIMITS.subtitle).optional(),
     // 마크다운 글(GFM: 소제목, 목록, 체크리스트, 인용, 링크 등). 화면은 shared/ui/markdown 이 그린다.

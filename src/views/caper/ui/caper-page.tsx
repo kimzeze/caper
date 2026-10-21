@@ -49,6 +49,7 @@ export function CaperPage({
               title={caper.title}
               coverTitle={titleOver ? caper.title : undefined}
               coverKicker={titleOver ? category?.name : undefined}
+              coverShade={caper.coverShade}
             />
           </div>
         )}
