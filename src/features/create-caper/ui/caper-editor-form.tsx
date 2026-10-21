@@ -36,7 +36,7 @@ const MarkdownEditor = dynamic(() => import("@/shared/ui/markdown-editor"), {
 const COUNTER_FROM = 0.8;
 
 // 만들기 편집기(네이버 블로그 글쓰기처럼 완성 모습 그대로 쓰는 한 화면).
-// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 카테고리 → 제목(h1 크기) 굵게 → 슬로건 굵게 → 부제 보조 색 → 날짜·시간 → 설명(마크다운 편집기)
+// 순서와 글자 크기는 프로젝트 페이지(CaperArticle, 폰 한 단)와 같다: 카테고리 → 제목(h1 크기) 굵게 → 슬로건 굵게 → 부제 보조 색 → 날짜·시간 → 설명(마크다운 편집기)
 // → with(모집 인원, 참여 확정).
 // 헤더는 편집기라 화면 폭에 두고 아래 가는 선을 긋는다(design-system-a 패턴 "헤더"). 위에 고정한다.
 // 맨 위 사진 자리(photos)는 쓰는 쪽이 넣는다(사진은 폼 밖 초안 store 와 IndexedDB 가 다룬다).

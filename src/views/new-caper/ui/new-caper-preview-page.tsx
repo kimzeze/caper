@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import { isTitleOverCover } from "@/entities/caper";
 import {
   toPreviewCaper,
   useDraftPhotos,
@@ -10,13 +9,12 @@ import {
   useLoadedDraft,
   useMyCategories,
 } from "@/features/create-caper";
-import { CaperDetail } from "@/widgets/caper-detail";
-import { CaperGallery } from "@/widgets/caper-gallery";
+import { CaperArticle } from "@/widgets/caper-detail";
 import { SiteHeader } from "@/widgets/site-header";
 
 // 만들기를 누른 뒤의 미리보기. 아직 DB가 없어 초안을 프로젝트 페이지 모양으로만 보여 준다.
 // 사진은 브라우저에 임시 저장한 사진(blob: 주소)으로 그린다.
-// 구성은 views/caper 의 CaperPage 와 같다(같은 층의 view 는 서로 import하지 않아 여기서 다시 묶는다).
+// 글 배치는 프로젝트 페이지와 같은 CaperArticle 이다(참여 줄은 없다).
 export function NewCaperPreviewPage() {
   const draft = useLoadedDraft();
   const photos = useDraftPhotos();
@@ -39,7 +37,7 @@ export function NewCaperPreviewPage() {
   return (
     <>
       <SiteHeader />
-      <p className="measure-col mt-[0.5rlh] text-base text-muted-foreground">
+      <p className="measure-col mt-[0.5rlh] text-base text-muted-foreground lg:wide-col">
         아직 저장되지 않는 미리보기입니다. <Link href="/new">고치기</Link>
       </p>
       {draft === undefined || photos === undefined ? null : caper ===
@@ -51,25 +49,11 @@ export function NewCaperPreviewPage() {
           </p>
         </main>
       ) : !photosReady ? null : (
-        <main>
-          {galleryPhotos.length > 0 && (
-            <div className="mt-[0.5rlh]">
-              <CaperGallery
-                photos={galleryPhotos}
-                title={caper.title}
-                coverTitle={isTitleOverCover(caper) ? caper.title : undefined}
-                coverKicker={isTitleOverCover(caper) ? categoryName : undefined}
-                coverShade={caper.coverShade}
-              />
-            </div>
-          )}
-          <CaperDetail
-            caper={caper}
-            showTitle={!isTitleOverCover(caper)}
-            categoryName={categoryName}
-            className={galleryPhotos.length > 0 ? "mt-[1rlh]" : "mt-[2rlh]"}
-          />
-        </main>
+        <CaperArticle
+          caper={caper}
+          photos={galleryPhotos}
+          categoryName={categoryName}
+        />
       )}
     </>
   );
