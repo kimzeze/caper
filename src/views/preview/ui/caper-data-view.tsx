@@ -41,7 +41,9 @@ export function CaperDataView({
     {
       name: "제목 위치",
       value: isTitleOverCover(caper)
-        ? "사진 위"
+        ? caper.coverShade
+          ? "사진 위(음영)"
+          : "사진 위(음영 없음)"
         : caper.titlePlacement === "over"
           ? "아래(사진 위를 골랐지만 사진이 없음)"
           : "아래",
