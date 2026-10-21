@@ -81,7 +81,7 @@ export default function MarkdownEditor({
         role: "textbox",
         "aria-multiline": "true",
         "aria-label": ariaLabel,
-        class: "prose min-h-[5rlh] focus-visible:outline-none",
+        class: "prose prose-compact min-h-[5rlh] focus-visible:outline-none",
       },
     },
     onUpdate: ({ editor: current }) =>
@@ -100,7 +100,7 @@ export default function MarkdownEditor({
           "aria-label": ariaLabel,
           ...(ariaInvalid ? { "aria-invalid": "true" } : {}),
           ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}),
-          class: "prose min-h-[5rlh] focus-visible:outline-none",
+          class: "prose prose-compact min-h-[5rlh] focus-visible:outline-none",
         },
       },
     });
