@@ -7,7 +7,7 @@ import PhotoCarousel, { type CarouselPhoto } from "@/shared/ui/photo-carousel";
 export type GalleryPhoto = Omit<CarouselPhoto, "alt">;
 
 // 프로젝트 페이지 맨 위 사진 넘기기(shared/ui 의 PhotoCarousel). 사진 틀은 4:5(CAPER_IMAGE_RATIO)로 고정한다.
-// 폰에서는 화면 끝까지 차고, 넓은 화면에서는 본문 폭(--measure)까지만 늘어난다(데스크탑 2단은 #7).
+// 폰에서는 화면 끝까지 차고, 넓은 화면 한 단에서는 본문 폭(--measure)까지, 2단(lg)에서는 본문 칸(--article)을 채운다.
 // 사진 주소(src)는 쓰는 쪽이 정한다: 저장된 caper 는 imageUrl, 만들기 미리보기는 브라우저의 임시 사진.
 // coverTitle 이 있으면 표지(첫 장) 아래쪽에 제목을 얹는다. coverKicker(카테고리)는 그 제목 위 한 줄,
 // coverKickerHref 가 있으면 카테고리 모아 보기로 가는 링크. 넓은 화면에서는 왼쪽 정보 표가 보여 주므로 감춘다.
@@ -31,8 +31,10 @@ export function CaperGallery({
   const name = titleOneLine(title);
 
   return (
-    <div className="mx-auto w-full max-w-(--measure)">
+    <div className="mx-auto w-full max-w-(--measure) lg:max-w-none">
       <PhotoCarousel
+        // 넓은 화면에서는 2단 본문 칸(--article)을 채운다.
+        sizes="(min-width: 64rem) 48rem, (min-width: 45rem) 45rem, 100vw"
         photos={photos.map((photo, index) => ({
           ...photo,
           alt: `${name} 사진 ${index + 1}`,

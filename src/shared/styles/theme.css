@@ -30,11 +30,11 @@
   /* 본문 컬럼 폭. 글 사이트와 서비스의 문서형 화면(설정·도구 페이지)이 같이 쓴다 */
   --measure: 45rem;
 
-  /* 넓은 화면 2단(caper): 왼쪽 정보 칸 + 사이 + 오른쪽 본문(measure). 바깥 폭은 62rem.
-     헤더·프로젝트 페이지·아래 줄·카테고리 모아 보기가 같은 바깥 폭을 쓴다. */
-  --aside: 13rem;
-  --aside-gap: 4rem;
-  --wide: calc(var(--aside) + var(--aside-gap) + var(--measure));
+  /* 넓은 화면 2단(caper): 왼쪽 정보 칸 + 사이 + 오른쪽 본문. eyesmag 글 비율(1440px 에서 바깥 1142·정보 207·사이 약 180·본문 751px)을 따른다.
+     바깥 폭(--wide)은 헤더·프로젝트 페이지·아래 줄·카테고리 모아 보기가 같이 쓴다. */
+  --aside: 14rem;
+  --article: 48rem;
+  --wide: 74rem;
 }
 
 /* 본문 컬럼 — measure 폭으로 중앙 정렬 + 좌우 여백. 콘텐츠 폭이 정확히
@@ -46,12 +46,23 @@
   padding-inline: 1.5rem;
 }
 
-/* 넓은 바깥 컬럼(caper) — measure-col 과 같은 방식으로 --wide 폭. 넓은 화면(lg)에서 measure-col 대신 쓴다. */
+/* 넓은 바깥 컬럼(caper) — measure-col 과 같은 방식으로 --wide 폭. 넓은 화면(lg)에서 measure-col 대신 쓴다.
+   화면 끝 여백은 화면이 넓을수록 커진다(24 → 48px). */
 @utility wide-col {
   box-sizing: content-box;
   max-width: var(--wide);
   margin-inline: auto;
-  padding-inline: 1.5rem;
+  padding-inline: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* 넓은 화면 2단 격자(caper) — 왼쪽 정보 칸 + 오른쪽 본문 칸(최대 --article). 사이는 최소 clamp(64~160px)이고
+   남는 폭은 모두 사이로 간다(space-between). 1024px 에서 사이 약 92px, 1280px 에서 약 190px.
+   프로젝트 페이지와 아래 줄이 같이 써서 줄 내용이 본문 칸에 맞는다. */
+@utility article-grid {
+  display: grid;
+  grid-template-columns: var(--aside) minmax(0, var(--article));
+  justify-content: space-between;
+  column-gap: clamp(4rem, 9vw, 10rem);
 }
 
 /* 데모의 지금 상태(현재 칸·줄·노드 등) 표시: 반전(잉크 바탕 + 바탕색 글자). 문장 안 강조는 굵게.

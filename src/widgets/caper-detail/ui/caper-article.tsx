@@ -10,7 +10,7 @@ import { CaperInfo } from "./caper-info";
 
 // 프로젝트 글 한 편의 배치. 프로젝트 페이지와 만들기 미리보기가 같이 쓴다.
 // - 폰: 사진 넘기기(화면 폭) → 글 머리 → 글 몸, 한 단.
-// - 넓은 화면(lg): 바깥 폭 --wide 에 왼쪽 정보 표(--aside, 스크롤을 따라옴) + 오른쪽 본문(--measure).
+// - 넓은 화면(lg): 바깥 폭 --wide 에 왼쪽 정보 표(--aside, 스크롤을 따라옴) + 오른쪽 본문(--article), article-grid.
 //   오른쪽은 글 머리 → 사진 → 글 몸(eyesmag 글처럼 제목이 먼저).
 // 문서 순서는 글 머리가 먼저이고(화면 읽기도 제목부터), 폰에서만 사진을 앞으로 보인다(order).
 // 제목을 표지 위에 얹었으면 어디서나 사진이 먼저다.
@@ -38,7 +38,7 @@ export function CaperArticle({
   const hasPhotos = photos.length > 0;
 
   return (
-    <div className="lg:wide-col lg:mt-[1rlh] lg:grid lg:grid-cols-[var(--aside)_minmax(0,var(--measure))] lg:justify-between lg:gap-x-(--aside-gap)">
+    <div className="lg:wide-col lg:mt-[1rlh] lg:article-grid">
       <aside className="hidden lg:block">
         <CaperInfo
           caper={caper}
