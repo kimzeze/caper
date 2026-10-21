@@ -61,6 +61,8 @@ const TO_THE_MOON: Caper = {
   schedule: { date: "2026-10-24", start: "10:00", end: "12:00" },
   images: [LAUNCH, LAUNCH_NOSE, LAUNCH_ORBITER, LAUNCH_FLAME],
   status: "active",
+  capacity: 6,
+  joinPolicy: "instant",
   crew: [
     { id: "dohyeon", name: "도현", role: "owner" },
     { id: "minsu", name: "민수", role: "member" },
@@ -92,7 +94,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "to-the-moon",
     label: "To the Moon",
-    note: "사진 4장, 모든 항목, 제목 아래, 진행",
+    note: "사진 4장, 모든 항목, 제목 아래, 진행, 6명 모집에 3명(빈자리 3), 바로 확정",
     caper: TO_THE_MOON,
   }),
   fixture({
@@ -104,7 +106,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "no-image",
     label: "사진 없음",
-    note: "사진·슬로건 없음, 날짜만, 제목 위를 골랐지만 아래로, 기획, crew 1명",
+    note: "사진·슬로건 없음, 날짜만, 제목 위를 골랐지만 아래로, 기획, 혼자, 인원 제한 없음, 승인 후 확정",
     caper: {
       id: "first-kimchi",
       title: "첫 번째 김장",
@@ -115,6 +117,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
       schedule: { date: "2026-11-14" },
       images: [],
       status: "planning",
+      joinPolicy: "approval",
       crew: [{ id: "dohyeon", name: "도현", role: "owner" }],
       createdAt: "2026-10-19T12:30:00.000Z",
     },
@@ -122,7 +125,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "one-image",
     label: "사진 한 장",
-    note: "사진 1장(위치 막대 없음), 시작 시간만, 설명 없음, 완료",
+    note: "사진 1장(위치 막대 없음), 시작 시간만, 설명 없음, 완료라 모집 표시 없음(4명 모집에 2명)",
     caper: {
       id: "liftoff",
       title: "Liftoff",
@@ -132,6 +135,8 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
       schedule: { date: "2026-09-05", start: "23:00" },
       images: [LAUNCH_FLAME],
       status: "done",
+      capacity: 4,
+      joinPolicy: "approval",
       crew: [
         { id: "dohyeon", name: "도현", role: "owner" },
         { id: "seojun", name: "서준", role: "member" },
@@ -142,7 +147,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   fixture({
     key: "long-text",
     label: "긴 글",
-    note: "제목·슬로건·부제가 한도에 가깝고 설명이 긴 것, 제목 위(가장 빡빡한 경우)",
+    note: "제목·슬로건·부제가 한도에 가깝고 설명이 긴 것, 제목 위(가장 빡빡한 경우), 2명 모집이 다 참(마감)",
     caper: {
       id: "slow-summer-ride",
       title:
@@ -159,6 +164,8 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
       ).join("\n\n"),
       images: [LAUNCH_FLAME, LAUNCH],
       status: "planning",
+      capacity: 2,
+      joinPolicy: "approval",
       crew: [
         { id: "dohyeon", name: "도현", role: "owner" },
         { id: "hareen", name: "하린", role: "member" },
@@ -168,8 +175,8 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
   }),
   fixture({
     key: "big-crew",
-    label: "crew 많음",
-    note: "crew 12명, 이름이 긴 사람 포함",
+    label: "with 많음",
+    note: "12명, 이름이 긴 사람 포함, 인원 제한 없음, 바로 확정",
     caper: {
       id: "eleven",
       title: "Eleven",
@@ -178,6 +185,7 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
       subtitle: "반 친구들이랑 가을 소풍",
       images: [LAUNCH_NOSE, LAUNCH_FLAME],
       status: "active",
+      joinPolicy: "instant",
       crew: [
         { id: "dohyeon", name: "도현", role: "owner" },
         ...BIG_CREW_NAMES.map((name, index) => ({

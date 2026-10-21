@@ -3,6 +3,7 @@ import {
   type CreateCaperFormValues,
   caperSchema,
   createCaperSchema,
+  toCapacity,
 } from "@/entities/caper";
 
 import type { DraftPhoto } from "../model/draft-store";
@@ -29,6 +30,9 @@ export function toPreviewCaper(
     date,
     startTime,
     endTime,
+    capacityMode,
+    capacity,
+    joinPolicy,
   } = form.data;
 
   const caper = caperSchema.safeParse({
@@ -51,6 +55,8 @@ export function toPreviewCaper(
       height,
     })),
     status: "planning",
+    capacity: capacityMode === "limited" ? toCapacity(capacity) : undefined,
+    joinPolicy,
     crew: [{ id: "me", name: "나", role: "owner" }],
     createdAt: PREVIEW_CREATED_AT,
   });

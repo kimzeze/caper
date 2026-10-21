@@ -23,6 +23,9 @@ const toTheMoonValues: CreateCaperFormValues = {
   date: toTheMoon?.schedule?.date ?? "",
   startTime: toTheMoon?.schedule?.start ?? "",
   endTime: toTheMoon?.schedule?.end ?? "",
+  capacityMode: toTheMoon?.capacity === undefined ? "unlimited" : "limited",
+  capacity: toTheMoon?.capacity?.toString() ?? "",
+  joinPolicy: toTheMoon?.joinPolicy ?? "instant",
 };
 
 export const NEW_CAPER_CASES: readonly (PreviewCase & {
