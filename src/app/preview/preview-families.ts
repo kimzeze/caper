@@ -2,7 +2,6 @@ import { CAPER_FIXTURES } from "@/entities/caper/fixtures";
 import type { PreviewFamily } from "@/views/preview";
 
 import { NEW_CAPER_CASES } from "./new-caper/[case]/cases";
-import { PALETTE_CASES } from "./palette/[case]/cases";
 
 const fixtureCases = CAPER_FIXTURES.map(({ key, label, note }) => ({
   key,
@@ -33,15 +32,6 @@ export const PREVIEW_FAMILIES: readonly PreviewFamily[] = [
       label,
       note,
     })),
-  },
-  {
-    key: "palette",
-    label: "글자색 비교",
-    description:
-      "같은 프로젝트 페이지를 지금 색과 참고 색으로 봅니다. 라이트 모드로만 비교합니다.",
-    basePath: "/preview/palette",
-    whole: true,
-    cases: PALETTE_CASES.map(({ key, label, note }) => ({ key, label, note })),
   },
   {
     key: "capers",
