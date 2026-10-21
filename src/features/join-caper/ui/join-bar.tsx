@@ -12,6 +12,7 @@ import {
   joinState,
   seatsLeft,
 } from "@/entities/caper";
+import BottomBar from "@/shared/ui/bottom-bar";
 import Button from "@/shared/ui/button";
 import Field from "@/shared/ui/field";
 import Input from "@/shared/ui/input";
@@ -22,8 +23,7 @@ export type JoinActions = {
   onLeave: () => void;
 };
 
-// 프로젝트 페이지 아래에 붙는 참여 줄. 긴 설명을 읽는 중에도 보이게 화면 아래에 붙인다(sticky).
-// 고정(fixed)이 아니라 맨 아래까지 내리면 제자리로 돌아가 뒤의 내용을 가리지 않는다.
+// 프로젝트 페이지 아래에 붙는 참여 줄(BottomBar).
 // 참여하기를 누르면 같은 줄에서 with 에 보일 이름을 쓴다. 만든 사람과 끝난 프로젝트에는 줄이 없다.
 // 상태 문장은 바뀌면 화면 읽기가 읽어 준다(role="status").
 export function JoinBar({
@@ -74,35 +74,33 @@ export function JoinBar({
   }[state];
 
   return (
-    <div className="sticky bottom-0 z-10 border-t bg-background">
-      <div className="measure-col pt-[0.5rlh] pb-[max(0.5rlh,env(safe-area-inset-bottom))]">
-        {naming && state === "open" ? (
-          <JoinNameForm
-            approval={approval}
-            onSubmit={(name) => {
-              onJoin(name);
-              closeNaming();
-            }}
-            onClose={closeNaming}
-          />
-        ) : (
-          <div className="flex min-h-control items-center justify-between gap-4">
-            <p role="status" className="text-base text-muted-foreground">
-              {message}
-            </p>
-            {action && (
-              <Button
-                ref={actionRef}
-                variant={action.primary ? "primary" : "default"}
-                onClick={action.run}
-              >
-                {action.label}
-              </Button>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
+    <BottomBar>
+      {naming && state === "open" ? (
+        <JoinNameForm
+          approval={approval}
+          onSubmit={(name) => {
+            onJoin(name);
+            closeNaming();
+          }}
+          onClose={closeNaming}
+        />
+      ) : (
+        <div className="flex min-h-control items-center justify-between gap-4">
+          <p role="status" className="text-base text-muted-foreground">
+            {message}
+          </p>
+          {action && (
+            <Button
+              ref={actionRef}
+              variant={action.primary ? "primary" : "default"}
+              onClick={action.run}
+            >
+              {action.label}
+            </Button>
+          )}
+        </div>
+      )}
+    </BottomBar>
   );
 }
 
