@@ -174,11 +174,12 @@ export const CAPER_FIXTURES: readonly CaperFixture[] = [
         "지도에도 없는 길을 찾아서, 해가 질 때까지 페달을 멈추지 않는다. 돌아올 길은 그때 가서 생각한다",
       subtitle:
         "동네 친구 다섯 명이랑 자전거 타고 한강 끝까지 가 보기, 중간에 떡볶이랑 순대도 꼭 먹고 오기",
+      // 날마다 빈 줄(빈 문단) 하나로 띄운다. 편집기에서 빈 줄을 넣으면 &nbsp; 문단으로 저장된다.
       description: Array.from(
         { length: 6 },
         (_, index) =>
           `${index + 1}일째. 아침 일곱 시에 편의점 앞에서 모여 물과 김밥을 산다. 지도 앱은 끄고 갈림길마다 가위바위보로 방향을 정한다. 길을 잃으면 그 동네에서 가장 오래된 가게를 찾아 들어가 길을 묻고, 들은 이야기를 이 글에 적는다.`,
-      ).join("\n\n"),
+      ).join("\n\n&nbsp;\n\n"),
       images: [LAUNCH_FLAME, LAUNCH],
       status: "planning",
       capacity: 2,

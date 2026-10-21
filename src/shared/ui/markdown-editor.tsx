@@ -31,6 +31,23 @@ function trimTrailingEmpty(markdown: string): string {
   return markdown.replace(/(?:\s*&nbsp;)+\s*$/u, "").trimEnd();
 }
 
+// 글 중간의 빈 문단을 Tiptap 은 빈 줄을 더 두는 것으로 내보내는데(문단 사이 \n\n 에 빈 문단마다 \n\n 더),
+// 보통 마크다운(보기의 react-markdown, 나중의 앱)은 빈 줄을 하나로 합쳐 띄운 줄이 사라진다.
+// 빈 문단마다 &nbsp; 문단으로 바꿔 어디서 그려도 한 줄 띄움이 남게 한다. 코드 블록(```) 안은 건드리지 않는다.
+function keepBlankParagraphs(markdown: string): string {
+  return markdown
+    .split(/(^```[\s\S]*?^```)/m)
+    .map((part, index) =>
+      index % 2 === 1
+        ? part
+        : part.replace(/\n{3,}/g, (run) => {
+            const empty = Math.max(1, Math.round((run.length - 2) / 2));
+            return `\n\n${"&nbsp;\n\n".repeat(empty)}`;
+          }),
+    )
+    .join("");
+}
+
 /** 편집기를 바깥(React Hook Form의 오류 초점 등)에서 다룰 손잡이. */
 export type MarkdownEditorHandle = { focus: () => void };
 
@@ -85,7 +102,7 @@ export default function MarkdownEditor({
       },
     },
     onUpdate: ({ editor: current }) =>
-      onChange(trimTrailingEmpty(current.getMarkdown())),
+      onChange(keepBlankParagraphs(trimTrailingEmpty(current.getMarkdown()))),
     onBlur: () => onBlur?.(),
   });
 
