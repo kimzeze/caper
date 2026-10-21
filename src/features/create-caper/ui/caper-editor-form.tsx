@@ -1,22 +1,36 @@
 "use client";
 
 import { useId } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { type FieldPath, useFormState, useWatch } from "react-hook-form";
-import type { Control, UseFormRegisterReturn } from "react-hook-form";
+import {
+  Controller,
+  type FieldPath,
+  useFormState,
+  useWatch,
+} from "react-hook-form";
+import type { Control } from "react-hook-form";
 
 import { CAPER_LIMITS, type CreateCaperFormValues } from "@/entities/caper";
 import Button from "@/shared/ui/button";
 import EditorText from "@/shared/ui/editor-text";
+import { MarkdownEditorPlaceholder } from "@/shared/ui/markdown-editor";
 import ThemeToggle from "@/shared/ui/theme-toggle";
 
 import { useCreateCaperForm } from "../hooks/use-create-caper-form";
+
+// 설명 편집기(Tiptap)는 브라우저에서만 불러온다. 서버에서 미리 그리면 Tiptap 이 만들 때 부르는 Math.random()이
+// Cache Components 의 prerender 검사에 걸리고, 첫 화면 묶음도 무거워진다. 불러오는 동안은 같은 크기 자리를 둔다.
+const MarkdownEditor = dynamic(() => import("@/shared/ui/markdown-editor"), {
+  ssr: false,
+  loading: () => <MarkdownEditorPlaceholder />,
+});
 
 // 한도의 80%를 넘기면 글자 수를 보여 준다. 그 전에는 숫자가 글쓰기를 방해하지 않게 숨긴다.
 const COUNTER_FROM = 0.8;
 
 // 만들기 편집기(네이버 블로그 글쓰기처럼 완성 모습 그대로 쓰는 한 화면).
-// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 설명.
+// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 설명(마크다운 편집기).
 // 헤더는 편집기라 화면 폭에 두고 아래 가는 선을 긋는다(design-system-a 패턴 "헤더"). 위에 고정한다.
 export function CaperEditorForm({
   defaultValues,
@@ -114,12 +128,20 @@ export function CaperEditorForm({
           className="mt-[1.5rlh]"
         >
           {(described) => (
-            <EditorText
-              {...register("description")}
-              {...described}
-              rows={4}
-              placeholder="설명 (선택)"
-              aria-label="설명"
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <MarkdownEditor
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  handleRef={field.ref}
+                  {...described}
+                  placeholder="설명 (선택). 마크다운으로도 쓸 수 있습니다."
+                  aria-label="설명"
+                />
+              )}
             />
           )}
         </EditorField>
@@ -147,7 +169,7 @@ function EditorField({
   limit: number;
   control: Control<CreateCaperFormValues>;
   className?: string;
-  children: (described: Described) => React.ReactElement<UseFormRegisterReturn>;
+  children: (described: Described) => React.ReactElement;
 }) {
   const id = useId();
   const value = useWatch({ control, name });
