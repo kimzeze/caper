@@ -34,7 +34,11 @@ export default async function JoinPreviewRoute({
       family={findPreviewFamily("join")}
       previewCase={previewCase}
     >
-      <JoinPreview caper={previewCase.caper} viewer={previewCase.viewer} />
+      <JoinPreview
+        caper={previewCase.caper}
+        viewer={previewCase.viewer}
+        requests={previewCase.requests}
+      />
     </PreviewCasePage>
   );
 }
