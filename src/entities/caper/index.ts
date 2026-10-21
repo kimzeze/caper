@@ -9,8 +9,19 @@ export {
   TITLE_PLACEMENTS,
 } from "./schema";
 export { CAPER_STATUS_LABEL } from "./status";
+export {
+  caperScheduleSchema,
+  formatSchedule,
+  scheduleDateTime,
+} from "./schedule";
 export { coverImage, imageUrl, isTitleOverCover } from "./image";
-export type { Caper, CaperImage, CaperStatus, CrewMember } from "./types";
+export type {
+  Caper,
+  CaperImage,
+  CaperSchedule,
+  CaperStatus,
+  CrewMember,
+} from "./types";
 export {
   createCaperSchema,
   type CreateCaperFormValues,

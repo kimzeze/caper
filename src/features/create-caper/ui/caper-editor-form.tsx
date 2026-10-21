@@ -9,12 +9,14 @@ import {
   useFormState,
   useWatch,
 } from "react-hook-form";
-import type { Control } from "react-hook-form";
+import type { Control, UseFormRegister } from "react-hook-form";
 
 import { CAPER_LIMITS, type CreateCaperFormValues } from "@/entities/caper";
 import Button from "@/shared/ui/button";
 import Checkbox from "@/shared/ui/checkbox";
 import EditorText from "@/shared/ui/editor-text";
+import Field from "@/shared/ui/field";
+import Input from "@/shared/ui/input";
 import { MarkdownEditorPlaceholder } from "@/shared/ui/markdown-editor";
 import ThemeToggle from "@/shared/ui/theme-toggle";
 
@@ -31,7 +33,7 @@ const MarkdownEditor = dynamic(() => import("@/shared/ui/markdown-editor"), {
 const COUNTER_FROM = 0.8;
 
 // 만들기 편집기(네이버 블로그 글쓰기처럼 완성 모습 그대로 쓰는 한 화면).
-// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 설명(마크다운 편집기).
+// 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 날짜·시간 → 설명(마크다운 편집기).
 // 헤더는 편집기라 화면 폭에 두고 아래 가는 선을 긋는다(design-system-a 패턴 "헤더"). 위에 고정한다.
 // 맨 위 사진 자리(photos)는 쓰는 쪽이 넣는다(사진은 폼 밖 초안 store 와 IndexedDB 가 다룬다).
 // 사진이 있으면(hasPhotos) 제목을 표지 위에 얹을지 고른다.
@@ -145,6 +147,7 @@ export function CaperEditorForm({
             />
           )}
         </EditorField>
+        <ScheduleFields control={control} register={register} />
         <EditorField
           name="description"
           label="설명"
@@ -172,6 +175,67 @@ export function CaperEditorForm({
         </EditorField>
       </main>
     </form>
+  );
+}
+
+// 날짜와 시간 칸(선택). 폰에서는 기본 날짜·시간 고르기가 뜬다. 날짜만, 날짜와 시작만, 시작과 끝까지 넣을 수 있다.
+// 오류는 칸 줄 아래 굵게 한 문장(앞 칸의 것부터).
+function ScheduleFields({
+  control,
+  register,
+}: {
+  control: Control<CreateCaperFormValues>;
+  register: UseFormRegister<CreateCaperFormValues>;
+}) {
+  const id = useId();
+  const { errors } = useFormState({
+    control,
+    name: ["date", "startTime", "endTime"],
+  });
+  const message =
+    errors.date?.message ??
+    errors.startTime?.message ??
+    errors.endTime?.message;
+  const describedBy = message ? `${id}-error` : undefined;
+  const marks = (name: "date" | "startTime" | "endTime") => ({
+    "aria-invalid": errors[name] ? true : undefined,
+    "aria-describedby": describedBy,
+  });
+
+  return (
+    <div className="mt-[1rlh]">
+      <div className="flex flex-wrap items-end gap-x-3 gap-y-[0.5rlh]">
+        <Field label="날짜 (선택)">
+          <Input type="date" {...register("date")} {...marks("date")} />
+        </Field>
+        <div className="flex items-end gap-2">
+          <Field label="시작">
+            <Input
+              type="time"
+              width={9}
+              {...register("startTime")}
+              {...marks("startTime")}
+            />
+          </Field>
+          <span aria-hidden className="leading-(--spacing-control)">
+            -
+          </span>
+          <Field label="끝">
+            <Input
+              type="time"
+              width={9}
+              {...register("endTime")}
+              {...marks("endTime")}
+            />
+          </Field>
+        </div>
+      </div>
+      {message && (
+        <p id={`${id}-error`} className="mt-[0.25rlh] font-bold">
+          {message}
+        </p>
+      )}
+    </div>
   );
 }
 

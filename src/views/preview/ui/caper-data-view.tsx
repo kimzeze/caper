@@ -4,6 +4,7 @@ import {
   type Caper,
   CAPER_STATUS_LABEL,
   coverImage,
+  formatSchedule,
   imageUrl,
   isTitleOverCover,
 } from "@/entities/caper";
@@ -38,6 +39,10 @@ export function CaperDataView({ caper }: { caper: Caper }) {
     { name: "슬로건", value: caper.slogan },
     { name: "부제", value: caper.subtitle },
     { name: "설명", value: caper.description },
+    {
+      name: "날짜",
+      value: caper.schedule ? formatSchedule(caper.schedule) : undefined,
+    },
     { name: "사진", value: `${caper.images.length}장` },
     { name: "상태", value: CAPER_STATUS_LABEL[caper.status] },
     {

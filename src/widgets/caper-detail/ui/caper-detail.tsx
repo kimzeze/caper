@@ -1,9 +1,14 @@
 import { clsx } from "clsx";
 
-import { type Caper, CAPER_STATUS_LABEL } from "@/entities/caper";
+import {
+  type Caper,
+  CAPER_STATUS_LABEL,
+  formatSchedule,
+  scheduleDateTime,
+} from "@/entities/caper";
 import Markdown from "@/shared/ui/markdown";
 
-// 사진 아래 내용: 제목 → 슬로건 → 부제 → 상태·crew 수 → 설명 → crew.
+// 사진 아래 내용: 제목 → 슬로건 → 부제 → 날짜 → 상태·crew 수 → 설명 → crew.
 // 제목을 표지 위에 얹었으면 showTitle 을 끄고 여기서는 그리지 않는다.
 export function CaperDetail({
   caper,
@@ -35,7 +40,19 @@ export function CaperDetail({
           {caper.subtitle}
         </p>
       )}
-      <p className="mt-[0.5rlh] text-base text-muted-foreground">
+      {caper.schedule && (
+        <p className="mt-[0.5rlh] tabular-nums">
+          <time dateTime={scheduleDateTime(caper.schedule)}>
+            {formatSchedule(caper.schedule)}
+          </time>
+        </p>
+      )}
+      <p
+        className={clsx(
+          "text-base text-muted-foreground",
+          !caper.schedule && "mt-[0.5rlh]",
+        )}
+      >
         {CAPER_STATUS_LABEL[caper.status]} · crew {caper.crew.length}명
       </p>
       {caper.description && (
