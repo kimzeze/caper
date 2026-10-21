@@ -219,7 +219,10 @@ src/
   -0.01em)으로 쓴다. 그 한 벌만 잘라 둔 정적
   파일(`src/app/fonts/Urbanist-Regular.woff2`, 12KB)을 `next/font/local` 로
   싣는다. 이 글꼴은 로고에만 쓰고 본문·제목은 Pretendard 그대로다. 고른 과정과
-  후보 비교는 `docs/design/logo.md`. 헤더 위아래 여백은 0.5rlh.
+  후보 비교는 `docs/design/logo.md`. 헤더는 스크롤해도 위에 붙고(높이
+  `--site-header`), 폰에서만 아래에 아주 연한 선(옅은 바탕색), 아래 끝에 화면 폭
+  전체 스크롤 진행 막대(`shared/ui/scroll-progress`, 2px 잉크)가 있다. 위에 붙는
+  정보 표·페이지 안 이동은 `--site-header` 만큼 비킨다.
 - 라이트 모드 바탕은 흰색(`#ffffff`)이다(design-system-a 원본도 같다). 다크는
   stone-950 그대로.
 - 고정폭 글꼴에 한글을 넣지 않는다. Select 값이 한글이면 `sans` 를 준다.
