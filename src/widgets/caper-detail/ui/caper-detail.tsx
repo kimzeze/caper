@@ -19,12 +19,15 @@ import Markdown from "@/shared/ui/markdown";
 export function CaperDetail({
   caper,
   showTitle,
+  categoryName,
   myCrewId,
   withFooter,
   className,
 }: {
   caper: Caper;
   showTitle: boolean;
+  /** 제목 위 한 줄(잡지의 섹션 이름처럼). 제목을 표지에 얹었으면 표지 쪽이 그린다. */
+  categoryName?: string;
   myCrewId?: string;
   /** with 구역 끝에 붙일 것(만든 사람의 승인 목록 등). */
   withFooter?: ReactNode;
@@ -39,7 +42,12 @@ export function CaperDetail({
 
   return (
     <div className={clsx("measure-col pb-[5rlh]", className)}>
-      {showTitle && <h1>{caper.title}</h1>}
+      {showTitle && categoryName && (
+        <p className="text-base text-muted-foreground">{categoryName}</p>
+      )}
+      {showTitle && (
+        <h1 className={clsx(categoryName && "mt-[0.25rlh]")}>{caper.title}</h1>
+      )}
       {caper.slogan && (
         <p className={clsx("font-bold", showTitle && "mt-[0.5rlh]")}>
           {caper.slogan}

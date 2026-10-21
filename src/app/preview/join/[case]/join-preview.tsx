@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import type { Caper, CaperViewer, JoinRequest } from "@/entities/caper";
+import type { Category } from "@/entities/category";
 import { useJoinSimulation } from "@/features/join-caper/preview";
 import { useReviewSimulation } from "@/features/review-join-requests/preview";
 import { CaperPage } from "@/views/caper";
@@ -11,10 +12,12 @@ import { CaperPage } from "@/views/caper";
 // requests 가 있으면 만든 사람이 보는 화면이다.
 export function JoinPreview({
   caper,
+  category,
   viewer,
   requests,
 }: {
   caper: Caper;
+  category?: Category;
   viewer: CaperViewer;
   requests?: readonly JoinRequest[];
 }) {
@@ -25,6 +28,7 @@ export function JoinPreview({
   return (
     <CaperPage
       caper={caperState[0]}
+      category={category}
       join={join}
       review={requests ? review : undefined}
     />

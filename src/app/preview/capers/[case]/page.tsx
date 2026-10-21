@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { CAPER_FIXTURES, findCaperFixture } from "@/entities/caper/fixtures";
+import { findCategoryFixture } from "@/entities/category/fixtures";
 import { CaperDataView, PreviewCasePage } from "@/views/preview";
 
 import { findPreviewFamily } from "../../preview-families";
@@ -29,7 +30,10 @@ export default async function CaperDataPreviewRoute({
 
   return (
     <PreviewCasePage family={findPreviewFamily("capers")} previewCase={fixture}>
-      <CaperDataView caper={fixture.caper} />
+      <CaperDataView
+        caper={fixture.caper}
+        category={findCategoryFixture(fixture.caper.categoryId)}
+      />
     </PreviewCasePage>
   );
 }

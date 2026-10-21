@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { findCategoryFixture } from "@/entities/category/fixtures";
 import { PreviewCasePage } from "@/views/preview";
 
 import { findPreviewFamily } from "../../preview-families";
@@ -36,6 +37,7 @@ export default async function JoinPreviewRoute({
     >
       <JoinPreview
         caper={previewCase.caper}
+        category={findCategoryFixture(previewCase.caper.categoryId)}
         viewer={previewCase.viewer}
         requests={previewCase.requests}
       />

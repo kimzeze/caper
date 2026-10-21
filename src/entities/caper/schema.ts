@@ -75,6 +75,8 @@ export const caperSchema = z
       .min(1)
       .max(CAPER_LIMITS.description)
       .optional(),
+    // 묶어 둔 카테고리(선택, entities/category). 이름은 카테고리 쪽에만 둔다.
+    categoryId: z.string().min(1).optional(),
     // 언제 하는지(선택). 날짜와 그 지역 시각(schedule.ts).
     schedule: caperScheduleSchema.optional(),
     // 첫 장이 표지다. 목록과 링크 미리보기에도 첫 장을 쓴다.
