@@ -20,6 +20,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { clsx } from "clsx";
+import { useId } from "react";
 
 import type { EditorPhoto } from "./editor-photos";
 
@@ -63,6 +64,8 @@ export function PhotoThumbnails({
     onDragCancel: () => "옮기기를 그만뒀습니다.",
   };
 
+  const dndId = useId();
+
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (over === null || active.id === over.id) return;
     const ids = photos.map((photo) => photo.id);
@@ -75,6 +78,8 @@ export function PhotoThumbnails({
 
   return (
     <DndContext
+      // 화면 읽기 안내의 id 를 서버와 브라우저가 같게(없으면 @dnd-kit 이 세는 번호라 hydration 이 어긋난다).
+      id={dndId}
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={onDragEnd}
