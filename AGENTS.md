@@ -63,6 +63,8 @@ pnpm format         # CI는 format:check
 pnpm build
 ```
 
+- 폰에서 보기: 같은 와이파이에서 `http://<맥 IP>:3100` (개발 서버가
+  `192.168.*.*` 를 허용한다, `next.config.ts` 의 `allowedDevOrigins`).
 - 커밋 전에 husky가 lint-staged(ESLint, Prettier, typecheck)를 부른다.
 - PR 필수 검사: `quality`(CI), `lint`(PR 제목), `Branch Flow`.
 - Next.js 16.4는 학습 데이터와 다를 수 있다. 코드를 쓰기 전에
