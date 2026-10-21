@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { type ReactNode, useId } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
@@ -13,6 +13,7 @@ import type { Control } from "react-hook-form";
 
 import { CAPER_LIMITS, type CreateCaperFormValues } from "@/entities/caper";
 import Button from "@/shared/ui/button";
+import Checkbox from "@/shared/ui/checkbox";
 import EditorText from "@/shared/ui/editor-text";
 import { MarkdownEditorPlaceholder } from "@/shared/ui/markdown-editor";
 import ThemeToggle from "@/shared/ui/theme-toggle";
@@ -32,14 +33,20 @@ const COUNTER_FROM = 0.8;
 // 만들기 편집기(네이버 블로그 글쓰기처럼 완성 모습 그대로 쓰는 한 화면).
 // 순서와 글자 크기는 프로젝트 페이지(CaperDetail)와 같다: 제목 32px 굵게 → 슬로건 굵게 → 부제 보조 색 → 설명(마크다운 편집기).
 // 헤더는 편집기라 화면 폭에 두고 아래 가는 선을 긋는다(design-system-a 패턴 "헤더"). 위에 고정한다.
+// 맨 위 사진 자리(photos)는 쓰는 쪽이 넣는다(사진은 폼 밖 초안 store 와 IndexedDB 가 다룬다).
+// 사진이 있으면(hasPhotos) 제목을 표지 위에 얹을지 고른다.
 export function CaperEditorForm({
   defaultValues,
   onDraftChange,
   onCreate,
+  photos,
+  hasPhotos,
 }: {
   defaultValues: CreateCaperFormValues;
   onDraftChange: (draft: CreateCaperFormValues) => void;
   onCreate: (values: CreateCaperFormValues) => void;
+  photos: ReactNode;
+  hasPhotos: boolean;
 }) {
   const { form, submit } = useCreateCaperForm({
     defaultValues,
@@ -63,8 +70,26 @@ export function CaperEditorForm({
           </div>
         </div>
       </header>
+      <div className="mt-[0.5rlh]">{photos}</div>
       <main className="measure-col mt-[1.5rlh] pb-[5rlh]">
         <h1 className="sr-only">새 프로젝트</h1>
+        {hasPhotos && (
+          <Controller
+            name="titlePlacement"
+            control={control}
+            render={({ field }) => (
+              <Checkbox
+                checked={field.value === "over"}
+                onCheckedChange={(checked) =>
+                  field.onChange(checked ? "over" : "below")
+                }
+                className="mb-[1rlh]"
+              >
+                제목을 사진 위에
+              </Checkbox>
+            )}
+          />
+        )}
         <EditorField
           name="title"
           label="제목"
