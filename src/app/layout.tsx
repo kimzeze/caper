@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import { Archivo_Black } from "next/font/google";
 import localFont from "next/font/local";
 
 import { THEME_INIT } from "@/shared/ui/theme-store";
 
 import "./globals.css";
 
-// 글꼴은 design-system-a와 같은 두 벌. next/font가 파일을 싣고 미리 불러오며, 대체 글꼴 크기를 맞춰 글이 밀리지 않게 한다.
+// 본문 글꼴은 design-system-a와 같은 두 벌. next/font가 파일을 싣고 미리 불러오며, 대체 글꼴 크기를 맞춰 글이 밀리지 않게 한다.
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
   weight: "100 900",
@@ -20,6 +21,14 @@ const monoplex = localFont({
   variable: "--font-monoplex",
   display: "swap",
   preload: false,
+});
+
+// 로고(헤더의 caper)에만 쓰는 글꼴. 아주 굵은 소문자라 로고처럼 보인다. 빌드 때 받아 우리 서버에서 낸다(라틴만).
+const logoFont = Archivo_Black({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-archivo-black",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -41,7 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // data-theme 은 첫 페인트 전에 THEME_INIT 이 붙이므로 서버 HTML과 다를 수 있다.
     <html
       lang="ko"
-      className={`${pretendard.variable} ${monoplex.variable}`}
+      className={`${pretendard.variable} ${monoplex.variable} ${logoFont.variable}`}
       suppressHydrationWarning
     >
       <head>
