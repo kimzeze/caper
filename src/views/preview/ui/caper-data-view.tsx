@@ -10,6 +10,7 @@ import {
   isTitleOverCover,
   JOIN_POLICY_LABEL,
 } from "@/entities/caper";
+import type { Category } from "@/entities/category";
 
 // 고정폭에 한글 낱말(오전·오후)이 들어가지 않게 숫자로만 쓴다: 2026. 10. 18. 18:00
 const DATE_FORMAT = new Intl.DateTimeFormat("ko-KR", {
@@ -22,13 +23,20 @@ const DATE_FORMAT = new Intl.DateTimeFormat("ko-KR", {
   timeZone: "Asia/Seoul",
 });
 
-// caper 데이터를 화면 순서(표지 → 제목 → 슬로건 → 부제 → 날짜 → 상태 → 설명 → with)대로 그대로 보여 준다.
+// caper 데이터를 화면 순서(표지 → 카테고리 → 제목 → 슬로건 → 부제 → 날짜 → 상태 → 설명 → with)대로 그대로 보여 준다.
 // 디자인 전 단계의 확인용이고, 실제 프로젝트 페이지는 위젯으로 따로 만든다(패턴 "답 요약"의 이름·값 줄).
-export function CaperDataView({ caper }: { caper: Caper }) {
+export function CaperDataView({
+  caper,
+  category,
+}: {
+  caper: Caper;
+  category?: Category;
+}) {
   const owner = caper.crew.filter((member) => member.role === "owner");
   const members = caper.crew.filter((member) => member.role === "member");
   const cover = coverImage(caper);
   const rows: { name: string; value?: string; mono?: boolean }[] = [
+    { name: "카테고리", value: category?.name },
     { name: "제목", value: caper.title },
     {
       name: "제목 위치",
